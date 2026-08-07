@@ -30,3 +30,222 @@
  ○ Compiling /gallery ...
  ✓ Compiled /gallery in 585ms (463 modules)
  GET /gallery 200 in 925ms
+ ⨯ Error: Cannot find module './331.js'
+Require stack:
+- D:\natiyaarambam\.next\server\webpack-runtime.js
+- D:\natiyaarambam\.next\server\app\gallery\page.js
+- D:\natiyaarambam\node_modules\next\dist\server\require.js
+- D:\natiyaarambam\node_modules\next\dist\server\load-components.js
+- D:\natiyaarambam\node_modules\next\dist\build\utils.js
+- D:\natiyaarambam\node_modules\next\dist\build\swc\options.js
+- D:\natiyaarambam\node_modules\next\dist\build\swc\index.js
+- D:\natiyaarambam\node_modules\next\dist\build\next-config-ts\transpile-config.js
+- D:\natiyaarambam\node_modules\next\dist\server\config.js
+- D:\natiyaarambam\node_modules\next\dist\server\next.js
+- D:\natiyaarambam\node_modules\next\dist\server\lib\start-server.js
+    at <unknown> (D:\natiyaarambam\.next\server\app\page.js:2:8275)
+    at Object.<anonymous> (D:\natiyaarambam\.next\server\app\page.js:2:8329) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array],
+  page: '/'
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 13.7s (1047 modules)
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json'
+}
+Error: Cannot find module './331.js'
+Require stack:
+- D:\natiyaarambam\.next\server\webpack-runtime.js
+- D:\natiyaarambam\.next\server\app\gallery\page.js
+- D:\natiyaarambam\node_modules\next\dist\server\require.js
+- D:\natiyaarambam\node_modules\next\dist\server\load-components.js
+- D:\natiyaarambam\node_modules\next\dist\build\utils.js
+- D:\natiyaarambam\node_modules\next\dist\build\swc\options.js
+- D:\natiyaarambam\node_modules\next\dist\build\swc\index.js
+- D:\natiyaarambam\node_modules\next\dist\build\next-config-ts\transpile-config.js
+- D:\natiyaarambam\node_modules\next\dist\server\config.js
+- D:\natiyaarambam\node_modules\next\dist\server\next.js
+- D:\natiyaarambam\node_modules\next\dist\server\lib\start-server.js
+    at <unknown> (D:\natiyaarambam\.next\server\app\page.js:2:8275)
+    at Object.<anonymous> (D:\natiyaarambam\.next\server\app\page.js:2:8329) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array],
+  page: '/'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json'
+}
+Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json'
+}
+ GET / 500 in 27229ms
+ GET / 500 in 588ms
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json',
+  page: '/'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json'
+}
+Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json',
+  page: '/'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json'
+}
+Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json'
+}
+ GET / 500 in 4363ms
+ GET / 500 in 541ms
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json',
+  page: '/'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json',
+  page: '/'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json'
+}
+Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json',
+  page: '/'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json'
+}
+Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json',
+  page: '/'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json'
+}
+Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json'
+}
+ GET / 500 in 6415ms
+ GET / 500 in 2343ms
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json'
+}
+Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json'
+}
+ GET / 500 in 5308ms
+ GET / 500 in 863ms
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json',
+  page: '/'
+}
+ GET / 500 in 1154ms
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json'
+}
+Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json',
+  page: '/'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json'
+}
+Error: ENOENT: no such file or directory, open 'D:\natiyaarambam\.next\routes-manifest.json'
+    at Object.readFileUtf8 (c:\Users\Sairam.Gurunathan\.vscode\extensions\wallabyjs.console-ninja-1.0.538\out\buildHook\index.js:1:3588539) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\natiyaarambam\\.next\\routes-manifest.json'
+}
+[?25h
