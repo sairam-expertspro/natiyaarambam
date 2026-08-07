@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="#7e1414"/>
+  <path d="M42 19a16 16 0 1 0 5.2 11.8" fill="none" stroke="#c9a227" stroke-width="3" stroke-linecap="round"/>
+  <text x="12" y="41" font-family="Georgia, serif" font-size="24" font-weight="700" fill="#fcfaf0">N</text>
+  <text x="29" y="41" font-family="Georgia, serif" font-size="24" font-weight="700" fill="#fcfaf0">D</text>
+  <circle cx="39" cy="21" r="3" fill="#c9a227"/>
+</svg>
