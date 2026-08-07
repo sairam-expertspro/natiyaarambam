@@ -263,6 +263,30 @@
     var fileInput = document.querySelector("[data-upload-input]");
     var ownerChip = document.querySelector("[data-owner-chip]");
     var ownerOnly = document.querySelectorAll("[data-owner-only]");
+    var PHOTO_TAGS = ["Performance", "Training", "Celebration", "Students", "Recital"];
+
+    function galleryPhotoHTML(imageNumber) {
+      return (
+        '<div data-gallery-item data-kind="image">' +
+        '<button type="button" class="nd-tile" data-lightbox aria-label="View photo: Gallery Moment ' + imageNumber + '">' +
+        '<img src="../images/Images/' + imageNumber + '.webp" alt="Gallery Moment ' + imageNumber + '" loading="lazy">' +
+        '<span class="nd-tile-caption"><span class="nd-tile-tag">' + PHOTO_TAGS[(imageNumber - 1) % PHOTO_TAGS.length] + "</span>" +
+        '<span class="nd-tile-name">Gallery Moment ' + imageNumber + "</span></span></button></div>"
+      );
+    }
+
+    galleryGrid.querySelectorAll("[data-gallery-item]").forEach(function (el) {
+      el.remove();
+    });
+    var ownerTile = galleryGrid.querySelector("[data-owner-only]");
+    var photoMarkup = Array.from({ length: 65 }, function (_, i) {
+      return galleryPhotoHTML(i + 1);
+    }).join("");
+    if (ownerTile) {
+      ownerTile.insertAdjacentHTML("beforebegin", photoMarkup);
+    } else {
+      galleryGrid.insertAdjacentHTML("beforeend", photoMarkup);
+    }
 
     function applyOwnerVisibility() {
       ownerOnly.forEach(function (el) {

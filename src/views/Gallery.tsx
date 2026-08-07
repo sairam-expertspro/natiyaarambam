@@ -14,7 +14,7 @@ import {
   X,
 } from "lucide-react";
 import { Reveal, scrollToId, useSite } from "../components/chrome";
-import { ABOUT_IMG, IMG } from "../data";
+import { IMG } from "../data";
 
 /* Photography credits (Pexels, free license):
    Stage solo — Syam Vijai (18240707) · Festival — atelierbyvineeth (34717649)
@@ -28,15 +28,24 @@ type Photo = { src: string; tag: string; name: string; span?: string; mono?: boo
 type Film = { src: string; poster: string; name: string };
 
 /* ——— Photographs only: the printed anthology ——— */
-const PHOTOS: Photo[] = [
-  { src: "https://images.pexels.com/photos/18240707/pexels-photo-18240707.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=900", tag: "Arangetram", name: "First Light on Stage" },
-  { src: "https://images.pexels.com/photos/7318657/pexels-photo-7318657.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=1200", tag: "Sadhana", name: "Morning Rehearsal Circle", span: "md:col-span-2", mono: true },
-  { src: "https://images.pexels.com/photos/34717649/pexels-photo-34717649.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=900", tag: "Temple Festival", name: "Navarathiri Procession" },
-  { src: "https://images.pexels.com/photos/30481585/pexels-photo-30481585.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=900", tag: "Detail", name: "Ghungroo & Alta" },
-  { src: ABOUT_IMG.guruStudents, tag: "Parampara", name: "The Guru's Blessing", span: "md:row-span-2" },
-  { src: "https://images.pexels.com/photos/28489406/pexels-photo-28489406.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=1200", tag: "Community", name: "Sankirtana Ensemble", span: "md:col-span-2" },
-  { src: "https://images.pexels.com/photos/16039776/pexels-photo-16039776.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=900", tag: "Recital", name: "Deepam Evening" },
-];
+const GALLERY_IMAGE_COUNT = 65;
+const PHOTO_TAGS = ["Performance", "Training", "Celebration", "Students", "Recital"];
+
+/* Photographs from public/images/Images. */
+const PHOTOS: Photo[] = Array.from({ length: GALLERY_IMAGE_COUNT }, (_, index) => {
+  const imageNumber = index + 1;
+  return {
+    src: `/images/Images/${imageNumber}.webp`,
+    tag: PHOTO_TAGS[index % PHOTO_TAGS.length],
+    name: `Gallery Moment ${imageNumber}`,
+    span:
+      index % 17 === 1
+        ? "md:col-span-2"
+        : index % 23 === 4
+          ? "md:row-span-2"
+          : undefined,
+  };
+});
 
 /* ——— Films only: screened separately below ——— */
 const FILMS: Film[] = [
@@ -53,27 +62,10 @@ const FILMS: Film[] = [
 ];
 
 const MOSAIC: { big: Photo; jewelry: Photo; guru: Photo; floor: Photo } = {
-  big: {
-    src: "https://images.pexels.com/photos/18086346/pexels-photo-18086346.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1200&w=900",
-    tag: "Performance",
-    name: "Ardhamandali in Mid-Air",
-  },
-  jewelry: {
-    src: "https://images.pexels.com/photos/35059564/pexels-photo-35059564.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=900",
-    tag: "Adornment",
-    name: "Temple Ornaments",
-  },
-  guru: {
-    src: "https://images.pexels.com/photos/14742292/pexels-photo-14742292.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=900",
-    tag: "Parampara",
-    name: "Guru-Shishya Parampara",
-    mono: true,
-  },
-  floor: {
-    src: "https://images.pexels.com/photos/16039776/pexels-photo-16039776.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=1200",
-    tag: "The Academy",
-    name: "The Academy Floor",
-  },
+  big: PHOTOS[60],
+  jewelry: PHOTOS[61],
+  guru: PHOTOS[62],
+  floor: PHOTOS[63],
 };
 
 /* The anthology grid: photographs and films interleaved (shown under "All") */
@@ -82,15 +74,11 @@ type GridItem =
   | { kind: "film"; film: Film };
 
 const GRID: GridItem[] = [
-  { kind: "photo", photo: PHOTOS[0] },
-  { kind: "photo", photo: PHOTOS[1], span: PHOTOS[1].span },
-  { kind: "photo", photo: PHOTOS[2] },
+  ...PHOTOS.slice(0, 3).map((photo) => ({ kind: "photo" as const, photo, span: photo.span })),
   { kind: "film", film: FILMS[0] },
-  { kind: "photo", photo: PHOTOS[3] },
-  { kind: "photo", photo: PHOTOS[4], span: PHOTOS[4].span },
-  { kind: "photo", photo: PHOTOS[5], span: PHOTOS[5].span },
+  ...PHOTOS.slice(3, 6).map((photo) => ({ kind: "photo" as const, photo, span: photo.span })),
   { kind: "film", film: FILMS[1] },
-  { kind: "photo", photo: PHOTOS[6] },
+  ...PHOTOS.slice(6).map((photo) => ({ kind: "photo" as const, photo, span: photo.span })),
 ];
 
 type Filter = "all" | "image" | "video";
@@ -154,7 +142,7 @@ export default function Gallery() {
 
   /* Every photograph (including visitor uploads), viewable in the lightbox */
   const ALL_PHOTOS = useMemo(
-    () => [...PHOTOS, ...uploads, MOSAIC.big, MOSAIC.jewelry, MOSAIC.guru, MOSAIC.floor],
+    () => [...PHOTOS, ...uploads],
     [uploads]
   );
 
