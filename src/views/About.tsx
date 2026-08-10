@@ -2,7 +2,7 @@
 
 import { Play } from "lucide-react";
 import { Reveal, useSite } from "../components/chrome";
-import { ABOUT_IMG, IMG } from "../data";
+import { ABOUT_IMG } from "../data";
 import Image from "next/image";
 
 export default function About() {

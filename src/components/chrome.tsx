@@ -125,69 +125,6 @@ export const SOCIALS = [
   },
 ];
 
-/* ============================ Brand mark ============================ */
-function Logo({ small = false }: { small?: boolean }) {
-  return (
-    <svg
-      viewBox="0 0 360 96"
-      className={small ? "h-9 w-auto" : "h-11 w-auto md:h-[52px]"}
-      aria-hidden="true"
-      focusable="false"
-    >
-      {/* gold arc, open at the top-right */}
-      <path
-        d="M86.1 32.2 A42 42 0 1 0 58.9 9.4"
-        fill="none"
-        stroke="#c9a227"
-        strokeWidth="2.4"
-        strokeLinecap="round"
-      />
-      {/* thread + hanging bell */}
-      <path d="M59 9.5 Q75 5 83 15" fill="none" stroke="#c9a227" strokeWidth="1.3" />
-      <path d="M78.6 15.4 q4.4 -5.2 8.8 0 l1.8 6.2 h-12.4 z" fill="#c9a227" />
-      <circle cx="83" cy="23.6" r="1.7" fill="#c9a227" />
-      {/* N D A monogram */}
-      <text x="15" y="67" fontFamily="'Playfair Display', Georgia, serif" fontSize="47" fontWeight="700" fill="#7e1414">N</text>
-      <text x="46" y="67" fontFamily="'Playfair Display', Georgia, serif" fontSize="47" fontWeight="700" fill="#7e1414">D</text>
-      <text x="79" y="67" fontFamily="'Playfair Display', Georgia, serif" fontSize="47" fontWeight="700" fill="#7e1414">A</text>
-      {/* dancer silhouette over the D */}
-      <g transform="translate(52,25)">
-        <circle cx="7" cy="2.6" r="2.4" fill="#7e1414" />
-        <path
-          d="M8.6 6.2 Q13 4 14.6 0.4 M5.4 7.2 Q1.6 9.6 0 13.2 M7 5.6 L7 14"
-          stroke="#7e1414"
-          strokeWidth="1.7"
-          strokeLinecap="round"
-          fill="none"
-        />
-        <path d="M7 13 L0.4 23.2 Q7 26.8 13.6 23.2 Z" fill="#c9a227" />
-        <path
-          d="M4.6 24.4 L4 28.4 M9.4 24.4 L10 28.4"
-          stroke="#7e1414"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-      </g>
-      {/* wordmark */}
-      <text x="105" y="61" fontFamily="'Playfair Display', Georgia, serif" fontSize="37" fontWeight="700" fill="#7e1414">
-        Natyaarambam
-      </text>
-      <text
-        x="352"
-        y="83"
-        textAnchor="end"
-        fontFamily="'Jost', sans-serif"
-        fontSize="14.5"
-        fontWeight="600"
-        letterSpacing="5"
-        fill="#c9a227"
-      >
-        Dance Academy
-      </text>
-    </svg>
-  );
-}
-
 /* ============================ Layout ============================ */
 export function Layout({ children }: { children: ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
