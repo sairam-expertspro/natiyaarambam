@@ -3,6 +3,7 @@
 import { Play } from "lucide-react";
 import { Reveal, useSite } from "../components/chrome";
 import { ABOUT_IMG, IMG } from "../data";
+import Image from "next/image";
 
 export default function About() {
   const { goGallery, goHome } = useSite();
@@ -13,7 +14,7 @@ export default function About() {
       <section className="nd-about-banner" aria-labelledby="about-hero-title">
         <img
           className="nd-about-banner-img"
-          src={ABOUT_IMG.hero}
+          src="/images/image 7.png"
           alt="Bharatanatyam dancer in an emerald green and gold sari seated in araimandi before a deep maroon circle"
         />
         <div className="nd-about-banner-scrim" aria-hidden="true" />
@@ -26,7 +27,7 @@ export default function About() {
             <p className="nd-eyebrow nd-eyebrow--light">Natyaarambam Dance Academy</p>
           </Reveal>
           <Reveal delay={90}>
-            <h1 id="about-hero-title" className="mt-5 max-w-xl font-display text-[2.6rem] font-bold leading-[1.1] text-cream-50 md:text-[3.6rem]">
+            <h1 id="about-hero-title" className="mt-5 max-w-xl font-display text-[2.6rem] font-bold leading-[1.1] text-cream-50 md:text-[3.4rem]">
               Dance that Speaks the{" "}
               <span className="block text-gold-400">Language of the Soul</span>
             </h1>
@@ -59,7 +60,7 @@ export default function About() {
               <span className="nd-petal nd-petal--flip" style={{ left: "-70px", top: "170px", width: 150, height: 150 }} aria-hidden="true" />
               <div className="nd-img-zoom absolute right-0 top-0 w-[64%] shadow-xl">
                 <img
-                  src={ABOUT_IMG.stage}
+                  src="/images/Images/57.webp"
                   alt="Dancer in a red costume performing under warm stage light"
                   className="h-[300px] w-full object-cover sm:h-[360px]"
                   loading="lazy"
@@ -69,7 +70,7 @@ export default function About() {
                 <img
                   src={ABOUT_IMG.guruStudents}
                   alt="A guru seated outdoors teaching a circle of young students"
-                  className="nd-grayscale h-[240px] w-full object-cover sm:h-[280px]"
+                  className="nd-grayscale h-60 w-full object-cover sm:h-[280px]"
                   loading="lazy"
                 />
               </div>
@@ -151,7 +152,7 @@ export default function About() {
             <Reveal>
               <figure className="nd-founder-card relative overflow-hidden rounded-md">
                 <img
-                  src={ABOUT_IMG.hema}
+                  src="/images/2.webp"
                   alt="Guru Hema Chandrasekaran in a yellow sari with temple jewelry"
                   className="h-[520px] w-full object-cover object-top md:h-[600px]"
                   loading="lazy"
@@ -173,9 +174,9 @@ export default function About() {
                     The Journey of Natyaarambam
                   </h3>
                   <img
-                    src={IMG.mudra}
+                    src="/images/Portfolio.png"
                     alt="Hands held in a dance mudra"
-                    className="h-16 w-16 flex-none rounded-full border-2 border-gold-500/70 object-cover"
+                    className="h-18 w-18 fixed flex-none rounded-full z-20 border-2 border-gold-500/70 object-cover left-10% right-10 top-[2%] md:h-22 md:w-22"
                     loading="lazy"
                   />
                 </div>
@@ -223,12 +224,12 @@ export default function About() {
 
       {/* ====================== CTA BAND ====================== */}
       <section className="nd-cta" aria-labelledby="about-cta-title">
-        <span className="nd-cta-shape nd-cta-shape--diamond" style={{ left: "6%", top: "18%" }} aria-hidden="true" />
+        {/* <span className="nd-cta-shape nd-cta-shape--diamond" style={{ left: "6%", top: "18%" }} aria-hidden="true" />
         <span className="nd-cta-shape nd-cta-shape--diamond" style={{ right: "10%", bottom: "14%", width: 90, height: 90 }} aria-hidden="true" />
         <span className="nd-cta-shape nd-cta-shape--circle" style={{ right: "-70px", top: "-70px", width: 240, height: 240 }} aria-hidden="true" />
-        <span className="nd-cta-shape nd-cta-shape--circle" style={{ left: "14%", bottom: "-110px", width: 200, height: 200 }} aria-hidden="true" />
+        <span className="nd-cta-shape nd-cta-shape--circle" style={{ left: "14%", bottom: "-110px", width: 200, height: 200 }} aria-hidden="true" /> */}
         <span className="nd-cta-watermark" style={{ right: "4%", top: "50%", transform: "translateY(-50%)" }} aria-hidden="true">
-          नाट्यम्
+          <Image src="/images/Decorative Lotus watermark.svg" alt="" width={500} height={500} className="opacity-5 relative top-20 left-50" />
         </span>
 
         <div className="relative mx-auto max-w-[760px] px-5 py-20 text-center md:py-24">

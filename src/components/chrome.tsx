@@ -22,6 +22,7 @@ import {
   Sparkles,
   X,
 } from "lucide-react";
+import Image from "next/image";
 
 /* ============================ Site context ============================ */
 type Site = {
@@ -256,7 +257,8 @@ export function Layout({ children }: { children: ReactNode }) {
       <header className={`nd-header ${scrolled ? "is-scrolled" : ""}`}>
         <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-4 px-5 py-3.5 md:px-8">
           <Link href="/" aria-label="Natyaarambam Dance Academy home">
-            <Logo />
+            {/* <Logo /> */}
+            <Image src="/images/Logo.svg" alt="Natyaarambam Dance Academy" width={180} height={40} className="inline-block h-10 w-auto md:h-[52px]" />
           </Link>
 
           <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary">
@@ -311,7 +313,8 @@ export function Layout({ children }: { children: ReactNode }) {
           <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.4fr_0.8fr_0.8fr_1.2fr]">
             <div>
               <Link href="/" aria-label="Back to home">
-                <Logo small />
+                            <Image src="/images/Logo.svg" alt="Natyaarambam Dance Academy" width={180} height={40} className="inline-block h-10 w-auto md:h-[52px]" />
+
               </Link>
               <p className="mt-5 max-w-xs text-sm font-light leading-relaxed text-ink-500">
                 Preserving and promoting the richness of Indian classical dance

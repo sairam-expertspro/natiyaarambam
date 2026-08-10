@@ -10,11 +10,13 @@ import {
   LayoutGrid,
   Lock,
   Play,
+  Shuffle,
   Upload,
   X,
 } from "lucide-react";
 import { Reveal, scrollToId, useSite } from "../components/chrome";
 import { IMG } from "../data";
+import Image from "next/image";
 
 /* Photography credits (Pexels, free license):
    Stage solo — Syam Vijai (18240707) · Festival — atelierbyvineeth (34717649)
@@ -73,21 +75,100 @@ type GridItem =
   | { kind: "photo"; photo: Photo; span?: string }
   | { kind: "film"; film: Film };
 
-const GRID: GridItem[] = [
-  ...PHOTOS.slice(0, 3).map((photo) => ({ kind: "photo" as const, photo, span: photo.span })),
-  { kind: "film", film: FILMS[0] },
-  ...PHOTOS.slice(3, 6).map((photo) => ({ kind: "photo" as const, photo, span: photo.span })),
-  { kind: "film", film: FILMS[1] },
-  ...PHOTOS.slice(6).map((photo) => ({ kind: "photo" as const, photo, span: photo.span })),
-];
-
 type Filter = "all" | "image" | "video";
 
-const PREVIEW_COUNT = 6;
+const INITIAL_VISIBLE_COUNT = 12;
+const LOAD_BATCH_COUNT = 12;
 
 /* Owner-only uploads. Change this passcode as needed.
    Owners press Ctrl/Cmd + Shift + O to unlock. */
 const OWNER_PASSCODE = "HEMA2018";
+
+const shuffleItems = <T,>(items: T[], seed: number) => {
+  const shuffled = [...items];
+  let value = seed || 1;
+
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
+    value = (value * 1664525 + 1013904223) % 4294967296;
+    const j = value % (i + 1);
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  return shuffled;
+};
+
+const buildGrid = (photos: Photo[]): GridItem[] => [
+  ...photos.slice(0, 3).map((photo) => ({ kind: "photo" as const, photo, span: photo.span })),
+  { kind: "film", film: FILMS[0] },
+  ...photos.slice(3, 6).map((photo) => ({ kind: "photo" as const, photo, span: photo.span })),
+  { kind: "film", film: FILMS[1] },
+  ...photos.slice(6).map((photo) => ({ kind: "photo" as const, photo, span: photo.span })),
+];
+
+function GalleryImage({
+  src,
+  alt,
+  className,
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+}) {
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => setLoaded(false), [src]);
+
+  return (
+    <>
+      <span className={`nd-image-skeleton ${loaded ? "nd-image-skeleton--hidden" : ""}`} aria-hidden="true" />
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        className={`${className ?? ""} ${loaded ? "nd-image-loaded" : "nd-image-loading"}`.trim()}
+        onLoad={() => setLoaded(true)}
+      />
+    </>
+  );
+}
+
+function PhotoTile({ photo, onOpen }: { photo: Photo; onOpen: (photo: Photo) => void }) {
+  return (
+    <button
+      type="button"
+      className="nd-tile"
+      aria-label={`View photo: ${photo.name}`}
+      onClick={() => onOpen(photo)}
+    >
+      <GalleryImage src={photo.src} alt={photo.name} className={photo.mono ? "nd-grayscale" : ""} />
+      <span className="nd-tile-caption">
+        <span className="nd-tile-tag">{photo.tag}</span>
+        <span className="nd-tile-name">{photo.name}</span>
+      </span>
+    </button>
+  );
+}
+
+function FilmTile({ film, onPlay }: { film: Film; onPlay: (film: Film) => void }) {
+  return (
+    <button
+      type="button"
+      className="nd-tile"
+      aria-label={`Play film: ${film.name}`}
+      onClick={() => onPlay(film)}
+    >
+      <GalleryImage src={film.poster} alt={film.name} />
+      <span className="nd-play-btn" aria-hidden="true">
+        <Play size={20} fill="currentColor" />
+      </span>
+      <span className="nd-tile-caption">
+        <span className="nd-tile-tag">Film</span>
+        <span className="nd-tile-name">{film.name}</span>
+      </span>
+    </button>
+  );
+}
 
 export default function Gallery() {
   const { goHome, showToast } = useSite();
@@ -95,7 +176,8 @@ export default function Gallery() {
   const [film, setFilm] = useState<Film | null>(null);
   const [filter, setFilter] = useState<Filter>("all");
   const [uploads, setUploads] = useState<Photo[]>([]);
-  const [expanded, setExpanded] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
+  const [shuffleSeed, setShuffleSeed] = useState(0);
   const [dragging, setDragging] = useState(false);
   const fileRef = useRef<HTMLInputElement | null>(null);
 
@@ -146,20 +228,25 @@ export default function Gallery() {
     [uploads]
   );
 
+  const orderedPhotos = useMemo(
+    () => (shuffleSeed ? shuffleItems(PHOTOS, shuffleSeed) : PHOTOS),
+    [shuffleSeed]
+  );
+
   const filtered = useMemo(() => {
     const base: GridItem[] = [
-      ...GRID,
+      ...buildGrid(orderedPhotos),
       ...uploads.map((u) => ({ kind: "photo" as const, photo: u })),
     ];
     return base.filter((item) =>
       filter === "all" ? true : filter === "image" ? item.kind === "photo" : item.kind === "film"
     );
-  }, [filter, uploads]);
+  }, [filter, orderedPhotos, uploads]);
 
-  const shown = expanded ? filtered : filtered.slice(0, PREVIEW_COUNT);
+  const shown = filtered.slice(0, visibleCount);
   const hiddenCount = filtered.length - shown.length;
 
-  useEffect(() => setExpanded(false), [filter]);
+  useEffect(() => setVisibleCount(INITIAL_VISIBLE_COUNT), [filter, shuffleSeed]);
 
   const handleFiles = (list: FileList | null) => {
     if (!list) return;
@@ -177,7 +264,7 @@ export default function Gallery() {
       return;
     }
     setUploads((prev) => [...prev, ...images]);
-    setExpanded(true);
+    setVisibleCount((count) => Math.max(count, INITIAL_VISIBLE_COUNT + images.length));
     showToast(
       `${images.length} photo${images.length > 1 ? "s" : ""} added to the anthology — thank you for sharing`
     );
@@ -209,43 +296,10 @@ export default function Gallery() {
     if (idx >= 0) setLightbox(idx);
   };
 
-  const photoTile = (photo: Photo) => (
-    <button
-      type="button"
-      className="nd-tile"
-      aria-label={`View photo: ${photo.name}`}
-      onClick={() => openPhoto(photo)}
-    >
-      <img
-        src={photo.src}
-        alt={photo.name}
-        loading="lazy"
-        className={photo.mono ? "nd-grayscale" : ""}
-      />
-      <span className="nd-tile-caption">
-        <span className="nd-tile-tag">{photo.tag}</span>
-        <span className="nd-tile-name">{photo.name}</span>
-      </span>
-    </button>
-  );
-
-  const filmTile = (f: Film) => (
-    <button
-      type="button"
-      className="nd-tile"
-      aria-label={`Play film: ${f.name}`}
-      onClick={() => setFilm(f)}
-    >
-      <img src={f.poster} alt={f.name} loading="lazy" />
-      <span className="nd-play-btn" aria-hidden="true">
-        <Play size={20} fill="currentColor" />
-      </span>
-      <span className="nd-tile-caption">
-        <span className="nd-tile-tag">Film</span>
-        <span className="nd-tile-name">{f.name}</span>
-      </span>
-    </button>
-  );
+  const shuffleGallery = () => {
+    setShuffleSeed((seed) => seed + 1);
+    showToast("Gallery shuffled for a fresh view");
+  };
 
   return (
     <div id="gallery-page">
@@ -321,6 +375,14 @@ export default function Gallery() {
                     {f.label}
                   </button>
                 ))}
+                <button
+                  type="button"
+                  className="nd-filter-chip nd-filter-chip--shuffle inline-flex items-center gap-2"
+                  onClick={shuffleGallery}
+                >
+                  <Shuffle size={14} aria-hidden="true" />
+                  Shuffle
+                </button>
                 {isOwner && (
                   <>
                     <span className="nd-owner-chip">
@@ -361,10 +423,10 @@ export default function Gallery() {
           />
 
           {/* Anthology masonry — filtered by All / Images / Videos */}
-          <div key={`${filter}-${expanded}`} className="mt-12 grid auto-rows-[170px] grid-cols-2 gap-4 md:auto-rows-[210px] md:grid-cols-3">
+          <div key={`${filter}-${shuffleSeed}`} className="nd-gallery-grid mt-12">
             {shown.map((item, i) => (
               <Reveal
-                key={`${item.kind}-${item.kind === "photo" ? item.photo.name : item.film.name}-${i}`}
+                key={`${item.kind}-${item.kind === "photo" ? item.photo.src : item.film.src}`}
                 delay={(i % 3) * 80}
                 className={
                   item.kind === "photo"
@@ -374,7 +436,11 @@ export default function Gallery() {
                       : undefined
                 }
               >
-                {item.kind === "photo" ? photoTile(item.photo) : filmTile(item.film)}
+                {item.kind === "photo" ? (
+                  <PhotoTile photo={item.photo} onOpen={openPhoto} />
+                ) : (
+                  <FilmTile film={item.film} onPlay={setFilm} />
+                )}
               </Reveal>
             ))}
 
@@ -414,19 +480,25 @@ export default function Gallery() {
           </div>
 
           {/* View more / less */}
-          {hiddenCount > 0 && (
+          {(hiddenCount > 0 || visibleCount > INITIAL_VISIBLE_COUNT) && (
             <div className="mt-10 text-center">
               <button
                 type="button"
                 className="nd-btn nd-btn--ghost-maroon"
-                onClick={() => setExpanded((v) => !v)}
-                aria-expanded={expanded}
+                onClick={() => {
+                  if (hiddenCount > 0) {
+                    setVisibleCount((count) => count + LOAD_BATCH_COUNT);
+                  } else {
+                    setVisibleCount(INITIAL_VISIBLE_COUNT);
+                  }
+                }}
+                aria-expanded={hiddenCount === 0}
               >
-                {expanded ? "View Less" : `View More Moments (${hiddenCount} more)`}
+                {hiddenCount > 0 ? `Load ${Math.min(hiddenCount, LOAD_BATCH_COUNT)} More Moments` : "View Less"}
                 <ChevronDown
                   size={16}
                   aria-hidden="true"
-                  className={`transition-transform duration-300 ${expanded ? "rotate-180" : ""}`}
+                  className={`transition-transform duration-300 ${hiddenCount === 0 ? "rotate-180" : ""}`}
                 />
               </button>
             </div>
@@ -461,7 +533,7 @@ export default function Gallery() {
                   aria-label={`Play film: ${v.name}`}
                   onClick={() => setFilm(v)}
                 >
-                  <img src={v.poster} alt={v.name} loading="lazy" />
+                  <GalleryImage src={v.poster} alt={v.name} />
                   <span className="nd-play-btn" aria-hidden="true">
                     <Play size={22} fill="currentColor" />
                   </span>
@@ -473,22 +545,22 @@ export default function Gallery() {
 
           {/* Secondary photograph mosaic */}
           <div className="mt-14 grid auto-rows-[180px] grid-cols-2 gap-6 md:auto-rows-[200px] md:grid-cols-4">
-            <Reveal className="col-span-2 row-span-2">{photoTile(MOSAIC.big)}</Reveal>
-            <Reveal delay={90}>{photoTile(MOSAIC.jewelry)}</Reveal>
-            <Reveal delay={160}>{photoTile(MOSAIC.guru)}</Reveal>
-            <Reveal delay={220} className="col-span-2">{photoTile(MOSAIC.floor)}</Reveal>
+            <Reveal className="col-span-2 row-span-2"><PhotoTile photo={MOSAIC.big} onOpen={openPhoto} /></Reveal>
+            <Reveal delay={90}><PhotoTile photo={MOSAIC.jewelry} onOpen={openPhoto} /></Reveal>
+            <Reveal delay={160}><PhotoTile photo={MOSAIC.guru} onOpen={openPhoto} /></Reveal>
+            <Reveal delay={220} className="col-span-2"><PhotoTile photo={MOSAIC.floor} onOpen={openPhoto} /></Reveal>
           </div>
         </div>
       </section>
 
       {/* ====================== CTA BAND ====================== */}
       <section className="nd-cta" aria-labelledby="gallery-cta-title">
-        <span className="nd-cta-shape nd-cta-shape--diamond" style={{ left: "6%", top: "18%" }} aria-hidden="true" />
+        {/* <span className="nd-cta-shape nd-cta-shape--diamond" style={{ left: "6%", top: "18%" }} aria-hidden="true" />
         <span className="nd-cta-shape nd-cta-shape--diamond" style={{ right: "10%", bottom: "14%", width: 90, height: 90 }} aria-hidden="true" />
         <span className="nd-cta-shape nd-cta-shape--circle" style={{ right: "-70px", top: "-70px", width: 240, height: 240 }} aria-hidden="true" />
-        <span className="nd-cta-shape nd-cta-shape--circle" style={{ left: "14%", bottom: "-110px", width: 200, height: 200 }} aria-hidden="true" />
+        <span className="nd-cta-shape nd-cta-shape--circle" style={{ left: "14%", bottom: "-110px", width: 200, height: 200 }} aria-hidden="true" /> */}
         <span className="nd-cta-watermark" style={{ right: "4%", top: "50%", transform: "translateY(-50%)" }} aria-hidden="true">
-          नाट्यम्
+                    <Image src="/images/Decorative Lotus watermark.svg" alt="" width={500} height={500} className="opacity-5 relative top-20 left-50" />
         </span>
 
         <div className="relative mx-auto max-w-[760px] px-5 py-20 text-center md:py-24">
