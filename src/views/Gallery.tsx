@@ -563,7 +563,7 @@ export default function Gallery() {
                     <Image src="/images/Decorative Lotus watermark.svg" alt="" width={500} height={500} className="opacity-5 relative top-20 left-50" />
         </span>
 
-        <div className="relative z-10 mx-auto flex min-h-[540px] max-w-[1180px] flex-col justify-center px-5 py-20 md:min-h-[640px] md:px-8">
+        <div className="relative mx-auto max-w-[760px] px-5 py-20 text-center md:py-24">
           <Reveal>
             <h2 id="gallery-cta-title" className="font-display text-[2rem] font-bold text-cream-50 md:text-[2.6rem]">
               Begin Your Journey Within

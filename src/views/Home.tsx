@@ -12,24 +12,30 @@ import {
   Sparkles,
 } from "lucide-react";
 import { Reveal, useSite } from "../components/chrome";
-import { IMG, TESTIMONIALS } from "../data";
+import { TESTIMONIALS } from "../data";
 import Image from "next/image";
 
 function TestimonialCard({ t }: { t: (typeof TESTIMONIALS)[number] }) {
   return (
     <figure className="nd-card flex h-full flex-col p-7">
       <div className="flex items-start justify-between gap-3">
-        <span className="nd-quote-mark" aria-hidden="true">“</span>
-        <span className="mt-1 shrink-0 rounded-full border border-gold-500/50 px-3 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.16em] text-gold-600">
-          {t.tag}
+        <span className="nd-quote-mark" aria-hidden="true">
+          “
         </span>
+        {/* <span className="mt-1 shrink-0 rounded-full border border-gold-500/50 px-3 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.16em] text-gold-600">
+          {t.tag}
+        </span> */}
       </div>
       <blockquote className="mt-3 flex-1 text-[0.87rem] font-light leading-relaxed text-ink-700">
         {t.text}
       </blockquote>
       <figcaption className="mt-6 border-t border-maroon-800/10 pt-4">
-        <p className="font-display text-[1.05rem] font-semibold text-maroon-800">{t.name}</p>
-        <p className="text-xs uppercase tracking-[0.16em] text-ink-400">{t.role}</p>
+        <p className="font-display text-[1.05rem] font-semibold text-maroon-800">
+          {t.name}
+        </p>
+        {/* <p className="text-xs uppercase tracking-[0.16em] text-ink-400">
+          {t.role}
+        </p> */}
       </figcaption>
     </figure>
   );
@@ -53,7 +59,7 @@ function HeritageCount() {
         };
         requestAnimationFrame(tick);
       },
-      { threshold: 0.5 }
+      { threshold: 0.5 },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -71,8 +77,12 @@ export default function Home() {
       const next = !v;
       if (!next) {
         window.setTimeout(
-          () => testiRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }),
-          80
+          () =>
+            testiRef.current?.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            }),
+          80,
         );
       }
       return next;
@@ -117,7 +127,8 @@ export default function Home() {
     if (!draggingRef.current) return;
     const el = marqueeRef.current;
     if (!el) return;
-    el.scrollLeft = dragState.current.startScroll - (e.clientX - dragState.current.startX);
+    el.scrollLeft =
+      dragState.current.startScroll - (e.clientX - dragState.current.startX);
   };
   const endDrag = () => {
     if (!draggingRef.current) return;
@@ -134,7 +145,8 @@ export default function Home() {
     const el = marqueeRef.current;
     if (!el) return;
     const half = el.scrollWidth / 2;
-    const w = el.querySelector<HTMLElement>(".nd-marquee-item")?.offsetWidth ?? 380;
+    const w =
+      el.querySelector<HTMLElement>(".nd-marquee-item")?.offsetWidth ?? 380;
 
     /* When nudging left near the start, hop into the duplicated half first
        so the strip never slams into a wall — the loop stays seamless. */
@@ -169,44 +181,87 @@ export default function Home() {
       <section className="nd-about-banner" aria-labelledby="about-hero-title">
         <img
           className="nd-about-banner-img"
-          src="/images/Home Banner.png"
+          src="/images/Home Banner.webp"
           alt="Bharatanatyam dancer in an emerald green and gold sari seated in araimandi before a deep maroon circle"
         />
-        <div className="" aria-hidden="true" />
-        <span className="nd-bell" style={{ left: "7%", top: "26%" }} aria-hidden="true" />
-        <span className="nd-bell" style={{ left: "36%", bottom: "22%", animationDelay: "1.6s" }} aria-hidden="true" />
-        <span className="nd-bell" style={{ left: "18%", top: "64%", animationDelay: "2.8s" }} aria-hidden="true" />
+        <div className="nd-about-banner-scrim" aria-hidden="true" />
+        <span
+          className="nd-bell"
+          style={{ left: "7%", top: "26%" }}
+          aria-hidden="true"
+        />
+        <span
+          className="nd-bell"
+          style={{ left: "36%", bottom: "22%", animationDelay: "1.6s" }}
+          aria-hidden="true"
+        />
+        <span
+          className="nd-bell"
+          style={{ left: "18%", top: "64%", animationDelay: "2.8s" }}
+          aria-hidden="true"
+        />
 
         <div className="relative z-10 mx-auto flex min-h-[540px] max-w-[1180px] flex-col justify-center px-5 py-20 md:min-h-[640px] md:px-8">
-            <Reveal>
-              <p className="nd-eyebrow nd-eyebrow--light">Grace. Discipline. Heritage.</p>
-            </Reveal>
-            <Reveal delay={90}>
-              <h1 id="hero-title" className="mt-5 max-w-xl font-display text-[2.6rem] font-bold leading-[1.1] text-cream-50 md:text-[3.2rem]">
-                Discover the Divine <span className="text-nowrap">Language of <span className="text-gold-400">Bharatanatyam</span></span>
-                
-              </h1>
-            </Reveal>
-            <Reveal delay={180}>
-              <p className="mt-6 max-w-lg border-l-2 border-gold-500 pl-5 text-[0.97rem] font-light leading-relaxed text-cream-200/85">
-                Step into a world where rhythm, expression, and tradition come
-                together. At Natyaarambam Dance Academy, we offer structured
-                Bharatanatyam training that nurtures technique, confidence,
-                spirituality, and artistic expression for every aspiring dancer.
-              </p>
-            </Reveal>
-            <Reveal delay={270}>
-              <div className="mt-9 flex flex-wrap gap-4">
-                <button type="button" className="nd-btn nd-btn--maroon" onClick={() => goHome("contact")}>Enroll Now</button>
-                <button type="button" className="nd-btn nd-btn--gold-outline" onClick={goGallery}>
-                  <Play size={15} aria-hidden="true" /> Watch Our Gallery
-                </button>
-              </div>
-            </Reveal>
-          </div>
+          <Reveal>
+            <p className="nd-eyebrow nd-eyebrow--light">
+              Grace. Discipline. Heritage.
+            </p>
+          </Reveal>
+          <Reveal delay={90}>
+            <h1
+              id="hero-title"
+              className="
+    mt-5
+    max-w-xl
+    font-display
+    text-[2.2rem]
+    font-bold
+    leading-[1.1]
+    text-cream-50
+    sm:text-[2.6rem]
+    md:text-[3.2rem]
+    lg:text-[3.5rem]
+  "
+            >
+              Discover the Divine{" "}
+              <span className="sm:whitespace-nowrap">
+                Language of <span className="text-gold-400">Bharatanatyam</span>
+              </span>
+            </h1>
+          </Reveal>
+          <Reveal delay={180}>
+            <p className="mt-6 max-w-lg border-l-2 border-gold-500 pl-5 text-[0.97rem] font-light leading-relaxed text-cream-200/85">
+              Step into a world where rhythm, expression, and tradition come
+              together. At Natyaarambam Dance Academy, we offer structured
+              Bharatanatyam training that nurtures technique, confidence,
+              spirituality, and artistic expression for every aspiring dancer.
+            </p>
+          </Reveal>
+          <Reveal delay={270}>
+            <div className="mt-9 flex flex-wrap gap-4">
+              <button
+                type="button"
+                className="nd-btn nd-btn--maroon"
+                onClick={() => goHome("contact")}
+              >
+                Enroll Now
+              </button>
+              <button
+                type="button"
+                className="nd-btn nd-btn--gold-outline"
+                onClick={goGallery}
+              >
+                <Play size={15} aria-hidden="true" /> Watch Our Gallery
+              </button>
+            </div>
+          </Reveal>
+        </div>
       </section>
 
-      <section id="about-home" className="mx-auto max-w-[1180px] scroll-mt-24 px-5 py-20 md:px-8 md:py-28">
+      <section
+        id="about-home"
+        className="mx-auto max-w-[1180px] scroll-mt-24 px-5 py-20 md:px-8 md:py-28"
+      >
         <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
           <div>
             <Reveal>
@@ -225,7 +280,9 @@ export default function Home() {
             <div className="mt-9 space-y-7">
               <Reveal delay={160}>
                 <div className="flex gap-4">
-                  <span className="nd-icon-chip"><BookOpen size={16} strokeWidth={1.7} aria-hidden="true" /></span>
+                  <span className="nd-icon-chip">
+                    <BookOpen size={16} strokeWidth={1.7} aria-hidden="true" />
+                  </span>
                   <div>
                     <h3 className="text-[0.82rem] font-semibold uppercase tracking-[0.18em] text-maroon-800">
                       Intellectual Grounding
@@ -238,7 +295,9 @@ export default function Home() {
               </Reveal>
               <Reveal delay={240}>
                 <div className="flex gap-4">
-                  <span className="nd-icon-chip"><Compass size={16} strokeWidth={1.7} aria-hidden="true" /></span>
+                  <span className="nd-icon-chip">
+                    <Compass size={16} strokeWidth={1.7} aria-hidden="true" />
+                  </span>
                   <div>
                     <h3 className="text-[0.82rem] font-semibold uppercase tracking-[0.18em] text-maroon-800">
                       Structural Precision
@@ -255,7 +314,7 @@ export default function Home() {
           <Reveal delay={140} className="relative">
             <div className="nd-img-zoom rounded-sm">
               <img
-                src="/images/Home Page hidden.png"
+                src="/images/Home Page hidden.webp"
                 alt="Brass Nataraja — the cosmic dancer — glowing in warm temple light"
                 className="h-[420px] w-full object-cover md:h-[500px]"
                 loading="lazy"
@@ -269,7 +328,10 @@ export default function Home() {
       </section>
 
       {/* ====================== PILLARS / MISSION ====================== */}
-      <section id="training" className="scroll-mt-24 bg-cream-50 py-20 md:py-28">
+      <section
+        id="training"
+        className="scroll-mt-24 bg-cream-50 py-20 md:py-28"
+      >
         <div className="mx-auto max-w-[1180px] px-5 md:px-8">
           <Reveal>
             <h2 className="font-display text-[2rem] font-bold text-maroon-800 md:text-[2.4rem]">
@@ -281,7 +343,12 @@ export default function Home() {
           <div className="mt-12 grid gap-10 lg:grid-cols-2 lg:gap-14">
             <Reveal>
               <div className="nd-card relative h-full p-8 md:p-10">
-                <Sparkles className="absolute right-7 top-7 text-gold-500" size={20} strokeWidth={1.5} aria-hidden="true" />
+                <Sparkles
+                  className="absolute right-7 top-7 text-gold-500"
+                  size={20}
+                  strokeWidth={1.5}
+                  aria-hidden="true"
+                />
                 <p className="nd-eyebrow">Our Mission</p>
                 <h3 className="mt-3 font-display text-[1.55rem] font-semibold text-ink-900">
                   Cultivating Technical Mastery
@@ -290,8 +357,8 @@ export default function Home() {
                   To provide a rigorous, performance-driven education that
                   honors the intricate grammar of Bharatanatyam. We aim to
                   empower the next generation of dancers with clinical
-                  precision, emotional depth, and a deep-seated respect for
-                  the traditions.
+                  precision, emotional depth, and a deep-seated respect for the
+                  traditions.
                 </p>
                 <ul className="mt-7 space-y-4">
                   {[
@@ -300,8 +367,16 @@ export default function Home() {
                     "Holistic integration of Natyashastra theory",
                     "Sustainable physical conditioning for longevity",
                   ].map((t) => (
-                    <li key={t} className="flex gap-3 text-sm font-light leading-relaxed text-ink-700">
-                      <CheckCircle2 size={17} className="nd-check" strokeWidth={1.7} aria-hidden="true" />
+                    <li
+                      key={t}
+                      className="flex gap-3 text-sm font-light leading-relaxed text-ink-700"
+                    >
+                      <CheckCircle2
+                        size={17}
+                        className="nd-check"
+                        strokeWidth={1.7}
+                        aria-hidden="true"
+                      />
                       {t}
                     </li>
                   ))}
@@ -312,7 +387,7 @@ export default function Home() {
             <Reveal delay={140} className="relative">
               <div className="nd-img-zoom rounded-[26px]">
                 <img
-                  src="/images/Hand.png"
+                  src="/images/Hand.webp"
                   alt="A dancer's hand held in gyan mudra, adorned with bangles"
                   className="h-[440px] w-full rounded-[26px] object-cover md:h-[520px]"
                   loading="lazy"
@@ -327,7 +402,11 @@ export default function Home() {
       </section>
 
       {/* ====================== TESTIMONIALS ====================== */}
-      <section ref={testiRef} id="testimonials" className="mx-auto max-w-[1180px] scroll-mt-24 px-5 py-20 md:px-8 md:py-28">
+      <section
+        ref={testiRef}
+        id="testimonials"
+        className="mx-auto max-w-[1180px] scroll-mt-24 px-5 py-20 md:px-8 md:py-28"
+      >
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <Reveal>
@@ -340,9 +419,8 @@ export default function Home() {
             </Reveal>
             <Reveal delay={150}>
               <p className="mt-4 max-w-md text-sm font-light leading-relaxed text-ink-500">
-                Grace begins with discipline, and excellence follows
-                dedication. Natyaarambam makes every dance journey truly
-                unforgettable.
+                Grace begins with discipline, and excellence follows dedication.
+                Natyaarambam makes every dance journey truly unforgettable.
               </p>
             </Reveal>
           </div>
@@ -365,7 +443,10 @@ export default function Home() {
         </div>
 
         {showAllFeedback ? (
-          <div id="testimonial-grid" className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div
+            id="testimonial-grid"
+            className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+          >
             {TESTIMONIALS.map((t, i) => (
               <Reveal key={t.name} delay={(i % 3) * 90}>
                 <TestimonialCard t={t} />
@@ -397,7 +478,11 @@ export default function Home() {
                     </div>
                   ))}
                   {TESTIMONIALS.map((t) => (
-                    <div key={`echo-${t.name}`} className="nd-marquee-item" aria-hidden="true">
+                    <div
+                      key={`echo-${t.name}`}
+                      className="nd-marquee-item"
+                      aria-hidden="true"
+                    >
                       <TestimonialCard t={t} />
                     </div>
                   ))}
@@ -425,7 +510,8 @@ export default function Home() {
 
         {showAllFeedback && (
           <p className="nd-fb-card mt-10 text-center text-sm font-light italic text-ink-500">
-            Showing all {TESTIMONIALS.length} family stories — thank you for dancing with us.
+            Showing all {TESTIMONIALS.length} family stories — thank you for
+            dancing with us.
           </p>
         )}
       </section>
@@ -433,16 +519,16 @@ export default function Home() {
       {/* ====================== WHY CHOOSE ====================== */}
       <section id="why" className="scroll-mt-24 bg-cream-50 py-20 md:py-28">
         <div className="mx-auto grid max-w-[1180px] items-center gap-14 px-5 md:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
-            <Reveal delay={140} className="relative">
-              <div className="nd-img-zoom rounded-[26px]">
-                <img
-                  src="/images/Images/61.webp"
-                  alt="A dancer's hand held in gyan mudra, adorned with bangles"
-                  className="nd-grayscale h-[440px] w-full rounded-[26px] object-cover md:h-[520px]"
-                  loading="lazy"
-                />
-              </div>
-              <div className="nd-badge-gold absolute -bottom-6 right-6 w-[108px] rounded-sm py-4">
+          <Reveal delay={140} className="relative">
+            <div className="nd-img-zoom rounded-[26px]">
+              <img
+                src="/images/Images/61.webp"
+                alt="A dancer's hand held in gyan mudra, adorned with bangles"
+                className="nd-grayscale h-[440px] w-full rounded-[26px] object-cover md:h-[520px]"
+                loading="lazy"
+              />
+            </div>
+            <div className="nd-badge-gold absolute -bottom-6 right-6 w-[108px] rounded-sm py-4">
               <p className="font-display text-[1.9rem] font-bold leading-none">
                 <HeritageCount />
                 <span className="align-top text-lg">+</span>
@@ -451,7 +537,7 @@ export default function Home() {
                 Years of Heritage
               </p>
             </div>
-            </Reveal>
+          </Reveal>
 
           <div>
             <Reveal>
@@ -461,13 +547,16 @@ export default function Home() {
             </Reveal>
             <Reveal delay={90}>
               <p className="mt-5 text-sm font-light leading-relaxed text-ink-500">
-                At <strong className="font-medium text-ink-900">Natyaarambam Dance Academy</strong>, we are
-                dedicated to preserving the timeless heritage of Bharatanatyam
-                while inspiring every student to discover their artistic
-                potential. Our holistic approach combines traditional values,
-                expert mentorship, and disciplined training, helping students
-                build confidence, creativity, and cultural awareness. Whether
-                you are a beginner or an advanced learner, we provide a
+                At{" "}
+                <strong className="font-medium text-ink-900">
+                  Natyaarambam Dance Academy
+                </strong>
+                , we are dedicated to preserving the timeless heritage of
+                Bharatanatyam while inspiring every student to discover their
+                artistic potential. Our holistic approach combines traditional
+                values, expert mentorship, and disciplined training, helping
+                students build confidence, creativity, and cultural awareness.
+                Whether you are a beginner or an advanced learner, we provide a
                 nurturing environment where passion meets excellence and every
                 step becomes a journey of self-discovery.
               </p>
@@ -497,7 +586,9 @@ export default function Home() {
                       <span className="nd-num mr-2">{item.n}</span>
                       {item.t}
                     </h3>
-                    <p className="mt-2 text-sm font-light leading-relaxed text-ink-500">{item.d}</p>
+                    <p className="mt-2 text-sm font-light leading-relaxed text-ink-500">
+                      {item.d}
+                    </p>
                   </div>
                 </Reveal>
               ))}
@@ -512,26 +603,49 @@ export default function Home() {
         <span className="nd-cta-shape nd-cta-shape--diamond" style={{ right: "10%", bottom: "14%", width: 90, height: 90 }} aria-hidden="true" />
         <span className="nd-cta-shape nd-cta-shape--circle" style={{ right: "-70px", top: "-70px", width: 240, height: 240 }} aria-hidden="true" />
         <span className="nd-cta-shape nd-cta-shape--circle" style={{ left: "14%", bottom: "-110px", width: 200, height: 200 }} aria-hidden="true" /> */}
-        <span className="nd-cta-watermark" style={{ right: "4%", top: "50%", transform: "translateY(-50%)" }} aria-hidden="true">
-                    <Image src="/images/Decorative Lotus watermark.svg" alt="" width={500} height={500} className="opacity-5 relative top-20 left-50" />
+        <span
+          className="nd-cta-watermark"
+          style={{ right: "4%", top: "50%", transform: "translateY(-50%)" }}
+          aria-hidden="true"
+        >
+          <Image
+            src="/images/Decorative Lotus watermark.svg"
+            alt=""
+            width={500}
+            height={500}
+            className="opacity-5 relative top-20 left-50"
+          />
         </span>
 
         <div className="relative mx-auto max-w-[760px] px-5 py-20 text-center md:py-24">
           <Reveal>
-            <h2 id="cta-title" className="font-display text-[2rem] font-bold text-cream-50 md:text-[2.6rem]">
+            <h2
+              id="cta-title"
+              className="font-display text-[2rem] font-bold text-cream-50 md:text-[2.6rem]"
+            >
               Begin Your Journey Within
             </h2>
           </Reveal>
           <Reveal delay={100}>
             <p className="mx-auto mt-4 max-w-md text-sm font-light leading-relaxed text-cream-200/85">
-              Whether you are a seasoned practitioner or a curious beginner,
-              our space is designed to support your evolution.
+              Whether you are a seasoned practitioner or a curious beginner, our
+              space is designed to support your evolution.
             </p>
           </Reveal>
           <Reveal delay={190}>
             <div className="mt-9 flex flex-wrap justify-center gap-4">
-              <button type="button" className="nd-btn nd-btn--gold-solid" onClick={() => goHome("contact")}>Enroll Now</button>
-              <button type="button" className="nd-btn nd-btn--outline-cream" onClick={goGallery}>
+              <button
+                type="button"
+                className="nd-btn nd-btn--gold-solid"
+                onClick={() => goHome("contact")}
+              >
+                Enroll Now
+              </button>
+              <button
+                type="button"
+                className="nd-btn nd-btn--outline-cream"
+                onClick={goGallery}
+              >
                 <Play size={15} aria-hidden="true" /> Watch Our Gallery
               </button>
             </div>

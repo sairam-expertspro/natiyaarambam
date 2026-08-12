@@ -51,3 +51,104 @@ Require stack:
 }
  GET / 500 in 7290ms
  ✓ Compiled in 733ms
+ ✓ Compiled / in 415ms
+ GET / 200 in 3832ms
+ ○ Compiling /icon.svg ...
+ ✓ Compiled /icon.svg in 2.7s
+ GET /icon.svg?icon.68b2cfa1.svg 200 in 3788ms
+ ✓ Compiled in 1506ms
+ ✓ Compiled in 1055ms
+ ✓ Compiled / in 135ms
+ GET / 200 in 1061ms
+ ✓ Compiled /favicon.ico in 431ms
+ GET /favicon.ico?favicon.f51e4f7f.ico 200 in 930ms
+
+-----
+[1m[31mFATAL[39m[0m: An unexpected Turbopack error occurred. A panic log has been written to C:\Users\SAIRAM~1.GUR\AppData\Local\Temp\next-panic-184c766e0ac16b981882d694de4b740e.log.
+
+To help make Turbopack better, report this error by clicking here: https://github.com/vercel/next.js/discussions/new?category=turbopack-error-report&title=Turbopack%20Error%3A%20reading%20file%20D%3A%5Cnatiyaarambam%5Csrc%5Capp%5Cfavicon.ico&body=Turbopack%20version%3A%20%60v15.5.23%60%0ANext.js%20version%3A%20%600.0.0%60%0A%0AError%20message%3A%0A%60%60%60%0ATurbopack%20Error%3A%20reading%20file%20D%3A%5Cnatiyaarambam%5Csrc%5Capp%5Cfavicon.ico%0A%60%60%60&labels=Turbopack,Turbopack%20Panic%20Backtrace
+-----
+
+ ✓ Compiled in 516ms
+ GET / 200 in 1486ms
+ GET /favicon.ico?favicon.ccb008f2.ico 200 in 599ms
+ ✓ Compiled in 381ms
+ ✓ Compiled / in 173ms
+ GET / 200 in 612ms
+ GET /favicon.ico?favicon.8a3e8a5e.ico 200 in 473ms
+ GET / 200 in 921ms
+ GET /favicon.ico?favicon.8a3e8a5e.ico 200 in 621ms
+ GET / 200 in 847ms
+ GET / 200 in 775ms
+ GET / 200 in 946ms
+ GET /favicon.ico?favicon.8a3e8a5e.ico 200 in 674ms
+ GET / 200 in 713ms
+ GET /favicon.ico?favicon.8a3e8a5e.ico 200 in 670ms
+ ✓ Compiled in 1341ms
+ ✓ Compiled / in 108ms
+ GET / 200 in 411ms
+ GET /favicon.ico?favicon.e81b2f34.ico 200 in 506ms
+ GET / 200 in 826ms
+ GET /favicon.ico?favicon.e81b2f34.ico 200 in 543ms
+ ✓ Compiled in 168ms
+ GET / 200 in 1062ms
+ GET /favicon.ico?favicon.e81b2f34.ico 200 in 646ms
+ ○ Compiling /about ...
+ ✓ Compiled /about in 553ms
+ GET /about 200 in 716ms
+ GET /favicon.ico?favicon.e81b2f34.ico 200 in 423ms
+ ○ Compiling /training ...
+ ✓ Compiled /training in 741ms
+ GET /training 200 in 1003ms
+ GET /favicon.ico?favicon.e81b2f34.ico 200 in 416ms
+ ○ Compiling /contact ...
+ ✓ Compiled /contact in 819ms
+ GET /contact 200 in 1113ms
+ ✓ Compiled /gallery in 102ms
+ GET /gallery 200 in 503ms
+ GET /favicon.ico?favicon.e81b2f34.ico 200 in 789ms
+ GET / 200 in 295ms
+ GET /about 200 in 254ms
+ GET / 200 in 190ms
+ GET /about 200 in 308ms
+ GET /about 200 in 779ms
+ GET /favicon.ico?favicon.e81b2f34.ico 200 in 1171ms
+ GET / 200 in 347ms
+ GET /about 200 in 369ms
+ GET / 200 in 442ms
+ GET /gallery 200 in 340ms
+ GET / 200 in 266ms
+ GET / 200 in 627ms
+ GET /favicon.ico?favicon.e81b2f34.ico 200 in 827ms
+ ✓ Compiled in 946ms
+ GET / 200 in 3387ms
+ GET /favicon.ico?favicon.e81b2f34.ico 200 in 1341ms
+ ✓ Compiled in 460ms
+ ✓ Compiled in 447ms
+ GET / 200 in 1079ms
+ GET /favicon.ico?favicon.e81b2f34.ico 200 in 725ms
+ GET /about 200 in 211ms
+ ✓ Compiled in 157ms
+ GET /about 200 in 700ms
+ GET /favicon.ico?favicon.e81b2f34.ico 200 in 918ms
+ GET / 200 in 363ms
+ ✓ Compiled in 240ms
+ ✓ Compiled in 178ms
+ GET / 200 in 930ms
+ GET /favicon.ico?favicon.e81b2f34.ico 200 in 745ms
+ GET /gallery 200 in 470ms
+ GET /contact 200 in 536ms
+ GET / 200 in 347ms
+ ✓ Compiled in 201ms
+ GET / 200 in 1408ms
+ GET /favicon.ico?favicon.e81b2f34.ico 200 in 488ms
+ ✓ Compiled in 203ms
+ ✓ Compiled in 131ms
+ ✓ Compiled in 167ms
+ ✓ Compiled in 154ms
+ ✓ Compiled in 215ms
+ ✓ Compiled in 90ms
+ ✓ Compiled in 142ms
+ ✓ Compiled in 163ms
+ ✓ Compiled in 165ms
+ ✓ Compiled in 168ms

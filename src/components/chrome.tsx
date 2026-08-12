@@ -38,7 +38,9 @@ export function useSite() {
 }
 
 export const scrollToId = (id: string) =>
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  document
+    .getElementById(id)
+    ?.scrollIntoView({ behavior: "smooth", block: "start" });
 
 /* ============================ Scroll reveal ============================ */
 export function Reveal({
@@ -62,7 +64,7 @@ export function Reveal({
           io.disconnect();
         }
       },
-      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -166,7 +168,7 @@ export function Layout({ children }: { children: ReactNode }) {
         scrollToId(id);
       }
     },
-    [pathname, router]
+    [pathname, router],
   );
 
   useEffect(() => {
@@ -190,24 +192,59 @@ export function Layout({ children }: { children: ReactNode }) {
 
   return (
     <SiteCtx.Provider value={{ goGallery, showToast, goHome }}>
-      <a href="#main" className="nd-skip-link">Skip to content</a>
-      <div className="nd-progress" style={{ width: `${progress}%` }} aria-hidden="true" />
+      <a href="#main" className="nd-skip-link">
+        Skip to content
+      </a>
+      <div
+        className="nd-progress"
+        style={{ width: `${progress}%` }}
+        aria-hidden="true"
+      />
 
       {/* ============================ HEADER ============================ */}
       <header className={`nd-header ${scrolled ? "is-scrolled" : ""}`}>
         <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-4 px-5 py-3.5 md:px-8">
           <Link href="/" aria-label="Natyaarambam Dance Academy home">
             {/* <Logo /> */}
-            <Image src="/images/Logo.svg" alt="Natyaarambam Dance Academy" width={180} height={40} className="inline-block h-10 w-auto md:h-[52px]" />
+            <Image
+              src="/images/Logo.svg"
+              alt="Natyaarambam Dance Academy"
+              width={180}
+              height={40}
+              className="inline-block h-10 w-auto md:h-[52px]"
+            />
           </Link>
 
-          <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary">
-            <Link href="/" className={navLink("/", true)}>Home</Link>
-            <Link href="/about" className={navLink("/about")}>About</Link>
-            <Link href="/training" className={navLink("/training")}>Training</Link>
-            <Link href="/gallery" className={navLink("/gallery")}>Gallery</Link>
-            <button type="button" className="nd-nav-link" onClick={() => showToast("Our journal launches soon — follow us on social media")}>Blog</button>
-            <Link href="/contact" className={navLink("/contact")}>Contact</Link>
+          <nav
+            className="hidden items-center gap-7 lg:flex"
+            aria-label="Primary"
+          >
+            <Link href="/" className={navLink("/", true)}>
+              Home
+            </Link>
+            <Link href="/about" className={navLink("/about")}>
+              About
+            </Link>
+            <Link href="/training" className={navLink("/training")}>
+              Training
+            </Link>
+            <Link href="/gallery" className={navLink("/gallery")}>
+              Gallery
+            </Link>
+            <button
+              type="button"
+              className="nd-nav-link"
+              onClick={() =>
+                showToast(
+                  "Our journal launches soon — follow us on social media",
+                )
+              }
+            >
+              Blog
+            </button>
+            <Link href="/contact" className={navLink("/contact")}>
+              Contact
+            </Link>
           </nav>
 
           <div className="flex items-center gap-3">
@@ -230,15 +267,62 @@ export function Layout({ children }: { children: ReactNode }) {
           </div>
         </div>
 
-        <div className={`nd-mobile-menu ${menuOpen ? "is-open" : ""} lg:hidden`}>
-          <nav className="mx-auto max-w-[1180px] space-y-1 px-5 pb-5" aria-label="Mobile">
-            <Link href="/" className="block rounded px-3 py-2.5 text-sm font-medium text-ink-700 hover:bg-cream-200 hover:text-maroon-800">Home</Link>
-            <Link href="/about" className="block rounded px-3 py-2.5 text-sm font-medium text-ink-700 hover:bg-cream-200 hover:text-maroon-800">About</Link>
-            <Link href="/training" className="block rounded px-3 py-2.5 text-sm font-medium text-ink-700 hover:bg-cream-200 hover:text-maroon-800">Training</Link>
-            <Link href="/gallery" className="block rounded px-3 py-2.5 text-sm font-medium text-ink-700 hover:bg-cream-200 hover:text-maroon-800">Gallery</Link>
-            <button type="button" className="block w-full rounded px-3 py-2.5 text-left text-sm font-medium text-ink-700 hover:bg-cream-200 hover:text-maroon-800" onClick={() => showToast("Our journal launches soon — follow us on social media")}>Blog</button>
-            <Link href="/contact" className="block rounded px-3 py-2.5 text-sm font-medium text-ink-700 hover:bg-cream-200 hover:text-maroon-800">Contact</Link>
-            <button type="button" className="nd-btn nd-btn--maroon mt-3 w-full" onClick={() => { setMenuOpen(false); goHome("contact"); }}>
+        <div
+          className={`nd-mobile-menu ${menuOpen ? "is-open" : ""} lg:hidden`}
+        >
+          <nav
+            className="mx-auto max-w-[1180px] space-y-1 px-5 pb-5"
+            aria-label="Mobile"
+          >
+            <Link
+              href="/"
+              className="block rounded px-3 py-2.5 text-sm font-medium text-ink-700 hover:bg-cream-200 hover:text-maroon-800"
+            >
+              Home
+            </Link>
+            <Link
+              href="/about"
+              className="block rounded px-3 py-2.5 text-sm font-medium text-ink-700 hover:bg-cream-200 hover:text-maroon-800"
+            >
+              About
+            </Link>
+            <Link
+              href="/training"
+              className="block rounded px-3 py-2.5 text-sm font-medium text-ink-700 hover:bg-cream-200 hover:text-maroon-800"
+            >
+              Training
+            </Link>
+            <Link
+              href="/gallery"
+              className="block rounded px-3 py-2.5 text-sm font-medium text-ink-700 hover:bg-cream-200 hover:text-maroon-800"
+            >
+              Gallery
+            </Link>
+            <button
+              type="button"
+              className="block w-full rounded px-3 py-2.5 text-left text-sm font-medium text-ink-700 hover:bg-cream-200 hover:text-maroon-800"
+              onClick={() =>
+                showToast(
+                  "Our journal launches soon — follow us on social media",
+                )
+              }
+            >
+              Blog
+            </button>
+            <Link
+              href="/contact"
+              className="block rounded px-3 py-2.5 text-sm font-medium text-ink-700 hover:bg-cream-200 hover:text-maroon-800"
+            >
+              Contact
+            </Link>
+            <button
+              type="button"
+              className="nd-btn nd-btn--maroon mt-3 w-full"
+              onClick={() => {
+                setMenuOpen(false);
+                goHome("contact");
+              }}
+            >
               Enroll Now
             </button>
           </nav>
@@ -247,78 +331,162 @@ export function Layout({ children }: { children: ReactNode }) {
 
       <main id="main">{children}</main>
 
-      {/* ============================ FOOTER ============================ */}
       <footer id="contact" className="nd-footer scroll-mt-24">
         <div className="mx-auto max-w-[1180px] px-5 pb-8 pt-16 md:px-8">
-          <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.4fr_0.8fr_0.8fr_1.2fr]">
-            <div>
+          <div className="grid grid-cols-1 gap-10 text-center sm:grid-cols-2 lg:grid-cols-4 lg:text-left">
+            <div className="flex flex-col items-center lg:items-start">
               <Link href="/" aria-label="Back to home">
-                            <Image src="/images/Logo.svg" alt="Natyaarambam Dance Academy" width={180} height={40} className="inline-block h-10 w-auto md:h-[52px]" />
-
+                <Image
+                  src="/images/Logo.svg"
+                  alt="Natyaarambam Dance Academy"
+                  width={180}
+                  height={40}
+                  className="h-10 w-auto md:h-[52px]"
+                />
               </Link>
-              <p className="mt-5 max-w-xs text-sm font-light leading-relaxed text-ink-500">
+
+              <p className="mt-5 max-w-sm text-sm font-light leading-relaxed text-ink-500">
                 Preserving and promoting the richness of Indian classical dance
                 in its purest form. A premier institution for Kalakshetra-style
                 Bharatanatyam.
               </p>
-              <div className="mt-6 flex gap-3">
+            </div>
+
+            <nav
+              aria-label="Explore"
+              className="flex flex-col items-center lg:items-start"
+            >
+              <h3 className="text-[0.78rem] font-semibold uppercase tracking-[0.2em] text-ink-900">
+                Explore
+              </h3>
+
+              <ul className="mt-5 space-y-3">
+                <li>
+                  <Link href="/" className="nd-footer-link">
+                    Home
+                  </Link>
+                </li>
+
+                <li>
+                  <Link href="/about" className="nd-footer-link">
+                    About
+                  </Link>
+                </li>
+
+                <li>
+                  <Link href="/training" className="nd-footer-link">
+                    Training
+                  </Link>
+                </li>
+
+                <li>
+                  <Link href="/gallery" className="nd-footer-link">
+                    Gallery
+                  </Link>
+                </li>
+
+                <li>
+                  <button
+                    type="button"
+                    className="nd-footer-link"
+                    onClick={() =>
+                      showToast(
+                        "Our journal launches soon — follow us on social media",
+                      )
+                    }
+                  >
+                    Blog
+                  </button>
+                </li>
+
+                <li>
+                  <Link href="/contact" className="nd-footer-link">
+                    Contact
+                  </Link>
+                </li>
+              </ul>
+            </nav>
+
+            <div className="flex flex-col items-center lg:items-start">
+              <h3 className="text-[0.78rem] font-semibold uppercase tracking-[0.2em] text-ink-900">
+                Contact
+              </h3>
+
+              <ul className="mt-5 max-w-[280px] space-y-4 text-sm font-light text-ink-500">
+                <li className="flex items-start justify-center gap-3 text-left lg:justify-start">
+                  <MapPin
+                    size={17}
+                    className="mt-0.5 shrink-0 text-maroon-700"
+                    aria-hidden="true"
+                  />
+
+                  <span>
+                    Collinsbrook Farm Community, Frisco 14901, Thunder Rd,
+                    Frisco, 75035
+                  </span>
+                </li>
+
+                <li className="flex items-center justify-center gap-3 lg:justify-start">
+                  <Phone
+                    size={17}
+                    className="shrink-0 text-maroon-700"
+                    aria-hidden="true"
+                  />
+
+                  <a href="tel:+19456990311" className="nd-footer-link">
+                    +1 (945) 699-0311
+                  </a>
+                </li>
+
+                <li className="flex items-center justify-center gap-3 lg:justify-start">
+                  <Mail
+                    size={17}
+                    className="shrink-0 text-maroon-700"
+                    aria-hidden="true"
+                  />
+
+                  <a
+                    href="mailto:natyaarambham@gmail.com"
+                    className="nd-footer-link break-all"
+                  >
+                    natyaarambham@gmail.com
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div className="flex flex-col items-center lg:items-start">
+              <h3 className="text-[0.78rem] font-semibold uppercase tracking-[0.2em] text-ink-900">
+                Social
+              </h3>
+
+              <div className="mt-5 flex flex-wrap justify-center gap-3 lg:justify-start">
                 {SOCIALS.map((s) => (
-                  <Link key={s.label} href={{ pathname: s.link }} type="button" className="nd-social-btn" target="_blank" rel="noopener noreferrer" aria-label={s.label}>
+                  <Link
+                    key={s.label}
+                    href={s.link}
+                    className="nd-social-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.label}
+                  >
                     {s.icon}
                   </Link>
                 ))}
               </div>
             </div>
-
-            <nav aria-label="Explore">
-              <h3 className="text-[0.78rem] font-semibold uppercase tracking-[0.2em] text-ink-900">Explore</h3>
-              <ul className="mt-5 space-y-3">
-                <li><Link href="/" className="nd-footer-link">Home</Link></li>
-                <li><Link href="/about" className="nd-footer-link">About</Link></li>
-                <li><Link href="/training" className="nd-footer-link">Training</Link></li>
-                <li><Link href="/gallery" className="nd-footer-link">Gallery</Link></li>
-                <li><button type="button" className="nd-footer-link" onClick={() => showToast("Our journal launches soon — follow us on social media")}>Blog</button></li>
-                <li><Link href="/contact" className="nd-footer-link">Contact</Link></li>
-              </ul>
-            </nav>
-
-            {/* <nav aria-label="Legal">
-              <h3 className="text-[0.78rem] font-semibold uppercase tracking-[0.2em] text-ink-900">Legal</h3>
-              <ul className="mt-5 space-y-3">
-                {["Privacy Policy", "Terms of Service", "Performance Bookings"].map((l) => (
-                  <li key={l}>
-                    <button type="button" className="nd-footer-link" onClick={() => showToast(`${l} — available at the front desk`)}>
-                      {l}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </nav> */}
-
-            <div>
-              <h3 className="text-[0.78rem] font-semibold uppercase tracking-[0.2em] text-ink-900">Contact</h3>
-              <ul className="mt-5 space-y-4 text-sm font-light text-ink-500">
-                <li className="flex gap-3">
-                  <MapPin size={17} className="mt-0.5 flex-none text-maroon-700" aria-hidden="true" />
-                  Collinsbrook Farm Community, Frisco 14901, Thunder Rd, Frisco, 75035
-                </li>
-                <li className="flex gap-3">
-                  <Phone size={17} className="mt-0.5 flex-none text-maroon-700" aria-hidden="true" />
-                  <a href="tel:+19456990311" className="nd-footer-link">+1 (945) 699-0311</a>
-                </li>
-                <li className="flex gap-3">
-                  <Mail size={17} className="mt-0.5 flex-none text-maroon-700" aria-hidden="true" />
-                  <a href="mailto:natyaarambham@gmail.com" className="nd-footer-link">natyaarambham@gmail.com</a>
-                </li>
-              </ul>
-            </div>
           </div>
 
-          <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-maroon-800/10 pt-6 sm:flex-row">
+          <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-maroon-800/10 pt-6 text-center sm:flex-row sm:text-left">
             <p className="text-xs font-light text-ink-400">
-              © 2026 Natyaarambam Dance Academy of Bharatanatyam. All rights reserved.
+              © 2026 Natyaarambam Dance Academy of Bharatanatyam. All rights
+              reserved.
             </p>
-            <div className="flex items-center gap-4 text-gold-600" aria-hidden="true">
+
+            <div
+              className="flex items-center justify-center gap-4 text-gold-600"
+              aria-hidden="true"
+            >
               <Heart size={15} strokeWidth={1.6} />
               <Sparkles size={15} strokeWidth={1.6} />
               <Feather size={15} strokeWidth={1.6} />
@@ -327,11 +495,18 @@ export function Layout({ children }: { children: ReactNode }) {
         </div>
       </footer>
 
-      {/* ============================ TOAST ============================ */}
-      <div className={`nd-toast ${toast ? "is-visible" : ""}`} role="status" aria-live="polite">
+      <div
+        className={`nd-toast ${toast ? "is-visible" : ""}`}
+        role="status"
+        aria-live="polite"
+      >
         {toast && (
           <>
-            <Sparkles size={16} className="flex-none text-gold-400" aria-hidden="true" />
+            <Sparkles
+              size={16}
+              className="flex-none text-gold-400"
+              aria-hidden="true"
+            />
             <span>{toast}</span>
           </>
         )}

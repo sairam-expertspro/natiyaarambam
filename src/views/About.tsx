@@ -2,7 +2,6 @@
 
 import { Play } from "lucide-react";
 import { Reveal, useSite } from "../components/chrome";
-import { ABOUT_IMG } from "../data";
 import Image from "next/image";
 
 export default function About() {
@@ -13,7 +12,7 @@ export default function About() {
       <section className="nd-about-banner" aria-labelledby="about-hero-title">
         <img
           className="nd-about-banner-img"
-          src="/images/image 7.png"
+          src="/images/image 7.webp"
           alt="Bharatanatyam dancer in an emerald green and gold sari seated in araimandi before a deep maroon circle"
         />
         <div className="nd-about-banner-scrim" aria-hidden="true" />
@@ -66,7 +65,7 @@ export default function About() {
               </div>
               <div className="nd-img-zoom absolute bottom-0 left-0 w-[58%] border-[6px] border-cream-50 shadow-xl">
                 <img
-                  src={ABOUT_IMG.guruStudents}
+                  src="/images/salangai.webp"
                   alt="A guru seated outdoors teaching a circle of young students"
                   className="nd-grayscale h-60 w-full object-cover sm:h-[280px]"
                   loading="lazy"
@@ -172,7 +171,7 @@ export default function About() {
                     The Journey of Natyaarambam
                   </h3>
                   <img
-                    src="/images/Portfolio.png"
+                    src="/images/Portfolio.webp"
                     alt="Hands held in a dance mudra"
                     className="h-18 w-18 fixed flex-none rounded-full z-20 border-2 border-gold-500/70 object-cover left-10% right-10 top-[2%] md:h-22 md:w-22"
                     loading="lazy"

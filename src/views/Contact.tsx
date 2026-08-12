@@ -12,14 +12,9 @@ import {
   Phone,
   Play,
   Send,
-  Share2,
 } from "lucide-react";
 import { Reveal, scrollToId, useSite } from "../components/chrome";
 import Image from "next/image";
-
-/* Hero photo: Roman Saienko — pexels-photo-37662274 */
-const HERO_IMG =
-  "https://images.pexels.com/photos/37662274/pexels-photo-37662274.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1600";
 
 const JOURNEY = [
   {
@@ -81,7 +76,7 @@ export default function Contact() {
     <div id="contact-page">
       {/* ====================== CONTACT HERO ====================== */}
       <section className="nd-contact-hero" aria-labelledby="contact-title">
-        <img className="nd-contact-media" src="/images/Contact.png" alt="A devotee seated in prayer before a lamp-lit shrine inside a carved stone temple" />
+        <img className="nd-contact-media" src="/images/Contact.webp" alt="A devotee seated in prayer before a lamp-lit shrine inside a carved stone temple" />
         <div className="nd-contact-overlay" aria-hidden="true" />
         <div className="relative z-10 mx-auto flex min-h-[540px] max-w-[1180px] flex-col justify-center px-5 py-20 md:min-h-[640px] md:px-8">
           <Reveal>

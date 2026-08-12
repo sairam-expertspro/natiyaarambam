@@ -12,10 +12,6 @@ const STATUS_LABEL: Record<Status, string> = {
   inperson: "In Person",
 };
 
-/* Training hero stage photo: Mohd.Ashabul Haque Nannu — pexels-photo-16039776 */
-const HERO_IMG =
-  "https://images.pexels.com/photos/16039776/pexels-photo-16039776.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1600";
-
 const LEVELS = [
   {
     tag: "Beginner (Level 1)",
@@ -72,8 +68,7 @@ export default function Training() {
     <div id="training-page">
       {/* ====================== TRAINING HERO ====================== */}
       <section className="nd-train-hero" aria-labelledby="training-title">
-        {/* {`Photo: Mohd.Ashabul Haque Nannu / Pexels`} */}
-        <img className="nd-train-media" src="/images/Training Page 1.png" alt="A troupe of Bharatanatyam dancers performing on stage in vibrant costumes" />
+        <img className="nd-train-media" src="/images/Training Page 1.webp" alt="A troupe of Bharatanatyam dancers performing on stage in vibrant costumes" />
         <div className="nd-train-overlay" aria-hidden="true" />
         <div className="relative z-10 mx-auto flex min-h-[540px] max-w-[1180px] flex-col justify-center px-5 py-20 md:min-h-[640px] md:px-8">
           <Reveal>
