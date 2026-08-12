@@ -89,6 +89,7 @@ const socialStroke = {
 export const SOCIALS = [
   {
     label: "Facebook",
+    link: "https://www.facebook.com/groups/228705529315840/",
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" {...socialStroke}>
         <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
@@ -97,6 +98,7 @@ export const SOCIALS = [
   },
   {
     label: "Instagram",
+    link: "https://www.instagram.com/natyaarambam_dance_academy?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" {...socialStroke}>
         <rect x="2" y="2" width="20" height="20" rx="5" />
@@ -107,6 +109,7 @@ export const SOCIALS = [
   },
   {
     label: "YouTube",
+    link: "https://www.youtube.com/@natyaarambam3083",
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" {...socialStroke}>
         <path d="M22.5 12s0-3.4-.4-5a2.6 2.6 0 0 0-1.8-1.8C18.6 4.7 12 4.7 12 4.7s-6.6 0-8.3.5A2.6 2.6 0 0 0 1.9 7c-.4 1.6-.4 5-.4 5s0 3.4.4 5a2.6 2.6 0 0 0 1.8 1.8c1.7.5 8.3.5 8.3.5s6.6 0 8.3-.5a2.6 2.6 0 0 0 1.8-1.8c.4-1.6.4-5 .4-5z" />
@@ -114,15 +117,15 @@ export const SOCIALS = [
       </svg>
     ),
   },
-  {
-    label: "WhatsApp",
-    icon: (
-      <svg width="16" height="16" viewBox="0 0 24 24" {...socialStroke}>
-        <path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L3 21l2-5.4A8.5 8.5 0 1 1 21 11.5z" />
-        <path d="M9 9.5c.3 2.4 2.9 5 5.4 5.4l1.1-1.1 2 .9c-.3 1.3-1.5 1.9-2.8 1.6-3.3-.7-6.3-3.7-7-7-.3-1.3.3-2.5 1.6-2.8l.9 2z" />
-      </svg>
-    ),
-  },
+  // {
+  //   label: "WhatsApp",
+  //   icon: (
+  //     <svg width="16" height="16" viewBox="0 0 24 24" {...socialStroke}>
+  //       <path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L3 21l2-5.4A8.5 8.5 0 1 1 21 11.5z" />
+  //       <path d="M9 9.5c.3 2.4 2.9 5 5.4 5.4l1.1-1.1 2 .9c-.3 1.3-1.5 1.9-2.8 1.6-3.3-.7-6.3-3.7-7-7-.3-1.3.3-2.5 1.6-2.8l.9 2z" />
+  //     </svg>
+  //   ),
+  // },
 ];
 
 /* ============================ Layout ============================ */
@@ -260,9 +263,9 @@ export function Layout({ children }: { children: ReactNode }) {
               </p>
               <div className="mt-6 flex gap-3">
                 {SOCIALS.map((s) => (
-                  <button key={s.label} type="button" className="nd-social-btn" aria-label={s.label} onClick={() => showToast(`Follow us on ${s.label}`)}>
+                  <Link key={s.label} href={{ pathname: s.link }} type="button" className="nd-social-btn" target="_blank" rel="noopener noreferrer" aria-label={s.label}>
                     {s.icon}
-                  </button>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -279,7 +282,7 @@ export function Layout({ children }: { children: ReactNode }) {
               </ul>
             </nav>
 
-            <nav aria-label="Legal">
+            {/* <nav aria-label="Legal">
               <h3 className="text-[0.78rem] font-semibold uppercase tracking-[0.2em] text-ink-900">Legal</h3>
               <ul className="mt-5 space-y-3">
                 {["Privacy Policy", "Terms of Service", "Performance Bookings"].map((l) => (
@@ -290,7 +293,7 @@ export function Layout({ children }: { children: ReactNode }) {
                   </li>
                 ))}
               </ul>
-            </nav>
+            </nav> */}
 
             <div>
               <h3 className="text-[0.78rem] font-semibold uppercase tracking-[0.2em] text-ink-900">Contact</h3>

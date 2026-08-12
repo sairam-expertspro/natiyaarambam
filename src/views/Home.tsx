@@ -166,28 +166,29 @@ export default function Home() {
 
   return (
     <div id="home">
-      {/* ============================ HERO ============================ */}
-      <section className="nd-hero" aria-labelledby="hero-title">
-        <div className="nd-hero-glow" aria-hidden="true" />
-        <div className="nd-kolam hidden md:block" style={{ right: "-140px", top: "-140px", width: 460, height: 460 }} aria-hidden="true" />
-        <div className="nd-kolam hidden md:block" style={{ left: "-120px", bottom: "-160px", width: 340, height: 340 }} aria-hidden="true" />
-        <span className="nd-bell" style={{ left: "12%", top: "22%" }} aria-hidden="true" />
-        <span className="nd-bell" style={{ left: "46%", top: "70%", animationDelay: "1.4s" }} aria-hidden="true" />
-        <span className="nd-bell" style={{ right: "8%", bottom: "18%", animationDelay: "2.6s" }} aria-hidden="true" />
+      <section className="nd-about-banner" aria-labelledby="about-hero-title">
+        <img
+          className="nd-about-banner-img"
+          src="/images/Home Banner.png"
+          alt="Bharatanatyam dancer in an emerald green and gold sari seated in araimandi before a deep maroon circle"
+        />
+        <div className="" aria-hidden="true" />
+        <span className="nd-bell" style={{ left: "7%", top: "26%" }} aria-hidden="true" />
+        <span className="nd-bell" style={{ left: "36%", bottom: "22%", animationDelay: "1.6s" }} aria-hidden="true" />
+        <span className="nd-bell" style={{ left: "18%", top: "64%", animationDelay: "2.8s" }} aria-hidden="true" />
 
-        <div className="relative mx-auto grid max-w-[1180px] items-center gap-10 px-5 py-16 md:px-8 md:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:py-24">
-          <div>
+        <div className="relative z-10 mx-auto flex min-h-[540px] max-w-[1180px] flex-col justify-center px-5 py-20 md:min-h-[640px] md:px-8">
             <Reveal>
               <p className="nd-eyebrow nd-eyebrow--light">Grace. Discipline. Heritage.</p>
             </Reveal>
             <Reveal delay={90}>
-              <h1 id="hero-title" className="mt-5 font-display text-[2.6rem] font-bold leading-[1.1] text-cream-50 md:text-[3.5rem]">
-                Discover the Divine Language of{" "}
-                <span className="text-gold-400">Bharatanatyam</span>
+              <h1 id="hero-title" className="mt-5 max-w-xl font-display text-[2.6rem] font-bold leading-[1.1] text-cream-50 md:text-[3.2rem]">
+                Discover the Divine <span className="text-nowrap">Language of <span className="text-gold-400">Bharatanatyam</span></span>
+                
               </h1>
             </Reveal>
             <Reveal delay={180}>
-              <p className="mt-6 max-w-lg text-[0.98rem] font-light leading-relaxed text-cream-200/85">
+              <p className="mt-6 max-w-lg border-l-2 border-gold-500 pl-5 text-[0.97rem] font-light leading-relaxed text-cream-200/85">
                 Step into a world where rhythm, expression, and tradition come
                 together. At Natyaarambam Dance Academy, we offer structured
                 Bharatanatyam training that nurtures technique, confidence,
@@ -203,18 +204,8 @@ export default function Home() {
               </div>
             </Reveal>
           </div>
-
-          <div className="relative mx-auto w-full max-w-[440px] lg:max-w-none">
-            <img
-              src={IMG.hero}
-              alt="Bharatanatyam dancer holding a classical pose in traditional costume"
-              className="nd-dancer-img relative z-10 mx-auto h-[420px] w-full object-cover object-top md:h-[540px]"
-            />
-          </div>
-        </div>
       </section>
 
-      {/* ====================== NEO-CLASSICAL PHILOSOPHY ====================== */}
       <section id="about-home" className="mx-auto max-w-[1180px] scroll-mt-24 px-5 py-20 md:px-8 md:py-28">
         <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
           <div>
@@ -264,7 +255,7 @@ export default function Home() {
           <Reveal delay={140} className="relative">
             <div className="nd-img-zoom rounded-sm">
               <img
-                src={IMG.hall}
+                src="/images/Home Page hidden.png"
                 alt="Brass Nataraja — the cosmic dancer — glowing in warm temple light"
                 className="h-[420px] w-full object-cover md:h-[500px]"
                 loading="lazy"
@@ -321,7 +312,7 @@ export default function Home() {
             <Reveal delay={140} className="relative">
               <div className="nd-img-zoom rounded-[26px]">
                 <img
-                  src={IMG.mudra}
+                  src="/images/Hand.png"
                   alt="A dancer's hand held in gyan mudra, adorned with bangles"
                   className="h-[440px] w-full rounded-[26px] object-cover md:h-[520px]"
                   loading="lazy"
@@ -442,16 +433,16 @@ export default function Home() {
       {/* ====================== WHY CHOOSE ====================== */}
       <section id="why" className="scroll-mt-24 bg-cream-50 py-20 md:py-28">
         <div className="mx-auto grid max-w-[1180px] items-center gap-14 px-5 md:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
-          <Reveal className="relative">
-            <div className="nd-img-zoom">
-              <img
-                src={IMG.heritage}
-                alt="A Bharatanatyam dancer mid-movement beneath flowering trees"
-                className="nd-grayscale h-[440px] w-full object-cover md:h-[520px]"
-                loading="lazy"
-              />
-            </div>
-            <div className="nd-badge-gold absolute -bottom-6 right-6 w-[108px] rounded-sm py-4">
+            <Reveal delay={140} className="relative">
+              <div className="nd-img-zoom rounded-[26px]">
+                <img
+                  src="/images/Images/61.webp"
+                  alt="A dancer's hand held in gyan mudra, adorned with bangles"
+                  className="nd-grayscale h-[440px] w-full rounded-[26px] object-cover md:h-[520px]"
+                  loading="lazy"
+                />
+              </div>
+              <div className="nd-badge-gold absolute -bottom-6 right-6 w-[108px] rounded-sm py-4">
               <p className="font-display text-[1.9rem] font-bold leading-none">
                 <HeritageCount />
                 <span className="align-top text-lg">+</span>
@@ -460,7 +451,7 @@ export default function Home() {
                 Years of Heritage
               </p>
             </div>
-          </Reveal>
+            </Reveal>
 
           <div>
             <Reveal>

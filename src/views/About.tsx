@@ -10,7 +10,6 @@ export default function About() {
 
   return (
     <div id="about-page">
-      {/* ====================== ABOUT HERO BANNER ====================== */}
       <section className="nd-about-banner" aria-labelledby="about-hero-title">
         <img
           className="nd-about-banner-img"
@@ -33,7 +32,7 @@ export default function About() {
             </h1>
           </Reveal>
           <Reveal delay={180}>
-            <p className="mt-6 max-w-md text-[0.98rem] font-light leading-relaxed text-cream-200/85">
+            <p className="mt-6 max-w-lg border-l-2 border-gold-500 pl-5 text-[0.97rem] font-light leading-relaxed text-cream-200/85">
               Natyaarambam Dance Academy is more than a dance school; it is a
               sanctuary where the ancient echoes of temple traditions meet
               the precision of modern mastery.
@@ -50,7 +49,6 @@ export default function About() {
         </div>
       </section>
 
-      {/* ====================== LEGACY ====================== */}
       <section className="overflow-hidden bg-cream-100 py-20 md:py-28" aria-labelledby="legacy-title">
         <div className="mx-auto grid max-w-[1180px] items-center gap-14 px-5 md:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:gap-20">
           {/* Collage */}

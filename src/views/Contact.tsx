@@ -47,9 +47,9 @@ const HOURS = [
 
 const INFO_CARDS = [
   { icon: Mail, label: "Email", value: "natyaarambham@gmail.com", href: "mailto:natyaarambham@gmail.com" },
-  { icon: MapPin, label: "Location", value: "585, 2nd Main, RHCS Layout" },
+  { icon: MapPin, label: "Location", value: "Collinsbrook farm Community,Frisco 14901, Thunder Rd, Frisco, 75035" },
   { icon: Phone, label: "Contact", value: "+1 (945) 699-0311", href: "tel:+19456990311" },
-  { icon: Globe, label: "Website", value: "Natyaarambam.com" },
+  { icon: Globe, label: "Website", value: "www.natyaarambam.com", href: "https://www.natyaarambam.com" },
 ];
 
 export default function Contact() {
@@ -81,9 +81,9 @@ export default function Contact() {
     <div id="contact-page">
       {/* ====================== CONTACT HERO ====================== */}
       <section className="nd-contact-hero" aria-labelledby="contact-title">
-        <img className="nd-contact-media" src={HERO_IMG} alt="A devotee seated in prayer before a lamp-lit shrine inside a carved stone temple" />
+        <img className="nd-contact-media" src="/images/Contact.png" alt="A devotee seated in prayer before a lamp-lit shrine inside a carved stone temple" />
         <div className="nd-contact-overlay" aria-hidden="true" />
-        <div className="relative mx-auto flex min-h-[520px] max-w-[1180px] flex-col justify-center px-5 py-20 md:min-h-[560px] md:px-8">
+        <div className="relative z-10 mx-auto flex min-h-[540px] max-w-[1180px] flex-col justify-center px-5 py-20 md:min-h-[640px] md:px-8">
           <Reveal>
             <p className="nd-eyebrow nd-eyebrow--light">Contact Us</p>
           </Reveal>
@@ -93,7 +93,7 @@ export default function Contact() {
             </h1>
           </Reveal>
           <Reveal delay={180}>
-            <p className="mt-6 max-w-lg text-[0.97rem] font-light leading-relaxed text-cream-200/85">
+            <p className="mt-6 max-w-lg border-l-2 border-gold-500 pl-5 text-[0.97rem] font-light leading-relaxed text-cream-200/85">
               Whether you are a novice seeker or a seasoned practitioner, our
               doors are open to those who respect the geometry of tradition.
               Reach out to schedule a visit or inquire about our specialized
@@ -239,23 +239,6 @@ export default function Contact() {
             </div>
           </Reveal>
         </div>
-
-        {/* Follow the tradition */}
-        <div className="mx-auto mt-16 max-w-[1180px] px-5 md:px-8">
-          <Reveal>
-            <div className="flex items-center justify-center gap-5 border-t border-maroon-800/10 pt-10">
-              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-ink-500">
-                Follow the Tradition
-              </p>
-              <button type="button" className="nd-social-btn" aria-label="Share Natyaarambam" onClick={() => showToast("Share link copied — pass the tradition on")}>
-                <Share2 size={16} strokeWidth={1.7} />
-              </button>
-              <button type="button" className="nd-social-btn" aria-label="Visit our website" onClick={() => showToast("Natyaarambam.com — opening soon")}>
-                <Globe size={16} strokeWidth={1.7} />
-              </button>
-            </div>
-          </Reveal>
-        </div>
       </section>
 
       {/* ====================== FIND US ====================== */}
@@ -263,21 +246,17 @@ export default function Contact() {
         <div className="mx-auto max-w-[1180px] px-5 md:px-8">
           <Reveal>
             <div className="rounded-lg bg-white p-7 shadow-[0_30px_70px_-40px_rgba(61,7,7,0.4)] md:p-10">
+                  <h2 id="findus-title" className="font-display text-[1.6rem] font-bold text-ink-900 mb-5">Find Us</h2>
               <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-12">
                 {/* Map */}
                 <div>
-                  <h2 id="findus-title" className="font-display text-[1.6rem] font-bold text-ink-900">Find Us</h2>
-                  <div className="nd-map-frame mt-5 h-[280px]">
-                    <iframe
-                      title="Natyaarambam Dance Academy — 585 2nd Main, RHCS Layout, Bangalore"
-                      src="https://www.google.com/maps?q=585%202nd%20Main%20RHCS%20Layout%20Annapoorneshwari%20Nagar%20Bangalore%20560091&output=embed"
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                    />
+                  <div className="h-full">
+                    <iframe title="Natyaarambam Dance Academy" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3338.522839968172!2d-96.77220917452146!3d33.200386773489676!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864c3d003c8c6ff1%3A0x81fdb5e6c0efce1!2sCollinsbrook%20farms!5e0!3m2!1sen!2sin!4v1786451879477!5m2!1sen!2sin" 
+                    width="500" height="500" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
                   </div>
-                  <p className="mt-4 text-sm font-light text-ink-500">
+                  {/* <p className="mt-4 text-sm font-light text-ink-500">
                     585, 2nd Main, RHCS Layout, Annapoorneshwari Nagar, Bangalore 560091
-                  </p>
+                  </p> */}
                 </div>
 
                 {/* Contact info mini cards */}

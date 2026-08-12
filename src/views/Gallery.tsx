@@ -307,7 +307,7 @@ export default function Gallery() {
       <section className="nd-gallery-hero" aria-labelledby="gallery-title">
         <img className="nd-gallery-media" src={IMG.hall} alt="The Natyaarambam studio bathed in warm light, Nataraja watching over the wooden floor" />
         <div className="nd-gallery-overlay" aria-hidden="true" />
-        <div className="relative mx-auto flex min-h-[520px] max-w-[1180px] flex-col justify-center px-5 py-20 md:min-h-[580px] md:px-8">
+        <div className="relative z-10 mx-auto flex min-h-[540px] max-w-[1180px] flex-col justify-center px-5 py-20 md:min-h-[640px] md:px-8">
           <Reveal>
             <p className="nd-eyebrow nd-eyebrow--light">Gallery</p>
           </Reveal>
@@ -563,7 +563,7 @@ export default function Gallery() {
                     <Image src="/images/Decorative Lotus watermark.svg" alt="" width={500} height={500} className="opacity-5 relative top-20 left-50" />
         </span>
 
-        <div className="relative mx-auto max-w-[760px] px-5 py-20 text-center md:py-24">
+        <div className="relative z-10 mx-auto flex min-h-[540px] max-w-[1180px] flex-col justify-center px-5 py-20 md:min-h-[640px] md:px-8">
           <Reveal>
             <h2 id="gallery-cta-title" className="font-display text-[2rem] font-bold text-cream-50 md:text-[2.6rem]">
               Begin Your Journey Within

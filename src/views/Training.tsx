@@ -45,12 +45,12 @@ const SCHEDULE: {
   guru: string;
   status: Status;
 }[] = [
-  { small: "Beginner (Level 1)", name: "Prarambhika", days: "Saturday & Sunday", slot: "10:00 – 11:30 AM", guru: "Guru Hema", status: "offline" },
-  { small: "Intermediate", name: "Madhyama", days: "Saturday & Sunday", slot: "11:30 AM – 1:00 PM", guru: "Guru Hema", status: "offline" },
-  { small: "Advanced Repertoire", name: "Praveena", days: "Saturday & Sunday", slot: "2:00 – 3:30 PM", guru: "Guru Hema", status: "offline" },
-  { small: "Fusion & Film", name: "Semi-Classical", days: "Saturday & Sunday", slot: "4:00 – 5:30 PM", guru: "Guru Hema", status: "inperson" },
-  { small: "Beginner (Level 1)", name: "Prarambhika — Live Stream", days: "Monday & Wednesday", slot: "6:00 – 7:00 PM", guru: "Guru Hema", status: "online" },
-  { small: "Intermediate", name: "Madhyama — Live Stream", days: "Tuesday & Thursday", slot: "7:00 – 8:00 PM", guru: "Guru Hema", status: "online" },
+  { small: "Beginner (Level 1)", name: "Prarambhika", days: "Saturday & Sunday", slot: "–", guru: "Guru Hema", status: "offline" },
+  { small: "Intermediate", name: "Madhyama", days: "Saturday & Sunday", slot: "–", guru: "Guru Hema", status: "offline" },
+  { small: "Advanced Repertoire", name: "Praveena", days: "Saturday & Sunday", slot: "–", guru: "Guru Hema", status: "offline" },
+  { small: "Fusion & Film", name: "Semi-Classical", days: "Saturday & Sunday", slot: "–", guru: "Guru Hema", status: "inperson" },
+  { small: "Beginner (Level 1)", name: "Prarambhika — Live Stream", days: "Monday & Wednesday", slot: "–", guru: "Guru Hema", status: "online" },
+  { small: "Intermediate", name: "Madhyama — Live Stream", days: "Tuesday & Thursday", slot: "–", guru: "Guru Hema", status: "online" },
 ];
 
 const FILTERS: { id: "all" | Status; label: string; dot?: string }[] = [
@@ -73,9 +73,9 @@ export default function Training() {
       {/* ====================== TRAINING HERO ====================== */}
       <section className="nd-train-hero" aria-labelledby="training-title">
         {/* {`Photo: Mohd.Ashabul Haque Nannu / Pexels`} */}
-        <img className="nd-train-media" src={HERO_IMG} alt="A troupe of Bharatanatyam dancers performing on stage in vibrant costumes" />
+        <img className="nd-train-media" src="/images/Training Page 1.png" alt="A troupe of Bharatanatyam dancers performing on stage in vibrant costumes" />
         <div className="nd-train-overlay" aria-hidden="true" />
-        <div className="relative mx-auto flex min-h-[560px] max-w-[1180px] flex-col justify-center px-5 py-20 md:min-h-[620px] md:px-8">
+        <div className="relative z-10 mx-auto flex min-h-[540px] max-w-[1180px] flex-col justify-center px-5 py-20 md:min-h-[640px] md:px-8">
           <Reveal>
             <p className="nd-eyebrow nd-eyebrow--light">Professional Artistry</p>
           </Reveal>
@@ -85,7 +85,7 @@ export default function Training() {
             </h1>
           </Reveal>
           <Reveal delay={180}>
-            <p className="mt-6 max-w-md text-[0.98rem] font-light leading-relaxed text-cream-200/85">
+            <p className="mt-6 max-w-lg border-l-2 border-gold-500 pl-5 text-[0.97rem] font-light leading-relaxed text-cream-200/85">
               Mastering the divine art of Bharatanatyam through a structured,
               rigorous, and spiritually grounded curriculum.
             </p>

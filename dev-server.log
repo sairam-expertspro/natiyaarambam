@@ -12,3 +12,42 @@ Creating turbopack project { dir: 'D:\\natiyaarambam', testMode: true }
  ○ Compiling /gallery ...
  ✓ Compiled /gallery in 5.9s
  GET /gallery 200 in 7350ms
+ ○ Compiling / ...
+ ✓ Compiled / in 2s
+ ⨯ Error: Cannot find module '../chunks/ssr/[turbopack]_runtime.js'
+Require stack:
+- D:\natiyaarambam\.next\server\app\page.js
+- D:\natiyaarambam\node_modules\next\dist\server\require.js
+- D:\natiyaarambam\node_modules\next\dist\server\load-components.js
+- D:\natiyaarambam\node_modules\next\dist\build\utils.js
+- D:\natiyaarambam\node_modules\next\dist\build\swc\options.js
+- D:\natiyaarambam\node_modules\next\dist\build\swc\index.js
+- D:\natiyaarambam\node_modules\next\dist\build\next-config-ts\transpile-config.js
+- D:\natiyaarambam\node_modules\next\dist\server\config.js
+- D:\natiyaarambam\node_modules\next\dist\server\next.js
+- D:\natiyaarambam\node_modules\next\dist\server\lib\start-server.js
+    at Object.<anonymous> (D:\natiyaarambam\.next\server\app\page.js:1:7) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array],
+  page: '/'
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 3.5s
+ ⨯ Error: Cannot find module '../chunks/ssr/[turbopack]_runtime.js'
+Require stack:
+- D:\natiyaarambam\.next\server\pages\_document.js
+- D:\natiyaarambam\node_modules\next\dist\server\require.js
+- D:\natiyaarambam\node_modules\next\dist\server\load-components.js
+- D:\natiyaarambam\node_modules\next\dist\build\utils.js
+- D:\natiyaarambam\node_modules\next\dist\build\swc\options.js
+- D:\natiyaarambam\node_modules\next\dist\build\swc\index.js
+- D:\natiyaarambam\node_modules\next\dist\build\next-config-ts\transpile-config.js
+- D:\natiyaarambam\node_modules\next\dist\server\config.js
+- D:\natiyaarambam\node_modules\next\dist\server\next.js
+- D:\natiyaarambam\node_modules\next\dist\server\lib\start-server.js
+    at Object.<anonymous> (D:\natiyaarambam\.next\server\pages\_document.js:1:7) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ GET / 500 in 7290ms
+ ✓ Compiled in 733ms
