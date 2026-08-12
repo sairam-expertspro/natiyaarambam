@@ -1,4 +1,4 @@
 # Next.js build output
 .next/
 node_modules
-dev-server.log
+*.log

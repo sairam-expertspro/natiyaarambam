@@ -589,12 +589,12 @@ export default function Gallery() {
       {/* ====================== PHOTO LIGHTBOX ====================== */}
       {lightbox !== null && ALL_PHOTOS[lightbox] && (
         <div className="nd-lightbox" role="dialog" aria-modal="true" aria-label="Gallery photo viewer" onClick={() => setLightbox(null)}>
-          <button type="button" className="nd-lightbox-btn right-5 top-5" aria-label="Close viewer" onClick={() => setLightbox(null)}>
+          <button type="button" className="nd-lightbox-btn nd-lightbox-close" aria-label="Close viewer" onClick={() => setLightbox(null)}>
             <X size={20} />
           </button>
           <button
             type="button"
-            className="nd-lightbox-btn left-4 md:left-8"
+            className="nd-lightbox-btn nd-lightbox-nav nd-lightbox-nav--prev"
             aria-label="Previous photo"
             onClick={(e) => {
               e.stopPropagation();
@@ -603,7 +603,7 @@ export default function Gallery() {
           >
             <ChevronLeft size={22} />
           </button>
-          <figure className="text-center" onClick={(e) => e.stopPropagation()}>
+          <figure className="nd-lightbox-figure" onClick={(e) => e.stopPropagation()}>
             <img src={ALL_PHOTOS[lightbox].src} alt={ALL_PHOTOS[lightbox].name} />
             <figcaption className="mt-4 font-display text-sm italic text-gold-300">
               {ALL_PHOTOS[lightbox].name}
@@ -614,7 +614,7 @@ export default function Gallery() {
           </figure>
           <button
             type="button"
-            className="nd-lightbox-btn right-4 md:right-8"
+            className="nd-lightbox-btn nd-lightbox-nav nd-lightbox-nav--next"
             aria-label="Next photo"
             onClick={(e) => {
               e.stopPropagation();

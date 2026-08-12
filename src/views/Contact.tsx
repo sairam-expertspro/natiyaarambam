@@ -240,25 +240,27 @@ export default function Contact() {
       <section className="bg-cream-100 pb-20 md:pb-28" aria-labelledby="findus-title">
         <div className="mx-auto max-w-[1180px] px-5 md:px-8">
           <Reveal>
-            <div className="rounded-lg bg-white p-7 shadow-[0_30px_70px_-40px_rgba(61,7,7,0.4)] md:p-10">
-                  <h2 id="findus-title" className="font-display text-[1.6rem] font-bold text-ink-900 mb-5">Find Us</h2>
-              <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-12">
+            <div className="nd-find-card">
+              <h2 id="findus-title" className="font-display text-[1.6rem] font-bold text-ink-900">Find Us</h2>
+              <div className="nd-find-grid">
                 {/* Map */}
-                <div>
-                  <div className="h-full">
-                    <iframe title="Natyaarambam Dance Academy" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3338.522839968172!2d-96.77220917452146!3d33.200386773489676!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864c3d003c8c6ff1%3A0x81fdb5e6c0efce1!2sCollinsbrook%20farms!5e0!3m2!1sen!2sin!4v1786451879477!5m2!1sen!2sin" 
-                    width="500" height="500" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
-                  </div>
+                <div className="nd-map-frame">
+                  <iframe
+                    title="Natyaarambam Dance Academy"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3338.522839968172!2d-96.77220917452146!3d33.200386773489676!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864c3d003c8c6ff1%3A0x81fdb5e6c0efce1!2sCollinsbrook%20farms!5e0!3m2!1sen!2sin!4v1786451879477!5m2!1sen!2sin"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
                   {/* <p className="mt-4 text-sm font-light text-ink-500">
                     585, 2nd Main, RHCS Layout, Annapoorneshwari Nagar, Bangalore 560091
                   </p> */}
                 </div>
 
                 {/* Contact info mini cards */}
-                <div className="rounded-lg bg-cream-100 p-7 md:p-8">
+                <div className="nd-contact-info-panel">
                   <p className="nd-eyebrow">Get in Touch</p>
                   <h3 className="mt-2 font-display text-[1.6rem] font-bold text-ink-900">Contact Information</h3>
-                  <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  <div className="nd-contact-info-grid">
                     {INFO_CARDS.map((c, i) => (
                       <Reveal key={c.label} delay={i * 80}>
                         <div className="nd-info-mini">
