@@ -10,11 +10,12 @@ import {
   Mail,
   MapPin,
   Phone,
-  Play,
   Send,
 } from "lucide-react";
-import { Reveal, scrollToId, useSite } from "../components/chrome";
-import Image from "next/image";
+import { Reveal } from "@/components/ui/Reveal";
+import { PageHero } from "@/components/sections/PageHero";
+import { CtaBand } from "@/components/sections/CtaBand";
+import { useSite, scrollToId } from "@/lib/site-context";
 
 const JOURNEY = [
   {
@@ -48,7 +49,7 @@ const INFO_CARDS = [
 ];
 
 export default function Contact() {
-  const { showToast, goGallery } = useSite();
+  const { showToast } = useSite();
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({
     name: "",
@@ -74,29 +75,25 @@ export default function Contact() {
 
   return (
     <div id="contact-page">
-      {/* ====================== CONTACT HERO ====================== */}
-      <section className="nd-contact-hero" aria-labelledby="contact-title">
-        <img className="nd-contact-media" src="/images/Contact.webp" alt="A devotee seated in prayer before a lamp-lit shrine inside a carved stone temple" />
-        <div className="nd-contact-overlay" aria-hidden="true" />
-        <div className="relative z-10 mx-auto flex min-h-[540px] max-w-[1180px] flex-col justify-center px-5 py-20 md:min-h-[640px] md:px-8">
-          <Reveal>
-            <p className="nd-eyebrow nd-eyebrow--light">Contact Us</p>
-          </Reveal>
-          <Reveal delay={90}>
-            <h1 id="contact-title" className="mt-5 max-w-2xl font-display text-[2.5rem] font-bold leading-[1.1] text-cream-50 md:text-[3.4rem]">
-              Begin Your <span className="text-gold-400">Journey of Mastery</span>
-            </h1>
-          </Reveal>
-          <Reveal delay={180}>
-            <p className="mt-6 max-w-lg border-l-2 border-gold-500 pl-5 text-[0.97rem] font-light leading-relaxed text-cream-200/85">
-              Whether you are a novice seeker or a seasoned practitioner, our
+      <PageHero
+        id="contact-title"
+        variant="contact"
+        image={{
+          src: "/images/Contact.webp",
+          alt: "A devotee seated in prayer before a lamp-lit shrine inside a carved stone temple",
+        }}
+        eyebrow="Contact Us"
+        titleClassName="mt-5 max-w-2xl font-display text-[2.5rem] font-bold leading-[1.1] text-cream-50 md:text-[3.4rem]"
+        title={
+          <>
+            Begin Your <span className="text-gold-400">Journey of Mastery</span>
+          </>
+        }
+        description="Whether you are a novice seeker or a seasoned practitioner, our
               doors are open to those who respect the geometry of tradition.
               Reach out to schedule a visit or inquire about our specialized
-              curriculum.
-            </p>
-          </Reveal>
-        </div>
-      </section>
+              curriculum."
+      />
 
       {/* ====================== JOINING + ENROLL FORM ====================== */}
       <section id="enroll" className="scroll-mt-24 bg-cream-100 py-20 md:py-28" aria-labelledby="joining-title">
@@ -251,9 +248,6 @@ export default function Contact() {
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                   />
-                  {/* <p className="mt-4 text-sm font-light text-ink-500">
-                    585, 2nd Main, RHCS Layout, Annapoorneshwari Nagar, Bangalore 560091
-                  </p> */}
                 </div>
 
                 {/* Contact info mini cards */}
@@ -286,38 +280,7 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* ====================== CTA BAND ====================== */}
-      <section className="nd-cta" aria-labelledby="contact-cta-title">
-        {/* <span className="nd-cta-shape nd-cta-shape--diamond" style={{ left: "6%", top: "18%" }} aria-hidden="true" />
-        <span className="nd-cta-shape nd-cta-shape--diamond" style={{ right: "10%", bottom: "14%", width: 90, height: 90 }} aria-hidden="true" />
-        <span className="nd-cta-shape nd-cta-shape--circle" style={{ right: "-70px", top: "-70px", width: 240, height: 240 }} aria-hidden="true" />
-        <span className="nd-cta-shape nd-cta-shape--circle" style={{ left: "14%", bottom: "-110px", width: 200, height: 200 }} aria-hidden="true" /> */}
-        <span className="nd-cta-watermark" style={{ right: "4%", top: "50%", transform: "translateY(-50%)" }} aria-hidden="true">
-                    <Image src="/images/Decorative Lotus watermark.svg" alt="" width={500} height={500} className="opacity-5 relative top-20 left-50" />
-        </span>
-
-        <div className="relative mx-auto max-w-[760px] px-5 py-20 text-center md:py-24">
-          <Reveal>
-            <h2 id="contact-cta-title" className="font-display text-[2rem] font-bold text-cream-50 md:text-[2.6rem]">
-              Begin Your Journey Within
-            </h2>
-          </Reveal>
-          <Reveal delay={100}>
-            <p className="mx-auto mt-4 max-w-md text-sm font-light leading-relaxed text-cream-200/85">
-              Whether you are a seasoned practitioner or a curious beginner,
-              our space is designed to support your evolution.
-            </p>
-          </Reveal>
-          <Reveal delay={190}>
-            <div className="mt-9 flex flex-wrap justify-center gap-4">
-              <button type="button" className="nd-btn nd-btn--gold-solid" onClick={() => scrollToId("enroll")}>Enroll Now</button>
-              <button type="button" className="nd-btn nd-btn--outline-cream" onClick={goGallery}>
-                <Play size={15} aria-hidden="true" /> Watch Our Gallery
-              </button>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      <CtaBand id="contact-cta-title" onEnroll={() => scrollToId("enroll")} />
     </div>
   );
 }

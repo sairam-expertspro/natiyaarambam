@@ -1,1 +1,33 @@
-@import "../index.css";
+@import "tailwindcss";
+@import "../styles/custom.css";
+
+/* ——— Design tokens extracted from the Natyaarambam mockup ——— */
+@theme {
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-body: "Jost", ui-sans-serif, sans-serif;
+
+  /* Warm ivory — page background */
+  --color-cream-50: #fcfaf0;
+  --color-cream-100: #f7f3e2;
+  --color-cream-200: #efe8cf;
+  --color-cream-300: #e4dab8;
+
+  /* Temple maroon — primary brand */
+  --color-maroon-950: #3d0707;
+  --color-maroon-900: #560c0c;
+  --color-maroon-800: #6e1010;
+  --color-maroon-700: #821616;
+  --color-maroon-600: #9a2222;
+
+  /* Antique gold — accent */
+  --color-gold-300: #e8d184;
+  --color-gold-400: #d9b94e;
+  --color-gold-500: #c9a227;
+  --color-gold-600: #a9861c;
+
+  /* Ink */
+  --color-ink-900: #2e2a24;
+  --color-ink-700: #4a453c;
+  --color-ink-500: #6e6759;
+  --color-ink-400: #8d8677;
+}

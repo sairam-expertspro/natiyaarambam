@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { CheckCircle2, Play, Star } from "lucide-react";
-import { Reveal, useSite } from "../components/chrome";
-import Image from "next/image";
+import { Reveal } from "@/components/ui/Reveal";
+import { PageHero } from "@/components/sections/PageHero";
+import { CtaBand } from "@/components/sections/CtaBand";
+import { useSite } from "@/lib/site-context";
 
 type Status = "online" | "offline" | "inperson";
 const STATUS_LABEL: Record<Status, string> = {
@@ -66,35 +68,30 @@ export default function Training() {
 
   return (
     <div id="training-page">
-      {/* ====================== TRAINING HERO ====================== */}
-      <section className="nd-train-hero" aria-labelledby="training-title">
-        <img className="nd-train-media" src="/images/Training Page 1.webp" alt="A troupe of Bharatanatyam dancers performing on stage in vibrant costumes" />
-        <div className="nd-train-overlay" aria-hidden="true" />
-        <div className="relative z-10 mx-auto flex min-h-[540px] max-w-[1180px] flex-col justify-center px-5 py-20 md:min-h-[640px] md:px-8">
-          <Reveal>
-            <p className="nd-eyebrow nd-eyebrow--light">Professional Artistry</p>
-          </Reveal>
-          <Reveal delay={90}>
-            <h1 id="training-title" className="mt-5 max-w-2xl font-display text-[2.6rem] font-bold leading-[1.08] text-cream-50 md:text-[3.6rem]">
-              Training <span className="italic">&amp;</span> <span className="text-gold-400">Curriculum</span>
-            </h1>
-          </Reveal>
-          <Reveal delay={180}>
-            <p className="mt-6 max-w-lg border-l-2 border-gold-500 pl-5 text-[0.97rem] font-light leading-relaxed text-cream-200/85">
-              Mastering the divine art of Bharatanatyam through a structured,
-              rigorous, and spiritually grounded curriculum.
-            </p>
-          </Reveal>
-          <Reveal delay={270}>
-            <div className="mt-9 flex flex-wrap gap-4">
-              <button type="button" className="nd-btn nd-btn--maroon" onClick={() => enroll("your batch")}>Enroll Now</button>
-              <button type="button" className="nd-btn nd-btn--gold-outline" onClick={goGallery}>
-                <Play size={15} aria-hidden="true" /> Watch Our Gallery
-              </button>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      <PageHero
+        id="training-title"
+        variant="training"
+        image={{
+          src: "/images/Training Page 1.webp",
+          alt: "A troupe of Bharatanatyam dancers performing on stage in vibrant costumes",
+        }}
+        eyebrow="Professional Artistry"
+        titleClassName="mt-5 max-w-2xl font-display text-[2.6rem] font-bold leading-[1.08] text-cream-50 md:text-[3.6rem]"
+        title={
+          <>
+            Training <span className="italic">&amp;</span>{" "}
+            <span className="text-gold-400">Curriculum</span>
+          </>
+        }
+        description="Mastering the divine art of Bharatanatyam through a structured,
+              rigorous, and spiritually grounded curriculum."
+        primary={{ label: "Enroll Now", onClick: () => enroll("your batch") }}
+        secondary={{
+          label: "Watch Our Gallery",
+          onClick: goGallery,
+          icon: <Play size={15} aria-hidden="true" />,
+        }}
+      />
 
       {/* ====================== LEARNING PATHS ====================== */}
       <section className="bg-cream-100 py-20 md:py-28" aria-labelledby="paths-title">
@@ -250,38 +247,7 @@ export default function Training() {
         </div>
       </section>
 
-      {/* ====================== CTA BAND ====================== */}
-      <section className="nd-cta" aria-labelledby="training-cta-title">
-        {/* <span className="nd-cta-shape nd-cta-shape--diamond" style={{ left: "6%", top: "18%" }} aria-hidden="true" />
-        <span className="nd-cta-shape nd-cta-shape--diamond" style={{ right: "10%", bottom: "14%", width: 90, height: 90 }} aria-hidden="true" />
-        <span className="nd-cta-shape nd-cta-shape--circle" style={{ right: "-70px", top: "-70px", width: 240, height: 240 }} aria-hidden="true" />
-        <span className="nd-cta-shape nd-cta-shape--circle" style={{ left: "14%", bottom: "-110px", width: 200, height: 200 }} aria-hidden="true" /> */}
-        <span className="nd-cta-watermark" style={{ right: "4%", top: "50%", transform: "translateY(-50%)" }} aria-hidden="true">
-                    <Image src="/images/Decorative Lotus watermark.svg" alt="" width={500} height={500} className="opacity-5 relative top-20 left-50" />
-        </span>
-
-        <div className="relative mx-auto max-w-[760px] px-5 py-20 text-center md:py-24">
-          <Reveal>
-            <h2 id="training-cta-title" className="font-display text-[2rem] font-bold text-cream-50 md:text-[2.6rem]">
-              Begin Your Journey Within
-            </h2>
-          </Reveal>
-          <Reveal delay={100}>
-            <p className="mx-auto mt-4 max-w-md text-sm font-light leading-relaxed text-cream-200/85">
-              Whether you are a seasoned practitioner or a curious beginner,
-              our space is designed to support your evolution.
-            </p>
-          </Reveal>
-          <Reveal delay={190}>
-            <div className="mt-9 flex flex-wrap justify-center gap-4">
-              <button type="button" className="nd-btn nd-btn--gold-solid" onClick={() => enroll("your batch")}>Enroll Now</button>
-              <button type="button" className="nd-btn nd-btn--outline-cream" onClick={goGallery}>
-                <Play size={15} aria-hidden="true" /> Watch Our Gallery
-              </button>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      <CtaBand id="training-cta-title" />
     </div>
   );
 }

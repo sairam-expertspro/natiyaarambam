@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Layout } from "@/components/chrome";
+import { SiteLayout } from "@/components/layout/SiteLayout";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -42,7 +42,7 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <Layout>{children}</Layout>
+        <SiteLayout>{children}</SiteLayout>
       </body>
     </html>
   );

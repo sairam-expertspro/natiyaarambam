@@ -3,8 +3,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ChevronDown,
-  ChevronLeft,
-  ChevronRight,
   Clapperboard,
   Image as ImageIcon,
   LayoutGrid,
@@ -14,9 +12,22 @@ import {
   Upload,
   X,
 } from "lucide-react";
-import { Reveal, scrollToId, useSite } from "../components/chrome";
-import { IMG } from "../data";
-import Image from "next/image";
+import Lightbox from "yet-another-react-lightbox";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import Counter from "yet-another-react-lightbox/plugins/counter";
+import Captions from "yet-another-react-lightbox/plugins/captions";
+import "yet-another-react-lightbox/styles.css";
+import "yet-another-react-lightbox/plugins/counter.css";
+import "yet-another-react-lightbox/plugins/captions.css";
+import { Reveal } from "@/components/ui/Reveal";
+import { PageHero } from "@/components/sections/PageHero";
+import { CtaBand } from "@/components/sections/CtaBand";
+import { GalleryImage } from "@/components/gallery/GalleryImage";
+import { PhotoTile } from "@/components/gallery/PhotoTile";
+import { FilmTile } from "@/components/gallery/FilmTile";
+import type { Photo, Film } from "@/components/gallery/types";
+import { useSite, scrollToId } from "@/lib/site-context";
+import { IMG } from "@/lib/content";
 
 /* Photography credits (Pexels, free license):
    Stage solo — Syam Vijai (18240707) · Festival — atelierbyvineeth (34717649)
@@ -25,9 +36,6 @@ import Image from "next/image";
    Stage troupe — Mohd.Ashabul Haque Nannu (16039776) · Portrait — Kosygin Leishangthem (18086346)
    Jewelry — Punam Oishy (35059564) · Parampara — Bonaventure Fernandez (14742292)
    Videos — Anastasia Shuraeva (8751567) · Thirdman (8491501) */
-
-type Photo = { src: string; tag: string; name: string; span?: string; mono?: boolean };
-type Film = { src: string; poster: string; name: string };
 
 /* ——— Photographs only: the printed anthology ——— */
 const GALLERY_IMAGE_COUNT = 65;
@@ -105,71 +113,6 @@ const buildGrid = (photos: Photo[]): GridItem[] => [
   ...photos.slice(6).map((photo) => ({ kind: "photo" as const, photo, span: photo.span })),
 ];
 
-function GalleryImage({
-  src,
-  alt,
-  className,
-}: {
-  src: string;
-  alt: string;
-  className?: string;
-}) {
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => setLoaded(false), [src]);
-
-  return (
-    <>
-      <span className={`nd-image-skeleton ${loaded ? "nd-image-skeleton--hidden" : ""}`} aria-hidden="true" />
-      <img
-        src={src}
-        alt={alt}
-        loading="lazy"
-        decoding="async"
-        className={`${className ?? ""} ${loaded ? "nd-image-loaded" : "nd-image-loading"}`.trim()}
-        onLoad={() => setLoaded(true)}
-      />
-    </>
-  );
-}
-
-function PhotoTile({ photo, onOpen }: { photo: Photo; onOpen: (photo: Photo) => void }) {
-  return (
-    <button
-      type="button"
-      className="nd-tile"
-      aria-label={`View photo: ${photo.name}`}
-      onClick={() => onOpen(photo)}
-    >
-      <GalleryImage src={photo.src} alt={photo.name} className={photo.mono ? "nd-grayscale" : ""} />
-      <span className="nd-tile-caption">
-        <span className="nd-tile-tag">{photo.tag}</span>
-        <span className="nd-tile-name">{photo.name}</span>
-      </span>
-    </button>
-  );
-}
-
-function FilmTile({ film, onPlay }: { film: Film; onPlay: (film: Film) => void }) {
-  return (
-    <button
-      type="button"
-      className="nd-tile"
-      aria-label={`Play film: ${film.name}`}
-      onClick={() => onPlay(film)}
-    >
-      <GalleryImage src={film.poster} alt={film.name} />
-      <span className="nd-play-btn" aria-hidden="true">
-        <Play size={20} fill="currentColor" />
-      </span>
-      <span className="nd-tile-caption">
-        <span className="nd-tile-tag">Film</span>
-        <span className="nd-tile-name">{film.name}</span>
-      </span>
-    </button>
-  );
-}
-
 export default function Gallery() {
   const { goHome, showToast } = useSite();
   const [lightbox, setLightbox] = useState<number | null>(null);
@@ -228,6 +171,11 @@ export default function Gallery() {
     [uploads]
   );
 
+  const lightboxSlides = useMemo(
+    () => ALL_PHOTOS.map((photo) => ({ src: photo.src, alt: photo.name, title: photo.name })),
+    [ALL_PHOTOS]
+  );
+
   const orderedPhotos = useMemo(
     () => (shuffleSeed ? shuffleItems(PHOTOS, shuffleSeed) : PHOTOS),
     [shuffleSeed]
@@ -270,18 +218,11 @@ export default function Gallery() {
     );
   };
 
-  /* Keyboard support for lightbox + film modal */
+  /* Keyboard + scroll-lock support for the film modal (the photo lightbox handles its own) */
   useEffect(() => {
-    if (lightbox === null && film === null) return;
+    if (film === null) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setLightbox(null);
-        setFilm(null);
-      }
-      if (lightbox !== null) {
-        if (e.key === "ArrowRight") setLightbox((i) => (i === null ? i : (i + 1) % ALL_PHOTOS.length));
-        if (e.key === "ArrowLeft") setLightbox((i) => (i === null ? i : (i - 1 + ALL_PHOTOS.length) % ALL_PHOTOS.length));
-      }
+      if (e.key === "Escape") setFilm(null);
     };
     window.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
@@ -289,7 +230,7 @@ export default function Gallery() {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
-  }, [lightbox, film]);
+  }, [film]);
 
   const openPhoto = (photo: Photo) => {
     const idx = ALL_PHOTOS.indexOf(photo);
@@ -303,37 +244,31 @@ export default function Gallery() {
 
   return (
     <div id="gallery-page">
-      {/* ====================== GALLERY HERO ====================== */}
-      <section className="nd-gallery-hero" aria-labelledby="gallery-title">
-        <img className="nd-gallery-media" src={IMG.hall} alt="The Natyaarambam studio bathed in warm light, Nataraja watching over the wooden floor" />
-        <div className="nd-gallery-overlay" aria-hidden="true" />
-        <div className="relative z-10 mx-auto flex min-h-[540px] max-w-[1180px] flex-col justify-center px-5 py-20 md:min-h-[640px] md:px-8">
-          <Reveal>
-            <p className="nd-eyebrow nd-eyebrow--light">Gallery</p>
-          </Reveal>
-          <Reveal delay={90}>
-            <h1 id="gallery-title" className="mt-5 font-display text-[2.6rem] font-bold leading-[1.1] text-cream-50 md:text-[3.5rem]">
-              Explore Our
-              <span className="block text-gold-400">Memorable Moments</span>
-            </h1>
-          </Reveal>
-          <Reveal delay={180}>
-            <p className="mt-6 max-w-lg border-l-2 border-gold-500 pl-5 text-[0.97rem] font-light leading-relaxed text-cream-200/85">
-              Explore memorable moments from performances, workshops, and
+      <PageHero
+        id="gallery-title"
+        variant="gallery"
+        image={{
+          src: IMG.hall,
+          alt: "The Natyaarambam studio bathed in warm light, Nataraja watching over the wooden floor",
+        }}
+        eyebrow="Gallery"
+        titleClassName="mt-5 font-display text-[2.6rem] font-bold leading-[1.1] text-cream-50 md:text-[3.5rem]"
+        title={
+          <>
+            Explore Our
+            <span className="block text-gold-400">Memorable Moments</span>
+          </>
+        }
+        description="Explore memorable moments from performances, workshops, and
               cultural celebrations. Discover the passion, creativity, and
-              tradition that bring our academy to life.
-            </p>
-          </Reveal>
-          <Reveal delay={270}>
-            <div className="mt-9 flex flex-wrap gap-4">
-              <button type="button" className="nd-btn nd-btn--maroon" onClick={() => goHome("contact")}>Enroll Now</button>
-              <button type="button" className="nd-btn nd-btn--gold-outline" onClick={() => scrollToId("moments")}>
-                <Play size={15} aria-hidden="true" /> Watch Our Gallery
-              </button>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+              tradition that bring our academy to life."
+        primary={{ label: "Enroll Now", onClick: () => goHome("contact") }}
+        secondary={{
+          label: "Watch Our Gallery",
+          onClick: () => scrollToId("moments"),
+          icon: <Play size={15} aria-hidden="true" />,
+        }}
+      />
 
       {/* ====================== MOMENTS OF MASTERY — photographs ====================== */}
       <section id="moments" className="scroll-mt-24 bg-cream-100 py-20 md:py-28" aria-labelledby="moments-title">
@@ -437,7 +372,7 @@ export default function Gallery() {
                 }
               >
                 {item.kind === "photo" ? (
-                  <PhotoTile photo={item.photo} onOpen={openPhoto} />
+                  <PhotoTile photo={item.photo} onOpen={openPhoto} priority={i < 3} />
                 ) : (
                   <FilmTile film={item.film} onPlay={setFilm} />
                 )}
@@ -545,7 +480,7 @@ export default function Gallery() {
 
           {/* Secondary photograph mosaic */}
           <div className="mt-14 grid auto-rows-[180px] grid-cols-2 gap-6 md:auto-rows-[200px] md:grid-cols-4">
-            <Reveal className="col-span-2 row-span-2"><PhotoTile photo={MOSAIC.big} onOpen={openPhoto} /></Reveal>
+            <Reveal className="col-span-2 row-span-2"><PhotoTile photo={MOSAIC.big} onOpen={openPhoto} sizes="(max-width: 640px) 100vw, 50vw" /></Reveal>
             <Reveal delay={90}><PhotoTile photo={MOSAIC.jewelry} onOpen={openPhoto} /></Reveal>
             <Reveal delay={160}><PhotoTile photo={MOSAIC.guru} onOpen={openPhoto} /></Reveal>
             <Reveal delay={220} className="col-span-2"><PhotoTile photo={MOSAIC.floor} onOpen={openPhoto} /></Reveal>
@@ -553,78 +488,20 @@ export default function Gallery() {
         </div>
       </section>
 
-      {/* ====================== CTA BAND ====================== */}
-      <section className="nd-cta" aria-labelledby="gallery-cta-title">
-        {/* <span className="nd-cta-shape nd-cta-shape--diamond" style={{ left: "6%", top: "18%" }} aria-hidden="true" />
-        <span className="nd-cta-shape nd-cta-shape--diamond" style={{ right: "10%", bottom: "14%", width: 90, height: 90 }} aria-hidden="true" />
-        <span className="nd-cta-shape nd-cta-shape--circle" style={{ right: "-70px", top: "-70px", width: 240, height: 240 }} aria-hidden="true" />
-        <span className="nd-cta-shape nd-cta-shape--circle" style={{ left: "14%", bottom: "-110px", width: 200, height: 200 }} aria-hidden="true" /> */}
-        <span className="nd-cta-watermark" style={{ right: "4%", top: "50%", transform: "translateY(-50%)" }} aria-hidden="true">
-                    <Image src="/images/Decorative Lotus watermark.svg" alt="" width={500} height={500} className="opacity-5 relative top-20 left-50" />
-        </span>
-
-        <div className="relative mx-auto max-w-[760px] px-5 py-20 text-center md:py-24">
-          <Reveal>
-            <h2 id="gallery-cta-title" className="font-display text-[2rem] font-bold text-cream-50 md:text-[2.6rem]">
-              Begin Your Journey Within
-            </h2>
-          </Reveal>
-          <Reveal delay={100}>
-            <p className="mx-auto mt-4 max-w-md text-sm font-light leading-relaxed text-cream-200/85">
-              Whether you are a seasoned practitioner or a curious beginner,
-              our space is designed to support your evolution.
-            </p>
-          </Reveal>
-          <Reveal delay={190}>
-            <div className="mt-9 flex flex-wrap justify-center gap-4">
-              <button type="button" className="nd-btn nd-btn--gold-solid" onClick={() => goHome("contact")}>Enroll Now</button>
-              <button type="button" className="nd-btn nd-btn--outline-cream" onClick={() => scrollToId("films")}>
-                <Play size={15} aria-hidden="true" /> Watch Our Gallery
-              </button>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      <CtaBand id="gallery-cta-title" onWatch={() => scrollToId("films")} />
 
       {/* ====================== PHOTO LIGHTBOX ====================== */}
-      {lightbox !== null && ALL_PHOTOS[lightbox] && (
-        <div className="nd-lightbox" role="dialog" aria-modal="true" aria-label="Gallery photo viewer" onClick={() => setLightbox(null)}>
-          <button type="button" className="nd-lightbox-btn nd-lightbox-close" aria-label="Close viewer" onClick={() => setLightbox(null)}>
-            <X size={20} />
-          </button>
-          <button
-            type="button"
-            className="nd-lightbox-btn nd-lightbox-nav nd-lightbox-nav--prev"
-            aria-label="Previous photo"
-            onClick={(e) => {
-              e.stopPropagation();
-              setLightbox((i) => (i === null ? i : (i - 1 + ALL_PHOTOS.length) % ALL_PHOTOS.length));
-            }}
-          >
-            <ChevronLeft size={22} />
-          </button>
-          <figure className="nd-lightbox-figure" onClick={(e) => e.stopPropagation()}>
-            <img src={ALL_PHOTOS[lightbox].src} alt={ALL_PHOTOS[lightbox].name} />
-            <figcaption className="mt-4 font-display text-sm italic text-gold-300">
-              {ALL_PHOTOS[lightbox].name}
-            </figcaption>
-            <p className="mt-1 text-xs tracking-[0.2em] text-cream-200/60">
-              {lightbox + 1} / {ALL_PHOTOS.length}
-            </p>
-          </figure>
-          <button
-            type="button"
-            className="nd-lightbox-btn nd-lightbox-nav nd-lightbox-nav--next"
-            aria-label="Next photo"
-            onClick={(e) => {
-              e.stopPropagation();
-              setLightbox((i) => (i === null ? i : (i + 1) % ALL_PHOTOS.length));
-            }}
-          >
-            <ChevronRight size={22} />
-          </button>
-        </div>
-      )}
+      <Lightbox
+        open={lightbox !== null}
+        close={() => setLightbox(null)}
+        index={lightbox ?? 0}
+        slides={lightboxSlides}
+        plugins={[Zoom, Counter, Captions]}
+        on={{ view: ({ index }) => setLightbox(index) }}
+        zoom={{ maxZoomPixelRatio: 3, scrollToZoom: true }}
+        counter={{ container: { style: { top: "unset", left: "unset", bottom: 0, right: 0 } } }}
+        styles={{ container: { backgroundColor: "rgba(23, 5, 5, 0.94)" } }}
+      />
 
       {/* ====================== OWNER ACCESS MODAL ====================== */}
       {ownerModal && (

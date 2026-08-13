@@ -11,61 +11,13 @@ import {
   Play,
   Sparkles,
 } from "lucide-react";
-import { Reveal, useSite } from "../components/chrome";
-import { TESTIMONIALS } from "../data";
-import Image from "next/image";
-
-function TestimonialCard({ t }: { t: (typeof TESTIMONIALS)[number] }) {
-  return (
-    <figure className="nd-card flex h-full flex-col p-7">
-      <div className="flex items-start justify-between gap-3">
-        <span className="nd-quote-mark" aria-hidden="true">
-          “
-        </span>
-        {/* <span className="mt-1 shrink-0 rounded-full border border-gold-500/50 px-3 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.16em] text-gold-600">
-          {t.tag}
-        </span> */}
-      </div>
-      <blockquote className="mt-3 flex-1 text-[0.87rem] font-light leading-relaxed text-ink-700">
-        {t.text}
-      </blockquote>
-      <figcaption className="mt-6 border-t border-maroon-800/10 pt-4">
-        <p className="font-display text-[1.05rem] font-semibold text-maroon-800">
-          {t.name}
-        </p>
-        {/* <p className="text-xs uppercase tracking-[0.16em] text-ink-400">
-          {t.role}
-        </p> */}
-      </figcaption>
-    </figure>
-  );
-}
-
-function HeritageCount() {
-  const ref = useRef<HTMLSpanElement | null>(null);
-  const [val, setVal] = useState(0);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (!e.isIntersecting) return;
-        io.disconnect();
-        const start = performance.now();
-        const tick = (now: number) => {
-          const p = Math.min((now - start) / 1300, 1);
-          setVal(Math.round(45 * (1 - Math.pow(1 - p, 3))));
-          if (p < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      },
-      { threshold: 0.5 },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-  return <span ref={ref}>{val}</span>;
-}
+import { Reveal } from "@/components/ui/Reveal";
+import { PageHero } from "@/components/sections/PageHero";
+import { CtaBand } from "@/components/sections/CtaBand";
+import { TestimonialCard } from "@/components/home/TestimonialCard";
+import { HeritageCount } from "@/components/home/HeritageCount";
+import { useSite } from "@/lib/site-context";
+import { TESTIMONIALS } from "@/lib/content";
 
 export default function Home() {
   const { goGallery, goHome } = useSite();
@@ -178,85 +130,35 @@ export default function Home() {
 
   return (
     <div id="home">
-      <section className="nd-about-banner" aria-labelledby="about-hero-title">
-        <img
-          className="nd-about-banner-img"
-          src="/images/Home Banner.webp"
-          alt="Bharatanatyam dancer in an emerald green and gold sari seated in araimandi before a deep maroon circle"
-        />
-        <div className="nd-about-banner-scrim" aria-hidden="true" />
-        <span
-          className="nd-bell"
-          style={{ left: "7%", top: "26%" }}
-          aria-hidden="true"
-        />
-        <span
-          className="nd-bell"
-          style={{ left: "36%", bottom: "22%", animationDelay: "1.6s" }}
-          aria-hidden="true"
-        />
-        <span
-          className="nd-bell"
-          style={{ left: "18%", top: "64%", animationDelay: "2.8s" }}
-          aria-hidden="true"
-        />
-
-        <div className="relative z-10 mx-auto flex min-h-[540px] max-w-[1180px] flex-col justify-center px-5 py-20 md:min-h-[640px] md:px-8">
-          <Reveal>
-            <p className="nd-eyebrow nd-eyebrow--light">
-              Grace. Discipline. Heritage.
-            </p>
-          </Reveal>
-          <Reveal delay={90}>
-            <h1
-              id="hero-title"
-              className="
-    mt-5
-    max-w-xl
-    font-display
-    text-[2.2rem]
-    font-bold
-    leading-[1.1]
-    text-cream-50
-    sm:text-[2.6rem]
-    md:text-[3.2rem]
-    lg:text-[3.5rem]
-  "
-            >
-              Discover the Divine{" "}
-              <span className="sm:whitespace-nowrap">
-                Language of <span className="text-gold-400">Bharatanatyam</span>
-              </span>
-            </h1>
-          </Reveal>
-          <Reveal delay={180}>
-            <p className="mt-6 max-w-lg border-l-2 border-gold-500 pl-5 text-[0.97rem] font-light leading-relaxed text-cream-200/85">
-              Step into a world where rhythm, expression, and tradition come
+      <PageHero
+        id="hero-title"
+        variant="banner"
+        bells
+        image={{
+          src: "/images/Home Banner.webp",
+          alt: "Bharatanatyam dancer in an emerald green and gold sari seated in araimandi before a deep maroon circle",
+        }}
+        eyebrow="Grace. Discipline. Heritage."
+        titleClassName="mt-5 max-w-xl font-display text-[2.2rem] font-bold leading-[1.1] text-cream-50 sm:text-[2.6rem] md:text-[3.2rem] lg:text-[3.5rem]"
+        title={
+          <>
+            Discover the Divine{" "}
+            <span className="sm:whitespace-nowrap">
+              Language of <span className="text-gold-400">Bharatanatyam</span>
+            </span>
+          </>
+        }
+        description="Step into a world where rhythm, expression, and tradition come
               together. At Natyaarambam Dance Academy, we offer structured
               Bharatanatyam training that nurtures technique, confidence,
-              spirituality, and artistic expression for every aspiring dancer.
-            </p>
-          </Reveal>
-          <Reveal delay={270}>
-            <div className="mt-9 flex flex-wrap gap-4">
-              <button
-                type="button"
-                className="nd-btn nd-btn--maroon"
-                onClick={() => goHome("contact")}
-              >
-                Enroll Now
-              </button>
-              <button
-                type="button"
-                className="nd-btn nd-btn--gold-outline"
-                onClick={goGallery}
-              >
-                <Play size={15} aria-hidden="true" /> Watch Our Gallery
-              </button>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+              spirituality, and artistic expression for every aspiring dancer."
+        primary={{ label: "Enroll Now", onClick: () => goHome("contact") }}
+        secondary={{
+          label: "Watch Our Gallery",
+          onClick: goGallery,
+          icon: <Play size={15} aria-hidden="true" />,
+        }}
+      />
 
       <section
         id="about-home"
@@ -321,7 +223,7 @@ export default function Home() {
               />
             </div>
             <blockquote className="nd-quote-card absolute -bottom-8 -left-2 max-w-[230px] p-6 text-[1.05rem] leading-snug md:-left-10">
-              “Dance is the hidden language of the soul.”
+              &ldquo;Dance is the hidden language of the soul.&rdquo;
             </blockquote>
           </Reveal>
         </div>
@@ -394,7 +296,7 @@ export default function Home() {
                 />
               </div>
               <p className="nd-dark-chip absolute -bottom-6 left-6 max-w-[250px] rounded-md px-6 py-5 text-[0.92rem] leading-snug">
-                “Precision is the bridge between the human and the divine.”
+                &ldquo;Precision is the bridge between the human and the divine.&rdquo;
               </p>
             </Reveal>
           </div>
@@ -597,61 +499,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ====================== CTA BAND ====================== */}
-      <section className="nd-cta" aria-labelledby="cta-title">
-        {/* <span className="nd-cta-shape nd-cta-shape--diamond" style={{ left: "6%", top: "18%" }} aria-hidden="true" />
-        <span className="nd-cta-shape nd-cta-shape--diamond" style={{ right: "10%", bottom: "14%", width: 90, height: 90 }} aria-hidden="true" />
-        <span className="nd-cta-shape nd-cta-shape--circle" style={{ right: "-70px", top: "-70px", width: 240, height: 240 }} aria-hidden="true" />
-        <span className="nd-cta-shape nd-cta-shape--circle" style={{ left: "14%", bottom: "-110px", width: 200, height: 200 }} aria-hidden="true" /> */}
-        <span
-          className="nd-cta-watermark"
-          style={{ right: "4%", top: "50%", transform: "translateY(-50%)" }}
-          aria-hidden="true"
-        >
-          <Image
-            src="/images/Decorative Lotus watermark.svg"
-            alt=""
-            width={500}
-            height={500}
-            className="opacity-5 relative top-20 left-50"
-          />
-        </span>
-
-        <div className="relative mx-auto max-w-[760px] px-5 py-20 text-center md:py-24">
-          <Reveal>
-            <h2
-              id="cta-title"
-              className="font-display text-[2rem] font-bold text-cream-50 md:text-[2.6rem]"
-            >
-              Begin Your Journey Within
-            </h2>
-          </Reveal>
-          <Reveal delay={100}>
-            <p className="mx-auto mt-4 max-w-md text-sm font-light leading-relaxed text-cream-200/85">
-              Whether you are a seasoned practitioner or a curious beginner, our
-              space is designed to support your evolution.
-            </p>
-          </Reveal>
-          <Reveal delay={190}>
-            <div className="mt-9 flex flex-wrap justify-center gap-4">
-              <button
-                type="button"
-                className="nd-btn nd-btn--gold-solid"
-                onClick={() => goHome("contact")}
-              >
-                Enroll Now
-              </button>
-              <button
-                type="button"
-                className="nd-btn nd-btn--outline-cream"
-                onClick={goGallery}
-              >
-                <Play size={15} aria-hidden="true" /> Watch Our Gallery
-              </button>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      <CtaBand id="cta-title" />
     </div>
   );
 }

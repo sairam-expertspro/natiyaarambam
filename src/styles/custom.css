@@ -714,7 +714,8 @@ button:focus-visible {
   .nd-about-banner,
   .nd-train-hero,
   .nd-gallery-hero,
-  .nd-contact-hero {
+  .nd-contact-hero,
+  .nd-blog-hero {
     min-height: auto;
   }
 
@@ -744,7 +745,8 @@ button:focus-visible {
 
   .nd-lightbox,
   .nd-video-modal,
-  .nd-owner-modal {
+  .nd-owner-modal,
+  .nd-article-modal {
     padding: 16px;
   }
 
@@ -1695,6 +1697,75 @@ button:focus-visible {
 .nd-journey-card {
   background: linear-gradient(155deg, #7e1414 0%, #611010 55%, #4c0c0c 100%);
   box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6);
+}
+
+/* ==========================================================================
+   BLOG PAGE
+   ========================================================================== */
+.nd-blog-hero {
+  position: relative;
+  overflow: hidden;
+  background: #170603;
+}
+.nd-blog-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: nd-kenburns 22s ease-out forwards;
+}
+.nd-blog-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    95deg,
+    rgba(16, 5, 3, 0.94) 0%,
+    rgba(16, 5, 3, 0.74) 36%,
+    rgba(16, 5, 3, 0.32) 66%,
+    rgba(16, 5, 3, 0.18) 100%
+  );
+}
+.nd-article-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 105;
+  background: rgba(22, 10, 6, 0.82);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow-y: auto;
+  animation: nd-fade 0.3s ease both;
+}
+.nd-article-sheet {
+  position: relative;
+  width: min(94vw, 760px);
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  background: #fffdf6;
+  border-radius: 10px;
+  box-shadow: 0 50px 110px -30px rgba(0, 0, 0, 0.75);
+  animation: nd-rise 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.nd-article-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: rgba(23, 5, 5, 0.55);
+  color: #fdf6e3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.25s ease;
+}
+.nd-article-close:hover {
+  background: var(--nd-maroon);
 }
 
 /* Reduced motion ---------------------------------------------------------- */

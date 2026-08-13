@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Training from "@/views/Training";
+import Training from "@/components/training/Training";
 
 export const metadata: Metadata = {
   title: "Training",

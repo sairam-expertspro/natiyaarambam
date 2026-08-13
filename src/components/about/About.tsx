@@ -1,52 +1,42 @@
 "use client";
 
 import { Play } from "lucide-react";
-import { Reveal, useSite } from "../components/chrome";
-import Image from "next/image";
+import { Reveal } from "@/components/ui/Reveal";
+import { PageHero } from "@/components/sections/PageHero";
+import { CtaBand } from "@/components/sections/CtaBand";
+import { useSite } from "@/lib/site-context";
 
 export default function About() {
   const { goGallery, goHome } = useSite();
 
   return (
     <div id="about-page">
-      <section className="nd-about-banner" aria-labelledby="about-hero-title">
-        <img
-          className="nd-about-banner-img"
-          src="/images/image 7.webp"
-          alt="Bharatanatyam dancer in an emerald green and gold sari seated in araimandi before a deep maroon circle"
-        />
-        <div className="nd-about-banner-scrim" aria-hidden="true" />
-        <span className="nd-bell" style={{ left: "7%", top: "26%" }} aria-hidden="true" />
-        <span className="nd-bell" style={{ left: "36%", bottom: "22%", animationDelay: "1.6s" }} aria-hidden="true" />
-        <span className="nd-bell" style={{ left: "18%", top: "64%", animationDelay: "2.8s" }} aria-hidden="true" />
-
-        <div className="relative z-10 mx-auto flex min-h-[540px] max-w-[1180px] flex-col justify-center px-5 py-20 md:min-h-[640px] md:px-8">
-          <Reveal>
-            <p className="nd-eyebrow nd-eyebrow--light">Natyaarambam Dance Academy</p>
-          </Reveal>
-          <Reveal delay={90}>
-            <h1 id="about-hero-title" className="mt-5 max-w-xl font-display text-[2.6rem] font-bold leading-[1.1] text-cream-50 md:text-[3.4rem]">
-              Dance that Speaks the{" "}
-              <span className="block text-gold-400">Language of the Soul</span>
-            </h1>
-          </Reveal>
-          <Reveal delay={180}>
-            <p className="mt-6 max-w-lg border-l-2 border-gold-500 pl-5 text-[0.97rem] font-light leading-relaxed text-cream-200/85">
-              Natyaarambam Dance Academy is more than a dance school; it is a
+      <PageHero
+        id="about-hero-title"
+        variant="banner"
+        bells
+        image={{
+          src: "/images/image 7.webp",
+          alt: "Bharatanatyam dancer in an emerald green and gold sari seated in araimandi before a deep maroon circle",
+        }}
+        eyebrow="Natyaarambam Dance Academy"
+        titleClassName="mt-5 max-w-xl font-display text-[2.6rem] font-bold leading-[1.1] text-cream-50 md:text-[3.4rem]"
+        title={
+          <>
+            Dance that Speaks the{" "}
+            <span className="block text-gold-400">Language of the Soul</span>
+          </>
+        }
+        description="Natyaarambam Dance Academy is more than a dance school; it is a
               sanctuary where the ancient echoes of temple traditions meet
-              the precision of modern mastery.
-            </p>
-          </Reveal>
-          <Reveal delay={270}>
-            <div className="mt-9 flex flex-wrap gap-4">
-              <button type="button" className="nd-btn nd-btn--maroon" onClick={() => goHome("contact")}>Enroll Now</button>
-              <button type="button" className="nd-btn nd-btn--gold-outline" onClick={goGallery}>
-                <Play size={15} aria-hidden="true" /> Watch Our Gallery
-              </button>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+              the precision of modern mastery."
+        primary={{ label: "Enroll Now", onClick: () => goHome("contact") }}
+        secondary={{
+          label: "Watch Our Gallery",
+          onClick: goGallery,
+          icon: <Play size={15} aria-hidden="true" />,
+        }}
+      />
 
       <section className="overflow-hidden bg-cream-100 py-20 md:py-28" aria-labelledby="legacy-title">
         <div className="mx-auto grid max-w-[1180px] items-center gap-14 px-5 md:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:gap-20">
@@ -219,38 +209,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* ====================== CTA BAND ====================== */}
-      <section className="nd-cta" aria-labelledby="about-cta-title">
-        {/* <span className="nd-cta-shape nd-cta-shape--diamond" style={{ left: "6%", top: "18%" }} aria-hidden="true" />
-        <span className="nd-cta-shape nd-cta-shape--diamond" style={{ right: "10%", bottom: "14%", width: 90, height: 90 }} aria-hidden="true" />
-        <span className="nd-cta-shape nd-cta-shape--circle" style={{ right: "-70px", top: "-70px", width: 240, height: 240 }} aria-hidden="true" />
-        <span className="nd-cta-shape nd-cta-shape--circle" style={{ left: "14%", bottom: "-110px", width: 200, height: 200 }} aria-hidden="true" /> */}
-        <span className="nd-cta-watermark" style={{ right: "4%", top: "50%", transform: "translateY(-50%)" }} aria-hidden="true">
-          <Image src="/images/Decorative Lotus watermark.svg" alt="" width={500} height={500} className="opacity-5 relative top-20 left-50" />
-        </span>
-
-        <div className="relative mx-auto max-w-[760px] px-5 py-20 text-center md:py-24">
-          <Reveal>
-            <h2 id="about-cta-title" className="font-display text-[2rem] font-bold text-cream-50 md:text-[2.6rem]">
-              Begin Your Journey Within
-            </h2>
-          </Reveal>
-          <Reveal delay={100}>
-            <p className="mx-auto mt-4 max-w-md text-sm font-light leading-relaxed text-cream-200/85">
-              Whether you are a seasoned practitioner or a curious beginner,
-              our space is designed to support your evolution.
-            </p>
-          </Reveal>
-          <Reveal delay={190}>
-            <div className="mt-9 flex flex-wrap justify-center gap-4">
-              <button type="button" className="nd-btn nd-btn--gold-solid" onClick={() => goHome("contact")}>Enroll Now</button>
-              <button type="button" className="nd-btn nd-btn--outline-cream" onClick={goGallery}>
-                <Play size={15} aria-hidden="true" /> Watch Our Gallery
-              </button>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      <CtaBand id="about-cta-title" />
     </div>
   );
 }
