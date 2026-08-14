@@ -31,7 +31,7 @@ const JOURNEY = [
   {
     icon: BadgeCheck,
     title: "Certified Curriculum",
-    text: "Graduate with a globally recognized certification from Natyaarambam Dance Academy.",
+    text: "Graduate with a recognized certification from Natyaarambam Dance Academy.",
   },
 ];
 
@@ -43,8 +43,8 @@ const HOURS = [
 
 const INFO_CARDS = [
   { icon: Mail, label: "Email", value: "natyaarambham@gmail.com", href: "mailto:natyaarambham@gmail.com" },
-  { icon: MapPin, label: "Location", value: "Collinsbrook farm Community,Frisco 14901, Thunder Rd, Frisco, 75035" },
-  { icon: Phone, label: "Contact", value: "+1 (945) 699-0311", href: "tel:+19456990311" },
+  { icon: MapPin, label: "Location", value: "Natyaarambam Dance Academy, Frisco 14901, Thunder Rd, Frisco, 75035" },
+  { icon: Phone, label: "Contact", value: "+1 (703) 334-1164", href: "tel:+1(703)334-1164" },
   { icon: Globe, label: "Website", value: "www.natyaarambam.com", href: "https://www.natyaarambam.com" },
 ];
 
@@ -97,19 +97,19 @@ export default function Contact() {
 
       {/* ====================== JOINING + ENROLL FORM ====================== */}
       <section id="enroll" className="scroll-mt-24 bg-cream-100 py-20 md:py-28" aria-labelledby="joining-title">
-        <div className="mx-auto grid max-w-[1180px] gap-12 px-5 md:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+        <div className="mx-auto grid max-w-[1180px] gap-8 px-5 md:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-10">
           {/* Left — journey + hours */}
           <div>
             <Reveal>
               <p className="nd-eyebrow">Joining Natyaarambam</p>
             </Reveal>
             <Reveal delay={80}>
-              <h2 id="joining-title" className="mt-3 font-display text-[2rem] font-bold leading-tight text-maroon-800 md:text-[2.4rem]">
+              <h2 id="joining-title" className="mt-2 font-display text-[1.25rem] font-bold leading-tight text-maroon-800 md:text-[2.4rem]">
                 Begin Your Dance Journey With Us
               </h2>
             </Reveal>
 
-            <div className="mt-9 space-y-7">
+            <div className="mt-6 space-y-7">
               {JOURNEY.map((j, i) => (
                 <Reveal key={j.title} delay={140 + i * 90}>
                   <div className="flex gap-4">
@@ -126,17 +126,20 @@ export default function Contact() {
             </div>
 
             <Reveal delay={380}>
-              <div className="nd-hours-card mt-10 max-w-md p-7">
+              <div className="nd-hours-card mt-6 max-w-md p-6">
                 <h3 className="font-display text-[1.5rem] font-bold text-ink-900">Visiting Hours</h3>
-                <dl className="mt-5">
+                {/* <dl className="mt-5">
                   {HOURS.map((h) => (
                     <div key={h.day} className="flex items-baseline justify-between gap-4 border-b border-maroon-800/10 py-3 last:border-b-0">
                       <dt className="font-display text-[0.95rem] italic text-ink-700">{h.day}</dt>
                       <dd className="text-sm font-light text-ink-700">{h.time}</dd>
                     </div>
                   ))}
-                </dl>
+                </dl> */}
                 <p className="mt-5 text-[0.68rem] font-medium uppercase tracking-[0.12em] text-ink-400">
+                  Only Weekend visits are available by appointment only.
+                </p>
+                <p className="mt-2 text-[0.68rem] font-medium uppercase tracking-[0.12em] text-ink-400">
                   Please call ahead for studio tours to ensure classes are not in session.
                 </p>
               </div>
@@ -242,11 +245,10 @@ export default function Contact() {
               <div className="nd-find-grid">
                 {/* Map */}
                 <div className="nd-map-frame">
-                  <iframe
-                    title="Natyaarambam Dance Academy"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3338.522839968172!2d-96.77220917452146!3d33.200386773489676!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864c3d003c8c6ff1%3A0x81fdb5e6c0efce1!2sCollinsbrook%20farms!5e0!3m2!1sen!2sin!4v1786451879477!5m2!1sen!2sin"
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
+                  
+                  <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3338.504754693429!2d-96.77432492452144!3d33.200861073489506!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzPCsDEyJzAzLjEiTiA5NsKwNDYnMTguMyJX!5e0!3m2!1sen!2sin!4v1786693556713!5m2!1sen!2sin"
+                  loading="lazy" 
+                  referrerPolicy="no-referrer-when-downgrade"
                   />
                 </div>
 

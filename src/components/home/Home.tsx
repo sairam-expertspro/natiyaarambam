@@ -46,7 +46,12 @@ export default function Home() {
   const pausedRef = useRef(false); // hover / focus pause
   const manualRef = useRef(false); // arrow tween in progress
   const draggingRef = useRef(false); // finger / mouse sweep in progress
+  const expandedCountRef = useRef(0); // "Read More" cards open
   const dragState = useRef({ startX: 0, startScroll: 0 });
+
+  const onTestimonialExpandChange = (isExpanded: boolean) => {
+    expandedCountRef.current = Math.max(0, expandedCountRef.current + (isExpanded ? 1 : -1));
+  };
 
   useEffect(() => {
     if (showAllFeedback) return;
@@ -55,7 +60,12 @@ export default function Home() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let raf = 0;
     const step = () => {
-      if (!pausedRef.current && !manualRef.current && !draggingRef.current) {
+      if (
+        !pausedRef.current &&
+        !manualRef.current &&
+        !draggingRef.current &&
+        expandedCountRef.current === 0
+      ) {
         el.scrollLeft += 0.7;
         const half = el.scrollWidth / 2;
         if (half > 0 && el.scrollLeft >= half) el.scrollLeft -= half;
@@ -68,6 +78,7 @@ export default function Home() {
 
   /* Finger / mouse sweep — drag the strip directly, seamlessly wrapping */
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if ((e.target as HTMLElement).closest("button")) return;
     const el = marqueeRef.current;
     if (!el) return;
     draggingRef.current = true;
@@ -214,9 +225,9 @@ export default function Home() {
           </div>
 
           <Reveal delay={140} className="relative">
-            <div className="nd-img-zoom rounded-sm">
+            <div className="nd-img-zoom rounded-[26px]">
               <img
-                src="/images/Home Page hidden.webp"
+                src="/images/Images/67.webp"
                 alt="Brass Nataraja — the cosmic dancer — glowing in warm temple light"
                 className="h-[420px] w-full object-cover md:h-[500px]"
                 loading="lazy"
@@ -289,7 +300,7 @@ export default function Home() {
             <Reveal delay={140} className="relative">
               <div className="nd-img-zoom rounded-[26px]">
                 <img
-                  src="/images/Hand.webp"
+                  src="/images/Images/65.webp"
                   alt="A dancer's hand held in gyan mudra, adorned with bangles"
                   className="h-[440px] w-full rounded-[26px] object-cover md:h-[520px]"
                   loading="lazy"
@@ -376,7 +387,7 @@ export default function Home() {
                 <div className="nd-marquee-track">
                   {TESTIMONIALS.map((t) => (
                     <div key={t.name} className="nd-marquee-item">
-                      <TestimonialCard t={t} />
+                      <TestimonialCard t={t} truncate onExpandChange={onTestimonialExpandChange} />
                     </div>
                   ))}
                   {TESTIMONIALS.map((t) => (
@@ -385,7 +396,7 @@ export default function Home() {
                       className="nd-marquee-item"
                       aria-hidden="true"
                     >
-                      <TestimonialCard t={t} />
+                      <TestimonialCard t={t} truncate onExpandChange={onTestimonialExpandChange} />
                     </div>
                   ))}
                 </div>
@@ -421,15 +432,15 @@ export default function Home() {
       {/* ====================== WHY CHOOSE ====================== */}
       <section id="why" className="scroll-mt-24 bg-cream-50 py-20 md:py-28">
         <div className="mx-auto grid max-w-[1180px] items-center gap-14 px-5 md:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
-          <Reveal delay={140} className="relative">
-            <div className="nd-img-zoom rounded-[26px]">
-              <img
-                src="/images/Images/61.webp"
-                alt="A dancer's hand held in gyan mudra, adorned with bangles"
-                className="nd-grayscale h-[440px] w-full rounded-[26px] object-cover md:h-[520px]"
-                loading="lazy"
-              />
-            </div>
+          <Reveal delay={140} className="relative w-full">
+  <div className="nd-img-zoom mx-auto w-full max-w-[650px] overflow-hidden rounded-[26px]">
+    <img
+      src="/images/Images/61.webp"
+      alt="A dancer's hand held in gyan mudra, adorned with bangles"
+      className="nd-grayscale block h-auto w-full rounded-[26px]"
+      loading="lazy"
+    />
+  </div>
             <div className="nd-badge-gold absolute -bottom-6 right-6 w-[108px] rounded-sm py-4">
               <p className="font-display text-[1.9rem] font-bold leading-none">
                 <HeritageCount />

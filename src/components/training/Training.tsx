@@ -16,21 +16,45 @@ const STATUS_LABEL: Record<Status, string> = {
 
 const LEVELS = [
   {
-    tag: "Beginner (Level 1)",
+    tag: "Beginner · Ages 4 - 9",
     name: "Prarambhika",
-    items: ["Ages 6 - 9 Years", "1 Sessions / Week", "Adavus & Rhythmic Theory"],
+    subtitle: "Foundation & Discovery",
+    items: [
+      "Basic Adavus & Hastas",
+      "Araimandi & Body Awareness",
+      "Rhythm & Tala",
+      "Introduction to Abhinaya",
+      "Alarippu",
+    ],
+    goal: "Strong fundamentals and joyful engagement with dance.",
     featured: false,
   },
   {
-    tag: "Intermediate",
+    tag: "Intermediate · Ages 10 - 15",
     name: "Madhyama",
-    items: ["Ages 10 - 15 Years", "1 Sessions / Week", "Jatiswaram & Shabdam"],
+    subtitle: "Technique & Expression",
+    items: [
+      "Advanced Adavus & Jatis",
+      "Rhythm & Musicality",
+      "Jatiswaram & Shabdam",
+      "Abhinaya & Rasa",
+      "Introduction to Varnam",
+    ],
+    goal: "Technical precision and expressive confidence.",
     featured: true,
   },
   {
-    tag: "Mastery",
+    tag: "Advanced · Ages 16+ / Adults",
     name: "Praveena",
-    items: ["Ages 16+ / Adults", "1 Sessions / Week", "Varnam & Manodharma"],
+    subtitle: "Mastery & Artistic Practice",
+    items: [
+      "Advanced Technique & Manodharma",
+      "Varnam & Advanced Repertoire",
+      "Abhinaya & Sahitya",
+      "Performance Training",
+      "Choreography & Nattuvangam",
+    ],
+    goal: "Artistic maturity, performance excellence and independent practice.",
     featured: false,
   },
 ];
@@ -43,18 +67,18 @@ const SCHEDULE: {
   guru: string;
   status: Status;
 }[] = [
-  { small: "Beginner (Level 1)", name: "Prarambhika", days: "Saturday & Sunday", slot: "–", guru: "Guru Hema", status: "offline" },
-  { small: "Intermediate", name: "Madhyama", days: "Saturday & Sunday", slot: "–", guru: "Guru Hema", status: "offline" },
-  { small: "Advanced Repertoire", name: "Praveena", days: "Saturday & Sunday", slot: "–", guru: "Guru Hema", status: "offline" },
-  { small: "Fusion & Film", name: "Semi-Classical", days: "Saturday & Sunday", slot: "–", guru: "Guru Hema", status: "inperson" },
-  { small: "Beginner (Level 1)", name: "Prarambhika — Live Stream", days: "Monday & Wednesday", slot: "–", guru: "Guru Hema", status: "online" },
-  { small: "Intermediate", name: "Madhyama — Live Stream", days: "Tuesday & Thursday", slot: "–", guru: "Guru Hema", status: "online" },
+  { small: "Beginner (Level 1)", name: "Prarambhika", days: "Saturday", slot: "11 AM – 12PM", guru: "Guru Hema", status: "inperson" },
+  { small: "Intermediate", name: "Madhyama", days: "Saturday", slot: "12 PM – 01 PM", guru: "Guru Hema", status: "inperson" },
+  { small: "Advanced Repertoire", name: "Praveena", days: "Tuesday", slot: "6.30 PM – 7.30 PM", guru: "Guru Hema", status: "inperson" },
+  { small: "Fusion & Film", name: "Semi-Classical", days: "Saturday", slot: "2 PM – 3 PM", guru: "Guru Hema", status: "inperson" },
+  { small: "Beginner (Level 1)", name: "Prarambhika", days: "Saturday", slot: "5 PM – 6 PM", guru: "Guru Hema", status: "online" },
+  { small: "Intermediate", name: "Madhyama", days: "Saturday", slot: "4 PM – 5 PM", guru: "Guru Hema", status: "online" },
+  { small: "Advanced Repertoire", name: "Praveena", days: "Monday", slot: "6.30 PM – 7.30 PM", guru: "Guru Hema", status: "online" },
 ];
 
 const FILTERS: { id: "all" | Status; label: string; dot?: string }[] = [
   { id: "all", label: "All" },
   { id: "online", label: "Online", dot: "nd-dot--online" },
-  { id: "offline", label: "Offline", dot: "nd-dot--offline" },
   { id: "inperson", label: "In Person", dot: "nd-dot--inperson" },
 ];
 
@@ -118,13 +142,16 @@ export default function Training() {
                   {lvl.featured && (
                     <Star className="nd-level-star" size={92} strokeWidth={1} aria-hidden="true" />
                   )}
-                  <p className={`text-[0.66rem] font-semibold uppercase tracking-[0.22em] ${lvl.featured ? "text-cream-200/70" : "text-ink-400"}`}>
+                  <p className={`text-[0.75rem] font-semibold uppercase tracking-[0.22em] ${lvl.featured ? "text-cream-200/70" : "text-ink-400"}`}>
                     {lvl.tag}
                   </p>
                   <h3 className={`mt-2.5 font-display text-[1.7rem] font-bold ${lvl.featured ? "text-gold-400" : "text-maroon-800"}`}>
                     {lvl.name}
                   </h3>
-                  <ul className="mt-6 space-y-3.5">
+                  <p className={`mt-2 text-lg font-medium italic ${lvl.featured ? "text-cream-200/70" : "text-ink-500"}`}>
+                    {lvl.subtitle}
+                  </p>
+                  <ul className="mt-2 space-y-3.5 pl-4">
                     {lvl.items.map((item) => (
                       <li key={item} className={`flex items-center gap-2.5 text-sm font-light ${lvl.featured ? "text-cream-200/85" : "text-ink-700"}`}>
                         <CheckCircle2 size={16} className={lvl.featured ? "flex-none text-gold-400" : "nd-check"} strokeWidth={1.7} aria-hidden="true" />
@@ -132,6 +159,12 @@ export default function Training() {
                       </li>
                     ))}
                   </ul>
+                  <p className={`mt-6 text-xs font-light leading-relaxed ${lvl.featured ? "text-cream-200/70" : "text-ink-500"}`}>
+                    <span className="font-semibold uppercase tracking-[0.08em]">Learning Goal:</span> 
+                  </p>
+                  <p className={`mt-1 text-sm font-light leading-relaxed ${lvl.featured ? "text-cream-200/70" : "text-ink-500"}`}>
+                    {lvl.goal}
+                  </p>
                   <button
                     type="button"
                     className={`nd-btn mt-8 w-full uppercase tracking-[0.14em] ${lvl.featured ? "nd-btn--gold-solid" : "nd-btn--maroon"}`}
@@ -144,6 +177,11 @@ export default function Training() {
               </Reveal>
             ))}
           </div>
+          <Reveal delay={90}>
+            <p className="mt-10 max-w-full text-[0.95rem] font-light leading-relaxed text-ink-500 border border-transparent p-2 rounded-lg bg-[#fffdf6] shadow-md">
+              New students are placed according to age, prior training and individual learning needs. Adults and students with previous Bharatanatyam experience may be placed at the appropriate level following an assessment.
+            </p>
+          </Reveal>
         </div>
       </section>
 
@@ -199,7 +237,7 @@ export default function Training() {
                 </thead>
                 <tbody key={filter}>
                   {rows.map((row, i) => (
-                    <tr key={row.name} className="nd-fb-card" style={{ animationDelay: `${i * 60}ms` }}>
+                    <tr key={`${row.name}-${row.status}-${row.days}-${row.slot}`} className="nd-fb-card" style={{ animationDelay: `${i * 60}ms` }}>
                       <td>
                         {row.small && (
                           <span className="block text-[0.66rem] font-light uppercase tracking-[0.08em] text-ink-400">

@@ -10,7 +10,11 @@ export function FilmTile({ film, onPlay }: { film: Film; onPlay: (film: Film) =>
       aria-label={`Play film: ${film.name}`}
       onClick={() => onPlay(film)}
     >
-      <GalleryImage src={film.poster} alt={film.name} />
+      {film.poster ? (
+        <GalleryImage src={film.poster} alt={film.name} />
+      ) : (
+        <video src={film.src} muted playsInline preload="metadata" aria-hidden="true" />
+      )}
       <span className="nd-play-btn" aria-hidden="true">
         <Play size={20} fill="currentColor" />
       </span>

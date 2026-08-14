@@ -22,7 +22,6 @@ import "yet-another-react-lightbox/plugins/captions.css";
 import { Reveal } from "@/components/ui/Reveal";
 import { PageHero } from "@/components/sections/PageHero";
 import { CtaBand } from "@/components/sections/CtaBand";
-import { GalleryImage } from "@/components/gallery/GalleryImage";
 import { PhotoTile } from "@/components/gallery/PhotoTile";
 import { FilmTile } from "@/components/gallery/FilmTile";
 import type { Photo, Film } from "@/components/gallery/types";
@@ -34,8 +33,7 @@ import { IMG } from "@/lib/content";
    Rehearsal — MART Production (7318657) · Guru blessing — Akshi Yogashala (31185784)
    Ghungroo — Krishna Photography (30481585) · Group — Sharath G. (28489406)
    Stage troupe — Mohd.Ashabul Haque Nannu (16039776) · Portrait — Kosygin Leishangthem (18086346)
-   Jewelry — Punam Oishy (35059564) · Parampara — Bonaventure Fernandez (14742292)
-   Videos — Anastasia Shuraeva (8751567) · Thirdman (8491501) */
+   Jewelry — Punam Oishy (35059564) · Parampara — Bonaventure Fernandez (14742292) */
 
 /* ——— Photographs only: the printed anthology ——— */
 const GALLERY_IMAGE_COUNT = 65;
@@ -57,19 +55,16 @@ const PHOTOS: Photo[] = Array.from({ length: GALLERY_IMAGE_COUNT }, (_, index) =
   };
 });
 
-/* ——— Films only: screened separately below ——— */
-const FILMS: Film[] = [
-  {
-    src: "https://videos.pexels.com/video-files/8751567/8751567-uhd_4096_2160_24fps.mp4",
-    poster: "https://images.pexels.com/videos/8751567/pexels-photo-8751567.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=630&w=1200",
-    name: "The Soul of Abhinaya",
-  },
-  {
-    src: "https://videos.pexels.com/video-files/8491501/8491501-uhd_3840_2160_25fps.mp4",
-    poster: "https://images.pexels.com/videos/8491501/pexels-photo-8491501.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=630&w=1200",
-    name: "Daily Sadhana: Training Session",
-  },
-];
+/* Films from public/images/Videos — no poster stills yet, so tiles fall
+   back to the video's own first frame (see FilmTile). */
+const VIDEO_COUNT = 4;
+const FILMS: Film[] = Array.from({ length: VIDEO_COUNT }, (_, index) => {
+  const videoNumber = index + 1;
+  return {
+    src: `/images/Videos/Video ${videoNumber}.mp4`,
+    name: `Video ${videoNumber}`,
+  };
+});
 
 const MOSAIC: { big: Photo; jewelry: Photo; guru: Photo; floor: Photo } = {
   big: PHOTOS[60],
@@ -461,19 +456,8 @@ export default function Gallery() {
 
           <div className="mt-10 grid gap-6 md:grid-cols-2">
             {FILMS.map((v, i) => (
-              <Reveal key={v.name} delay={i * 120}>
-                <button
-                  type="button"
-                  className="nd-tile aspect-video w-full"
-                  aria-label={`Play film: ${v.name}`}
-                  onClick={() => setFilm(v)}
-                >
-                  <GalleryImage src={v.poster} alt={v.name} />
-                  <span className="nd-play-btn" aria-hidden="true">
-                    <Play size={22} fill="currentColor" />
-                  </span>
-                  <span className="nd-cap-bar">{v.name}</span>
-                </button>
+              <Reveal key={v.name} delay={i * 120} className="aspect-video">
+                <FilmTile film={v} onPlay={setFilm} />
               </Reveal>
             ))}
           </div>

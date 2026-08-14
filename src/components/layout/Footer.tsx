@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Feather, Heart, Mail, MapPin, Phone, Sparkles } from "lucide-react";
 import { SOCIALS } from "@/lib/socials";
+import { useSite } from "@/lib/site-context";
 
 const EXPLORE_LINKS = [
   { href: "/", label: "Home" },
@@ -15,6 +16,8 @@ const EXPLORE_LINKS = [
 ];
 
 export function Footer() {
+  const { showToast } = useSite();
+
   return (
     <footer id="contact" className="nd-footer scroll-mt-24">
       <div className="mx-auto max-w-[1180px] px-5 pb-8 pt-16 md:px-8">
@@ -26,7 +29,7 @@ export function Footer() {
                 alt="Natyaarambam Dance Academy"
                 width={180}
                 height={40}
-                className="h-10 w-auto md:h-[52px]"
+                className="h-16 w-auto"
               />
             </Link>
 
@@ -61,9 +64,21 @@ export function Footer() {
             <ul className="mt-5 space-y-3">
               {EXPLORE_LINKS.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="nd-footer-link">
-                    {link.label}
-                  </Link>
+                  {link.href === "/blog" ? (
+                    <button
+                      type="button"
+                      className="nd-footer-link"
+                      onClick={() =>
+                        showToast("Our journal launches soon — follow us on social media")
+                      }
+                    >
+                      {link.label}
+                    </button>
+                  ) : (
+                    <Link href={link.href} className="nd-footer-link">
+                      {link.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
@@ -78,15 +93,15 @@ export function Footer() {
               <li className="flex items-start justify-start gap-3 text-left">
                 <MapPin size={17} className="mt-0.5 shrink-0 text-maroon-700" aria-hidden="true" />
                 <span>
-                  Collinsbrook Farm Community, Frisco 14901, Thunder Rd,
+                  Natyaarambam Dance Academy, Frisco 14901, Thunder Rd,
                   Frisco, 75035
                 </span>
               </li>
 
               <li className="flex items-center justify-start gap-3">
                 <Phone size={17} className="shrink-0 text-maroon-700" aria-hidden="true" />
-                <a href="tel:+19456990311" className="nd-footer-link">
-                  +1 (945) 699-0311
+                <a href="tel:+1(703)334-1164" className="nd-footer-link">
+                  +1 (703) 334-1164
                 </a>
               </li>
 

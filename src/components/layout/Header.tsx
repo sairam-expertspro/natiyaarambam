@@ -20,7 +20,7 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname() ?? "/";
-  const { goHome } = useSite();
+  const { goHome, showToast } = useSite();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 14);
@@ -45,16 +45,27 @@ export function Header() {
             alt="Natyaarambam Dance Academy"
             width={180}
             height={40}
-            className="inline-block h-10 w-auto md:h-[52px]"
+            className="inline-block w-auto h-[55px]"
           />
         </Link>
 
         <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary">
-          {NAV_LINKS.map((link) => (
-            <Link key={link.href} href={link.href} className={navLinkClass(link.href, link.exact)}>
-              {link.label}
-            </Link>
-          ))}
+          {NAV_LINKS.map((link) =>
+            link.href === "/blog" ? (
+              <button
+                key={link.href}
+                type="button"
+                className={navLinkClass(link.href, link.exact)}
+                onClick={() => showToast("Our journal launches soon — follow us on social media")}
+              >
+                {link.label}
+              </button>
+            ) : (
+              <Link key={link.href} href={link.href} className={navLinkClass(link.href, link.exact)}>
+                {link.label}
+              </Link>
+            ),
+          )}
         </nav>
 
         <div className="flex items-center gap-3">
@@ -79,15 +90,29 @@ export function Header() {
 
       <div className={`nd-mobile-menu ${menuOpen ? "is-open" : ""} lg:hidden`}>
         <nav className="mx-auto max-w-[1180px] space-y-1 px-5 pb-5" aria-label="Mobile">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="block rounded px-3 py-2.5 text-sm font-medium text-ink-700 hover:bg-cream-200 hover:text-maroon-800"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {NAV_LINKS.map((link) =>
+            link.href === "/blog" ? (
+              <button
+                key={link.href}
+                type="button"
+                className="block w-full rounded px-3 py-2.5 text-left text-sm font-medium text-ink-700 hover:bg-cream-200 hover:text-maroon-800"
+                onClick={() => {
+                  setMenuOpen(false);
+                  showToast("Our journal launches soon — follow us on social media");
+                }}
+              >
+                {link.label}
+              </button>
+            ) : (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="block rounded px-3 py-2.5 text-sm font-medium text-ink-700 hover:bg-cream-200 hover:text-maroon-800"
+              >
+                {link.label}
+              </Link>
+            ),
+          )}
           <button
             type="button"
             className="nd-btn nd-btn--maroon mt-3 w-full"
