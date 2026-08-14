@@ -35,12 +35,6 @@ const JOURNEY = [
   },
 ];
 
-const HOURS = [
-  { day: "Monday — Friday", time: "06:00 AM – 08:30 PM" },
-  { day: "Saturday", time: "08:00 AM – 04:00 PM" },
-  { day: "Sunday", time: "By Appointment Only" },
-];
-
 const INFO_CARDS = [
   { icon: Mail, label: "Email", value: "natyaarambham@gmail.com", href: "mailto:natyaarambham@gmail.com" },
   { icon: MapPin, label: "Location", value: "Natyaarambam Dance Academy, Frisco 14901, Thunder Rd, Frisco, 75035" },
