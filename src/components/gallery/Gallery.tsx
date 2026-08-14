@@ -1,15 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ChevronDown,
   Clapperboard,
   Image as ImageIcon,
   LayoutGrid,
-  Lock,
   Play,
   Shuffle,
-  Upload,
   X,
 } from "lucide-react";
 import Lightbox from "yet-another-react-lightbox";
@@ -83,10 +81,6 @@ type Filter = "all" | "image" | "video";
 const INITIAL_VISIBLE_COUNT = 12;
 const LOAD_BATCH_COUNT = 12;
 
-/* Owner-only uploads. Change this passcode as needed.
-   Owners press Ctrl/Cmd + Shift + O to unlock. */
-const OWNER_PASSCODE = "HEMA2018";
-
 const shuffleItems = <T,>(items: T[], seed: number) => {
   const shuffled = [...items];
   let value = seed || 1;
@@ -113,62 +107,12 @@ export default function Gallery() {
   const [lightbox, setLightbox] = useState<number | null>(null);
   const [film, setFilm] = useState<Film | null>(null);
   const [filter, setFilter] = useState<Filter>("all");
-  const [uploads, setUploads] = useState<Photo[]>([]);
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
   const [shuffleSeed, setShuffleSeed] = useState(0);
-  const [dragging, setDragging] = useState(false);
-  const fileRef = useRef<HTMLInputElement | null>(null);
-
-  /* Owner mode — uploads are hidden from everyone else */
-  const [isOwner, setIsOwner] = useState(false);
-  const [ownerModal, setOwnerModal] = useState(false);
-  const [passcode, setPasscode] = useState("");
-  const [passError, setPassError] = useState(false);
-
-  useEffect(() => {
-    setIsOwner(sessionStorage.getItem("nda-owner") === "1");
-  }, []);
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "o") {
-        e.preventDefault();
-        setOwnerModal(true);
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
-
-  const unlock = () => {
-    if (passcode.trim().toUpperCase() === OWNER_PASSCODE) {
-      sessionStorage.setItem("nda-owner", "1");
-      setIsOwner(true);
-      setOwnerModal(false);
-      setPasscode("");
-      setPassError(false);
-      showToast("Owner mode enabled — uploads unlocked");
-    } else {
-      setPassError(true);
-      window.setTimeout(() => setPassError(false), 700);
-    }
-  };
-
-  const lock = () => {
-    sessionStorage.removeItem("nda-owner");
-    setIsOwner(false);
-    showToast("Owner mode disabled — uploads hidden");
-  };
-
-  /* Every photograph (including visitor uploads), viewable in the lightbox */
-  const ALL_PHOTOS = useMemo(
-    () => [...PHOTOS, ...uploads],
-    [uploads]
-  );
 
   const lightboxSlides = useMemo(
-    () => ALL_PHOTOS.map((photo) => ({ src: photo.src, alt: photo.name, title: photo.name })),
-    [ALL_PHOTOS]
+    () => PHOTOS.map((photo) => ({ src: photo.src, alt: photo.name, title: photo.name })),
+    []
   );
 
   const orderedPhotos = useMemo(
@@ -177,41 +121,16 @@ export default function Gallery() {
   );
 
   const filtered = useMemo(() => {
-    const base: GridItem[] = [
-      ...buildGrid(orderedPhotos),
-      ...uploads.map((u) => ({ kind: "photo" as const, photo: u })),
-    ];
+    const base: GridItem[] = buildGrid(orderedPhotos);
     return base.filter((item) =>
       filter === "all" ? true : filter === "image" ? item.kind === "photo" : item.kind === "film"
     );
-  }, [filter, orderedPhotos, uploads]);
+  }, [filter, orderedPhotos]);
 
   const shown = filtered.slice(0, visibleCount);
   const hiddenCount = filtered.length - shown.length;
 
   useEffect(() => setVisibleCount(INITIAL_VISIBLE_COUNT), [filter, shuffleSeed]);
-
-  const handleFiles = (list: FileList | null) => {
-    if (!list) return;
-    const images = Array.from(list)
-      .filter((f) => f.type.startsWith("image/"))
-      .map<Photo>((f, i) => ({
-        src: URL.createObjectURL(f),
-        tag: "Community",
-        name:
-          f.name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ").trim() ||
-          `Shared Moment ${uploads.length + i + 1}`,
-      }));
-    if (images.length === 0) {
-      showToast("Only image files can join the anthology");
-      return;
-    }
-    setUploads((prev) => [...prev, ...images]);
-    setVisibleCount((count) => Math.max(count, INITIAL_VISIBLE_COUNT + images.length));
-    showToast(
-      `${images.length} photo${images.length > 1 ? "s" : ""} added to the anthology — thank you for sharing`
-    );
-  };
 
   /* Keyboard + scroll-lock support for the film modal (the photo lightbox handles its own) */
   useEffect(() => {
@@ -228,7 +147,7 @@ export default function Gallery() {
   }, [film]);
 
   const openPhoto = (photo: Photo) => {
-    const idx = ALL_PHOTOS.indexOf(photo);
+    const idx = PHOTOS.indexOf(photo);
     if (idx >= 0) setLightbox(idx);
   };
 
@@ -313,44 +232,12 @@ export default function Gallery() {
                   <Shuffle size={14} aria-hidden="true" />
                   Shuffle
                 </button>
-                {isOwner && (
-                  <>
-                    <span className="nd-owner-chip">
-                      <Lock size={11} aria-hidden="true" /> Owner Mode
-                      <button type="button" onClick={lock} aria-label="Exit owner mode">
-                        <X size={12} />
-                      </button>
-                    </span>
-                    <button
-                      type="button"
-                      className="nd-filter-chip nd-filter-chip--upload inline-flex items-center gap-2"
-                      onClick={() => fileRef.current?.click()}
-                    >
-                      <Upload size={14} aria-hidden="true" /> Upload
-                    </button>
-                  </>
-                )}
                 <span className="ml-1 text-xs font-light text-ink-400" aria-live="polite">
                   {filtered.length} moment{filtered.length === 1 ? "" : "s"}
                 </span>
               </div>
             </Reveal>
           </div>
-
-          {/* Hidden file input for uploads */}
-          <input
-            ref={fileRef}
-            type="file"
-            accept="image/*"
-            multiple
-            className="hidden"
-            aria-hidden="true"
-            tabIndex={-1}
-            onChange={(e) => {
-              handleFiles(e.target.files);
-              e.target.value = "";
-            }}
-          />
 
           {/* Anthology masonry — filtered by All / Images / Videos */}
           <div key={`${filter}-${shuffleSeed}`} className="nd-gallery-grid mt-12">
@@ -373,34 +260,6 @@ export default function Gallery() {
                 )}
               </Reveal>
             ))}
-
-            {/* Community upload drop-tile — owner only */}
-            {isOwner && filter !== "video" && (
-              <Reveal delay={(shown.length % 3) * 80}>
-                <button
-                  type="button"
-                  className={`nd-upload-tile ${dragging ? "nd-upload-tile--active" : ""}`}
-                  onClick={() => fileRef.current?.click()}
-                  onDragOver={(e) => {
-                    e.preventDefault();
-                    setDragging(true);
-                  }}
-                  onDragLeave={() => setDragging(false)}
-                  onDrop={(e) => {
-                    e.preventDefault();
-                    setDragging(false);
-                    handleFiles(e.dataTransfer.files);
-                  }}
-                  aria-label="Upload your own photos to the anthology"
-                >
-                  <span className="nd-upload-icon" aria-hidden="true">
-                    <Upload size={20} strokeWidth={1.6} />
-                  </span>
-                  <span className="nd-upload-title">Add Your Moment</span>
-                  <span className="nd-upload-hint">Click or drop images here</span>
-                </button>
-              </Reveal>
-            )}
 
             {filtered.length === 0 && (
               <p className="col-span-full py-12 text-center text-sm font-light italic text-ink-400">
@@ -487,59 +346,6 @@ export default function Gallery() {
         styles={{ container: { backgroundColor: "rgba(23, 5, 5, 0.94)" } }}
       />
 
-      {/* ====================== OWNER ACCESS MODAL ====================== */}
-      {ownerModal && (
-        <div
-          className="nd-owner-modal"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Owner access"
-          onClick={() => setOwnerModal(false)}
-        >
-          <form
-            className={`nd-owner-card ${passError ? "nd-shake" : ""}`}
-            onClick={(e) => e.stopPropagation()}
-            onSubmit={(e) => {
-              e.preventDefault();
-              unlock();
-            }}
-          >
-            <span className="nd-icon-square" aria-hidden="true">
-              <Lock size={16} strokeWidth={1.7} />
-            </span>
-            <h3 className="mt-5 font-display text-[1.6rem] font-bold text-maroon-800">Owner Access</h3>
-            <p className="mt-2 text-sm font-light leading-relaxed text-ink-500">
-              Uploading to the anthology is reserved for the academy owner.
-              Enter your passcode to manage the gallery.
-            </p>
-            <label htmlFor="owner-pass" className="nd-field mt-6">
-              <span className="sr-only">Owner passcode</span>
-            </label>
-            <input
-              id="owner-pass"
-              type="password"
-              autoFocus
-              autoComplete="off"
-              placeholder="Passcode"
-              className="nd-owner-input"
-              value={passcode}
-              onChange={(e) => setPasscode(e.target.value)}
-            />
-            <p className="nd-owner-error" role="alert" aria-live="assertive">
-              {passError ? "Incorrect passcode — the tradition stays protected." : ""}
-            </p>
-            <div className="mt-5 flex gap-3">
-              <button type="button" className="nd-btn nd-btn--ghost-maroon flex-1" onClick={() => setOwnerModal(false)}>
-                Cancel
-              </button>
-              <button type="submit" className="nd-btn nd-btn--maroon flex-1">
-                <Lock size={14} aria-hidden="true" /> Unlock
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-
       {/* ====================== FILM MODAL ====================== */}
       {film && (
         <div className="nd-video-modal" role="dialog" aria-modal="true" aria-label={`Playing film: ${film.name}`} onClick={() => setFilm(null)}>
@@ -547,7 +353,7 @@ export default function Gallery() {
             <X size={20} />
           </button>
           <div onClick={(e) => e.stopPropagation()} className="text-center">
-            <video src={film.src} poster={film.poster} controls autoPlay playsInline />
+            <video src={film.src} poster={film.poster} controls autoPlay playsInline preload="none" />
             <p className="mt-4 font-display text-sm italic text-gold-300">{film.name}</p>
           </div>
         </div>

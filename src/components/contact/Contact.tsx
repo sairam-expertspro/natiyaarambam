@@ -55,15 +55,31 @@ export default function Contact() {
     aspirations: "",
   });
 
-  const set = (key: keyof typeof form) => (e: { target: { value: string } }) =>
+  const [errors, setErrors] = useState<{ name?: string; contact?: string }>({});
+
+  const set = (key: keyof typeof form) => (e: { target: { value: string } }) => {
     setForm((f) => ({ ...f, [key]: e.target.value }));
+    if (key === "name" || key === "phone" || key === "email") {
+      setErrors((err) => ({
+        ...err,
+        name: key === "name" ? undefined : err.name,
+        contact: key === "phone" || key === "email" ? undefined : err.contact,
+      }));
+    }
+  };
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (!form.name.trim() || (!form.phone.trim() && !form.email.trim())) {
+    const nextErrors: { name?: string; contact?: string } = {};
+    if (!form.name.trim()) nextErrors.name = "Please enter the student's name";
+    if (!form.phone.trim() && !form.email.trim()) nextErrors.contact = "Add a phone number or email so we can reply";
+
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors);
       showToast("Please add the student's name and a phone or email so we can reply");
       return;
     }
+    setErrors({});
     setSubmitted(true);
   };
 
@@ -154,7 +170,7 @@ export default function Contact() {
                   <p className="mt-3 max-w-sm text-sm font-light leading-relaxed text-ink-500">
                     Your enrollment request for the{" "}
                     <strong className="font-medium text-ink-700">{form.level}</strong> track has
-                    been received. Guru Hema's office will reach out within one
+                    been received. Guru Hema&apos;s office will reach out within one
                     business day to schedule your trial class.
                   </p>
                   <button
@@ -162,6 +178,7 @@ export default function Contact() {
                     className="nd-btn nd-btn--ghost-maroon mt-8"
                     onClick={() => {
                       setSubmitted(false);
+                      setErrors({});
                       setForm({ name: "", age: "", phone: "", email: "", level: "Beginner (Prarambhika)", guardian: "", aspirations: "" });
                     }}
                   >
@@ -179,7 +196,21 @@ export default function Contact() {
                   <div className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2">
                     <div className="nd-field">
                       <label htmlFor="f-name">Student Name</label>
-                      <input id="f-name" type="text" placeholder="e.g. Anjali Rao" value={form.name} onChange={set("name")} required />
+                      <input
+                        id="f-name"
+                        type="text"
+                        placeholder="e.g. Anjali Rao"
+                        value={form.name}
+                        onChange={set("name")}
+                        required
+                        aria-invalid={errors.name ? "true" : undefined}
+                        aria-describedby={errors.name ? "f-name-error" : undefined}
+                      />
+                      {errors.name && (
+                        <p id="f-name-error" role="alert" className="mt-1 text-xs text-maroon-700">
+                          {errors.name}
+                        </p>
+                      )}
                     </div>
                     <div className="nd-field">
                       <label htmlFor="f-age">Student Age</label>
@@ -187,11 +218,32 @@ export default function Contact() {
                     </div>
                     <div className="nd-field">
                       <label htmlFor="f-phone">Mobile Number</label>
-                      <input id="f-phone" type="tel" placeholder="1234567890" value={form.phone} onChange={set("phone")} />
+                      <input
+                        id="f-phone"
+                        type="tel"
+                        placeholder="1234567890"
+                        value={form.phone}
+                        onChange={set("phone")}
+                        aria-invalid={errors.contact ? "true" : undefined}
+                        aria-describedby={errors.contact ? "f-contact-error" : undefined}
+                      />
                     </div>
                     <div className="nd-field">
                       <label htmlFor="f-email">Email</label>
-                      <input id="f-email" type="email" placeholder="Dance@gmail.com" value={form.email} onChange={set("email")} />
+                      <input
+                        id="f-email"
+                        type="email"
+                        placeholder="Dance@gmail.com"
+                        value={form.email}
+                        onChange={set("email")}
+                        aria-invalid={errors.contact ? "true" : undefined}
+                        aria-describedby={errors.contact ? "f-contact-error" : undefined}
+                      />
+                      {errors.contact && (
+                        <p id="f-contact-error" role="alert" className="mt-1 text-xs text-maroon-700">
+                          {errors.contact}
+                        </p>
+                      )}
                     </div>
                     <div className="nd-field">
                       <label htmlFor="f-level">Experience Level</label>

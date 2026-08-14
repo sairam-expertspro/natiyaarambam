@@ -67,13 +67,13 @@ const SCHEDULE: {
   guru: string;
   status: Status;
 }[] = [
-  { small: "Beginner (Level 1)", name: "Prarambhika", days: "Saturday", slot: "11 AM – 12PM", guru: "Guru Hema", status: "inperson" },
-  { small: "Intermediate", name: "Madhyama", days: "Saturday", slot: "12 PM – 01 PM", guru: "Guru Hema", status: "inperson" },
-  { small: "Advanced Repertoire", name: "Praveena", days: "Tuesday", slot: "6.30 PM – 7.30 PM", guru: "Guru Hema", status: "inperson" },
-  { small: "Fusion & Film", name: "Semi-Classical", days: "Saturday", slot: "2 PM – 3 PM", guru: "Guru Hema", status: "inperson" },
-  { small: "Beginner (Level 1)", name: "Prarambhika", days: "Saturday", slot: "5 PM – 6 PM", guru: "Guru Hema", status: "online" },
-  { small: "Intermediate", name: "Madhyama", days: "Saturday", slot: "4 PM – 5 PM", guru: "Guru Hema", status: "online" },
-  { small: "Advanced Repertoire", name: "Praveena", days: "Monday", slot: "6.30 PM – 7.30 PM", guru: "Guru Hema", status: "online" },
+  { small: "Beginner (Level 1)", name: "Prarambhika", days: "Saturday", slot: "11:00 AM – 12:00 PM", guru: "Guru Hema", status: "inperson" },
+  { small: "Intermediate", name: "Madhyama", days: "Saturday", slot: "12:00 PM – 01:00 PM", guru: "Guru Hema", status: "inperson" },
+  { small: "Advanced Repertoire", name: "Praveena", days: "Tuesday", slot: "06:30 PM – 07:30 PM", guru: "Guru Hema", status: "inperson" },
+  { small: "Fusion & Film", name: "Semi-Classical", days: "Saturday", slot: "02:00 PM – 03:00 PM", guru: "Guru Hema", status: "inperson" },
+  { small: "Beginner (Level 1)", name: "Prarambhika", days: "Saturday", slot: "05:00 PM – 06:00 PM", guru: "Guru Hema", status: "online" },
+  { small: "Intermediate", name: "Madhyama", days: "Saturday", slot: "04:00 PM – 05:00 PM", guru: "Guru Hema", status: "online" },
+  { small: "Advanced Repertoire", name: "Praveena", days: "Monday", slot: "06:30 PM – 07:30 PM", guru: "Guru Hema", status: "online" },
 ];
 
 const FILTERS: { id: "all" | Status; label: string; dot?: string }[] = [

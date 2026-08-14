@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { ArrowRight, X } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 import { PageHero } from "@/components/sections/PageHero";
@@ -226,8 +227,14 @@ export default function Blog() {
           {visible.map((a, i) => (
             <Reveal key={a.id} delay={(i % 3) * 100}>
               <article className="group flex h-full cursor-pointer flex-col" onClick={() => setReading(a)}>
-                <div className="nd-img-zoom overflow-hidden rounded-sm">
-                  <img src={a.img} alt={a.alt} loading="lazy" className="h-60 w-full object-cover" />
+                <div className="nd-img-zoom relative h-60 w-full overflow-hidden rounded-sm">
+                  <Image
+                    src={a.img}
+                    alt={a.alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover"
+                  />
                 </div>
                 <div className="mt-5 flex items-center gap-3 text-[0.72rem]">
                   <span className="font-semibold uppercase tracking-[0.18em] text-maroon-700">{a.cat}</span>
@@ -263,7 +270,15 @@ export default function Blog() {
             <button type="button" className="nd-article-close" aria-label="Close article" onClick={() => setReading(null)}>
               <X size={20} />
             </button>
-            <img src={reading.img} alt={reading.alt} className="h-64 w-full object-cover md:h-80" />
+            <div className="relative h-64 w-full md:h-80">
+              <Image
+                src={reading.img}
+                alt={reading.alt}
+                fill
+                sizes="(max-width: 768px) 100vw, 720px"
+                className="object-cover"
+              />
+            </div>
             <div className="px-7 py-8 md:px-12 md:py-10">
               <div className="flex flex-wrap items-center gap-3 text-[0.72rem]">
                 <span className="rounded-full bg-maroon-800 px-3.5 py-1 font-bold uppercase tracking-[0.18em] text-cream-50">{reading.cat}</span>
@@ -280,7 +295,7 @@ export default function Blog() {
                 ))}
               </div>
               <p className="mt-8 border-t border-maroon-800/10 pt-5 font-display text-sm italic text-ink-500">
-                — From the Natyaarambam journal, written by the academy's senior faculty.
+                — From the Natyaarambam journal, written by the academy&apos;s senior faculty.
               </p>
             </div>
           </article>

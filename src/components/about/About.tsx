@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Play } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 import { PageHero } from "@/components/sections/PageHero";
@@ -45,20 +46,22 @@ export default function About() {
             <div className="relative mx-auto h-[480px] max-w-[460px] sm:h-[560px]">
               <span className="nd-petal" style={{ left: "-40px", top: "30px", width: 190, height: 190 }} aria-hidden="true" />
               <span className="nd-petal nd-petal--flip" style={{ left: "-70px", top: "170px", width: 150, height: 150 }} aria-hidden="true" />
-              <div className="nd-img-zoom absolute right-0 top-0 w-[64%] shadow-xl">
-                <img
+              <div className="nd-img-zoom absolute right-0 top-0 h-[300px] w-[64%] shadow-xl sm:h-[360px]">
+                <Image
                   src="/images/Images/57.webp"
                   alt="Dancer in a red costume performing under warm stage light"
-                  className="h-[300px] w-full object-cover sm:h-[360px]"
-                  loading="lazy"
+                  fill
+                  sizes="(max-width: 640px) 64vw, 300px"
+                  className="object-cover"
                 />
               </div>
-              <div className="nd-img-zoom absolute bottom-0 left-0 w-[58%] border-[6px] border-cream-50 shadow-xl">
-                <img
+              <div className="nd-img-zoom absolute bottom-0 left-0 h-60 w-[58%] border-[6px] border-cream-50 shadow-xl sm:h-[280px]">
+                <Image
                   src="/images/salangai.webp"
                   alt="A guru seated outdoors teaching a circle of young students"
-                  className="nd-grayscale h-60 w-full object-cover sm:h-[280px]"
-                  loading="lazy"
+                  fill
+                  sizes="(max-width: 640px) 58vw, 280px"
+                  className="nd-grayscale object-cover"
                 />
               </div>
             </div>
@@ -137,12 +140,13 @@ export default function About() {
           <div className="mt-14 grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-10">
             {/* Founder portrait */}
             <Reveal>
-              <figure className="nd-founder-card relative overflow-hidden rounded-md">
-                <img
+              <figure className="nd-founder-card relative h-[520px] overflow-hidden rounded-md md:h-[600px]">
+                <Image
                   src="/images/2.webp"
                   alt="Guru Hema Chandrasekaran in a yellow sari with temple jewelry"
-                  className="h-[520px] w-full object-cover object-top md:h-[600px]"
-                  loading="lazy"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 480px"
+                  className="object-cover object-top"
                 />
                 <figcaption className="nd-founder-overlay absolute inset-x-0 bottom-0 p-7">
                   <p className="nd-eyebrow nd-eyebrow--light">Founder & Artistic Director</p>
@@ -160,11 +164,12 @@ export default function About() {
                   <h3 className="font-display text-[1.6rem] font-semibold text-cream-50 md:text-[1.9rem]">
                     The Journey of Natyaarambam
                   </h3>
-                  <img
+                  <Image
                     src="/images/Portfolio.webp"
                     alt="Hands held in a dance mudra"
+                    width={88}
+                    height={88}
                     className="h-18 w-18 fixed flex-none rounded-full z-20 border-2 border-gold-500/70 object-cover left-10% right-10 top-[2%] md:h-22 md:w-22"
-                    loading="lazy"
                   />
                 </div>
                 <div className="mt-6 space-y-5 text-[0.9rem] font-light leading-relaxed text-cream-200/85">
@@ -199,7 +204,7 @@ export default function About() {
                     disciplined training, artistic excellence, and cultural
                     values. Today, she continues to mentor aspiring dancers,
                     nurturing confidence, creativity, and a deep respect for
-                    India's classical heritage, ensuring that the timeless
+                    India&apos;s classical heritage, ensuring that the timeless
                     legacy of Bharatanatyam flourishes for generations to come.
                   </p>
                 </div>

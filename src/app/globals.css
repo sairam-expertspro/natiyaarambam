@@ -3,8 +3,8 @@
 
 /* ——— Design tokens extracted from the Natyaarambam mockup ——— */
 @theme {
-  --font-display: "Playfair Display", Georgia, serif;
-  --font-body: "Jost", ui-sans-serif, sans-serif;
+  --font-display: var(--font-playfair), Georgia, serif;
+  --font-body: var(--font-jost), ui-sans-serif, sans-serif;
 
   /* Warm ivory — page background */
   --color-cream-50: #fcfaf0;

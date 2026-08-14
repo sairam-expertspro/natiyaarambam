@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import {
   BookOpen,
   CheckCircle2,
@@ -225,12 +226,13 @@ export default function Home() {
           </div>
 
           <Reveal delay={140} className="relative">
-            <div className="nd-img-zoom rounded-[26px]">
-              <img
-                src="/images/Images/67.webp"
+            <div className="nd-img-zoom relative h-[420px] w-full rounded-[26px] md:h-[500px]">
+              <Image
+                src="/images/Images/2.webp"
                 alt="Brass Nataraja — the cosmic dancer — glowing in warm temple light"
-                className="h-[420px] w-full object-cover md:h-[500px]"
-                loading="lazy"
+                fill
+                sizes="(max-width: 1024px) 100vw, 560px"
+                className="object-cover"
               />
             </div>
             <blockquote className="nd-quote-card absolute -bottom-8 -left-2 max-w-[230px] p-6 text-[1.05rem] leading-snug md:-left-10">
@@ -298,12 +300,13 @@ export default function Home() {
             </Reveal>
 
             <Reveal delay={140} className="relative">
-              <div className="nd-img-zoom rounded-[26px]">
-                <img
+              <div className="nd-img-zoom relative h-[440px] w-full rounded-[26px] md:h-[520px]">
+                <Image
                   src="/images/Images/65.webp"
                   alt="A dancer's hand held in gyan mudra, adorned with bangles"
-                  className="h-[440px] w-full rounded-[26px] object-cover md:h-[520px]"
-                  loading="lazy"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 560px"
+                  className="rounded-[26px] object-cover"
                 />
               </div>
               <p className="nd-dark-chip absolute -bottom-6 left-6 max-w-[250px] rounded-md px-6 py-5 text-[0.92rem] leading-snug">
@@ -434,11 +437,13 @@ export default function Home() {
         <div className="mx-auto grid max-w-[1180px] items-center gap-14 px-5 md:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
           <Reveal delay={140} className="relative w-full">
   <div className="nd-img-zoom mx-auto w-full max-w-[650px] overflow-hidden rounded-[26px]">
-    <img
+    <Image
       src="/images/Images/61.webp"
       alt="A dancer's hand held in gyan mudra, adorned with bangles"
+      width={1366}
+      height={2048}
+      sizes="(max-width: 1024px) 100vw, 650px"
       className="nd-grayscale block h-auto w-full rounded-[26px]"
-      loading="lazy"
     />
   </div>
             <div className="nd-badge-gold absolute -bottom-6 right-6 w-[108px] rounded-sm py-4">

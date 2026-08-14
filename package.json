@@ -20,11 +20,20 @@
     "yet-another-react-lightbox": "^3.32.2"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
     "@tailwindcss/postcss": "4.1.17",
     "@types/node": "22.19.17",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
+    "eslint": "^9.19.0",
+    "eslint-config-next": "^15.1.6",
     "tailwindcss": "4.1.17",
     "typescript": "5.9.3"
+  },
+  "overrides": {
+    "next": {
+      "postcss": "^8.5.23",
+      "sharp": "^0.35.3"
+    }
   }
 }
