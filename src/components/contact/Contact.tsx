@@ -37,7 +37,7 @@ const JOURNEY = [
 
 const INFO_CARDS = [
   { icon: Mail, label: "Email", value: "natyaarambham@gmail.com", href: "mailto:natyaarambham@gmail.com" },
-  { icon: MapPin, label: "Location", value: "Natyaarambam Dance Academy, Frisco 14901, Thunder Rd, Frisco, 75035" },
+  { icon: MapPin, label: "Location", value: "Natyaarambam Dance Academy, 14901, Thunder Rd, Frisco, 75035" },
   { icon: Phone, label: "Contact", value: "+1 (703) 334-1164", href: "tel:+1(703)334-1164" },
   { icon: Globe, label: "Website", value: "www.natyaarambam.com", href: "https://www.natyaarambam.com" },
 ];
@@ -147,7 +147,7 @@ export default function Contact() {
                   ))}
                 </dl> */}
                 <p className="mt-5 text-[0.68rem] font-medium uppercase tracking-[0.12em] text-ink-400">
-                  Only Weekend visits are available by appointment only.
+                  Only Weekend appoinments are available at this moment.
                 </p>
                 <p className="mt-2 text-[0.68rem] font-medium uppercase tracking-[0.12em] text-ink-400">
                   Please call ahead for studio tours to ensure classes are not in session.

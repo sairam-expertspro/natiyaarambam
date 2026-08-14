@@ -35,8 +35,7 @@ export function Footer() {
 
             <p className="mt-5 max-w-sm text-sm font-light leading-relaxed text-ink-500">
               Preserving and promoting the richness of Indian classical dance
-              in its purest form. A premier institution for Kalakshetra-style
-              Bharatanatyam.
+              in its purest form. A premier institution for Bharatanatyam.
             </p>
             <div className="block lg:hidden">
             <div className="mt-5 flex flex-wrap justify-start gap-3">
@@ -93,7 +92,7 @@ export function Footer() {
               <li className="flex items-start justify-start gap-3 text-left">
                 <MapPin size={17} className="mt-0.5 shrink-0 text-maroon-700" aria-hidden="true" />
                 <span>
-                  Natyaarambam Dance Academy, Frisco 14901, Thunder Rd,
+                  Natyaarambam Dance Academy, 14901, Thunder Rd,
                   Frisco, 75035
                 </span>
               </li>
