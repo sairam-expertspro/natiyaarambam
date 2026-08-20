@@ -49,6 +49,7 @@ export default function Home() {
   const draggingRef = useRef(false); // finger / mouse sweep in progress
   const expandedCountRef = useRef(0); // "Read More" cards open
   const dragState = useRef({ startX: 0, startScroll: 0 });
+  const touchRestUntilRef = useRef(0); // keeps drift paused briefly after a touch swipe ends
 
   const onTestimonialExpandChange = (isExpanded: boolean) => {
     expandedCountRef.current = Math.max(0, expandedCountRef.current + (isExpanded ? 1 : -1));
@@ -65,7 +66,8 @@ export default function Home() {
         !pausedRef.current &&
         !manualRef.current &&
         !draggingRef.current &&
-        expandedCountRef.current === 0
+        expandedCountRef.current === 0 &&
+        Date.now() >= touchRestUntilRef.current
       ) {
         el.scrollLeft += 0.7;
         const half = el.scrollWidth / 2;
@@ -103,6 +105,9 @@ export default function Home() {
     const half = el.scrollWidth / 2;
     if (el.scrollLeft >= half) el.scrollLeft -= half;
     if (el.scrollLeft < 0) el.scrollLeft += half;
+    /* On touch devices there's no hover to keep pausedRef true, so the
+       auto-drift would otherwise resume mid-frame and fight the swipe. */
+    touchRestUntilRef.current = Date.now() + 2500;
   };
 
   const nudge = (dir: 1 | -1) => {
