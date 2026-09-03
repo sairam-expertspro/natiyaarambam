@@ -15,7 +15,7 @@ export function getMailTransporter() {
     transporter = nodemailer.createTransport({
       host: ZEPTOMAIL_HOST,
       port: Number(ZEPTOMAIL_PORT),
-      secure: false,
+      secure: Number(ZEPTOMAIL_PORT) === 465,
       auth: {
         user: ZEPTOMAIL_API_USER,
         pass: ZEPTOMAIL_API_KEY,

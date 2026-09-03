@@ -76,14 +76,16 @@ export async function POST(request: Request) {
   }
 
   try {
-    const notifyTo = process.env.ENROLL_NOTIFY_EMAIL;
-    const fromAddress = process.env.ZEPTOMAIL_FROM_EMAIL;
+    const notifyTo = process.env.ENROLL_NOTIFY_EMAIL || process.env.LEAD_EMAIL_TO;
+    const fromAddress = process.env.ZEPTOMAIL_FROM_EMAIL || process.env.ZEPTOMAIL_FROM;
+
     if (notifyTo && fromAddress) {
       const transporter = getMailTransporter();
       await transporter.sendMail({
         from: fromAddress,
         to: notifyTo,
-        subject: `New Enrollment Request — ${payload.name}`,
+        replyTo: payload.email || undefined,
+        subject: `New Enrollment Request - ${payload.name}`,
         text: [
           `Name: ${payload.name}`,
           `Age: ${payload.age ?? "-"}`,
