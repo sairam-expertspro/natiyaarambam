@@ -2,3 +2,9 @@
 .next/
 node_modules
 *.log
+
+# Environment variables
+.env
+.env.example
+.env.local
+.env*.local

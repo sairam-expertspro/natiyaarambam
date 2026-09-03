@@ -528,7 +528,11 @@ button:focus-visible {
    TESTIMONIAL MARQUEE — smooth left-to-right drift
    ========================================================================== */
 .nd-marquee {
-  overflow: hidden;
+  /* Safari/WebKit ignores scrollLeft assignments on overflow:hidden elements —
+     overflow-x must be auto/scroll for the JS-driven drift, drag, and arrow
+     nudges to work there. The scrollbar itself stays hidden below. */
+  overflow-x: auto;
+  overflow-y: hidden;
   padding: 10px 0 18px;
   mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);

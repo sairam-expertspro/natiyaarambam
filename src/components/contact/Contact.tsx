@@ -35,6 +35,22 @@ const JOURNEY = [
   },
 ];
 
+const US_PHONE_DIAL = "+1";
+
+function formatPhoneDisplay(digits: string) {
+  const area = digits.slice(0, 3);
+  const mid = digits.slice(3, 6);
+  const last = digits.slice(6, 10);
+  if (digits.length > 6) return `(${area}) ${mid}-${last}`;
+  if (digits.length > 3) return `(${area}) ${mid}`;
+  if (digits.length > 0) return `(${area}`;
+  return "";
+}
+
+function isValidPhone(digits: string) {
+  return /^\d{10}$/.test(digits);
+}
+
 const INFO_CARDS = [
   { icon: Mail, label: "Email", value: "natyaarambham@gmail.com", href: "mailto:natyaarambham@gmail.com" },
   { icon: MapPin, label: "Location", value: "Natyaarambam Dance Academy, 14901, Thunder Rd, Frisco, 75035" },
@@ -56,6 +72,7 @@ export default function Contact() {
   });
 
   const [errors, setErrors] = useState<{ name?: string; contact?: string }>({});
+  const [submitting, setSubmitting] = useState(false);
 
   const set = (key: keyof typeof form) => (e: { target: { value: string } }) => {
     setForm((f) => ({ ...f, [key]: e.target.value }));
@@ -68,19 +85,51 @@ export default function Contact() {
     }
   };
 
-  const onSubmit = (e: FormEvent) => {
+  const onPhoneChange = (e: { target: { value: string } }) => {
+    const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
+    setForm((f) => ({ ...f, phone: digits }));
+    setErrors((err) => ({ ...err, contact: undefined }));
+  };
+
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const nextErrors: { name?: string; contact?: string } = {};
     if (!form.name.trim()) nextErrors.name = "Please enter the student's name";
-    if (!form.phone.trim() && !form.email.trim()) nextErrors.contact = "Add a phone number or email so we can reply";
+    if (!form.phone.trim() && !form.email.trim()) {
+      nextErrors.contact = "Add a phone number or email so we can reply";
+    } else if (form.phone.trim() && !isValidPhone(form.phone)) {
+      nextErrors.contact = "Enter a valid 10-digit US mobile number";
+    }
 
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors);
-      showToast("Please add the student's name and a phone or email so we can reply");
+      showToast(nextErrors.contact ?? "Please add the student's name and a phone or email so we can reply");
       return;
     }
     setErrors({});
-    setSubmitted(true);
+    setSubmitting(true);
+
+    try {
+      const res = await fetch("/api/enroll", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          phone: form.phone ? `${US_PHONE_DIAL} ${formatPhoneDisplay(form.phone)}` : "",
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error || "Something went wrong. Please try again.");
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -109,7 +158,7 @@ export default function Contact() {
       <section id="enroll" className="scroll-mt-24 bg-cream-100 py-20 md:py-28" aria-labelledby="joining-title">
         <div className="mx-auto grid max-w-[1180px] gap-8 px-5 md:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-10">
           {/* Left — journey + hours */}
-          <div>
+          <div className="flex h-full flex-col">
             <Reveal>
               <p className="nd-eyebrow">Joining Natyaarambam</p>
             </Reveal>
@@ -135,8 +184,8 @@ export default function Contact() {
               ))}
             </div>
 
-            <Reveal delay={380}>
-              <div className="nd-hours-card mt-6 max-w-md p-6">
+            <Reveal delay={380} className="mt-6 flex flex-1">
+              <div className="nd-hours-card h-full max-w-md p-6">
                 <h3 className="font-display text-[1.5rem] font-bold text-ink-900">Visiting Hours</h3>
                 {/* <dl className="mt-5">
                   {HOURS.map((h) => (
@@ -158,7 +207,7 @@ export default function Contact() {
 
           {/* Right — Enroll form */}
           <Reveal delay={160}>
-            <div className="nd-enroll-card p-8 md:p-10" id="enroll-form">
+            <div className="nd-enroll-card h-full p-8 md:p-10" id="enroll-form">
               {submitted ? (
                 <div className="flex min-h-[480px] flex-col items-center justify-center text-center">
                   <span className="nd-success-mark" aria-hidden="true">
@@ -199,7 +248,7 @@ export default function Contact() {
                       <input
                         id="f-name"
                         type="text"
-                        placeholder="e.g. Anjali Rao"
+                        placeholder="Adhana Rajkumar"
                         value={form.name}
                         onChange={set("name")}
                         required
@@ -217,16 +266,21 @@ export default function Contact() {
                       <input id="f-age" type="number" min="3" max="99" placeholder="Years" value={form.age} onChange={set("age")} />
                     </div>
                     <div className="nd-field">
-                      <label htmlFor="f-phone">Mobile Number</label>
-                      <input
-                        id="f-phone"
-                        type="tel"
-                        placeholder="1234567890"
-                        value={form.phone}
-                        onChange={set("phone")}
-                        aria-invalid={errors.contact ? "true" : undefined}
-                        aria-describedby={errors.contact ? "f-contact-error" : undefined}
-                      />
+                      <label htmlFor="f-phone">Mobile Number (US)</label>
+                      <div className="flex items-end gap-2">
+                        <span className="pb-2 text-sm font-light text-ink-500">+1</span>
+                        <input
+                          id="f-phone"
+                          type="tel"
+                          inputMode="numeric"
+                          autoComplete="tel-national"
+                          placeholder="(214) 555-0136"
+                          value={formatPhoneDisplay(form.phone)}
+                          onChange={onPhoneChange}
+                          aria-invalid={errors.contact ? "true" : undefined}
+                          aria-describedby={errors.contact ? "f-contact-error" : undefined}
+                        />
+                      </div>
                     </div>
                     <div className="nd-field">
                       <label htmlFor="f-email">Email</label>
@@ -272,8 +326,14 @@ export default function Contact() {
                     />
                   </div>
 
-                  <button type="submit" className="nd-btn nd-btn--maroon mt-9 uppercase tracking-[0.18em]" style={{ fontSize: "0.78rem" }}>
-                    Submit <Send size={14} aria-hidden="true" />
+                  <button
+                    type="submit"
+                    className="nd-btn nd-btn--maroon mt-9 uppercase tracking-[0.18em]"
+                    style={{ fontSize: "0.78rem" }}
+                    disabled={submitting}
+                    aria-busy={submitting}
+                  >
+                    {submitting ? "Submitting…" : "Submit"} <Send size={14} aria-hidden="true" />
                   </button>
                 </form>
               )}

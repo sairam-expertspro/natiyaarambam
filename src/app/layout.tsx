@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Jost } from "next/font/google";
 import { SiteLayout } from "@/components/layout/SiteLayout";
+import { organizationJsonLd } from "@/lib/structured-data";
 import "./globals.css";
 
 const playfairDisplay = Playfair_Display({
@@ -28,12 +29,34 @@ export const metadata: Metadata = {
     "Structured Bharatanatyam training that nurtures technique, confidence, spirituality, and artistic expression.",
   applicationName: "Natyaarambam Dance Academy",
   metadataBase: new URL("https://natyaarambam.com"),
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     title: "Natyaarambam Dance Academy",
     description:
       "Grace, discipline, and heritage through structured Bharatanatyam training.",
     siteName: "Natyaarambam Dance Academy",
     type: "website",
+    images: [
+      {
+        url: "/images/Home Banner.webp",
+        width: 3168,
+        height: 1344,
+        alt: "Natyaarambam Dance Academy — Bharatanatyam training",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Natyaarambam Dance Academy",
+    description:
+      "Grace, discipline, and heritage through structured Bharatanatyam training.",
+    images: ["/images/Home Banner.webp"],
   },
 };
 
@@ -51,6 +74,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfairDisplay.variable} ${jost.variable}`}>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }}
+        />
         <SiteLayout>{children}</SiteLayout>
       </body>
     </html>

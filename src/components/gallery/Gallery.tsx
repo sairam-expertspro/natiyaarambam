@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Clapperboard,
   Image as ImageIcon,
   LayoutGrid,
@@ -94,18 +96,36 @@ const shuffleItems = <T,>(items: T[], seed: number) => {
   return shuffled;
 };
 
-const buildGrid = (photos: Photo[]): GridItem[] => [
-  ...photos.slice(0, 3).map((photo) => ({ kind: "photo" as const, photo, span: photo.span })),
-  { kind: "film", film: FILMS[0] },
-  ...photos.slice(3, 6).map((photo) => ({ kind: "photo" as const, photo, span: photo.span })),
-  { kind: "film", film: FILMS[1] },
-  ...photos.slice(6).map((photo) => ({ kind: "photo" as const, photo, span: photo.span })),
-];
+/* Every film gets woven into the anthology (not just the first two) so
+   "Moments of Mastery" and "Featured Videos" both show the full set. */
+const PHOTOS_PER_FILM = 3;
+
+const buildGrid = (photos: Photo[]): GridItem[] => {
+  const grid: GridItem[] = [];
+  let filmCursor = 0;
+
+  for (let i = 0; i < photos.length; i += PHOTOS_PER_FILM) {
+    for (const photo of photos.slice(i, i + PHOTOS_PER_FILM)) {
+      grid.push({ kind: "photo", photo, span: photo.span });
+    }
+    if (filmCursor < FILMS.length) {
+      grid.push({ kind: "film", film: FILMS[filmCursor] });
+      filmCursor += 1;
+    }
+  }
+
+  while (filmCursor < FILMS.length) {
+    grid.push({ kind: "film", film: FILMS[filmCursor] });
+    filmCursor += 1;
+  }
+
+  return grid;
+};
 
 export default function Gallery() {
   const { goHome, showToast } = useSite();
   const [lightbox, setLightbox] = useState<number | null>(null);
-  const [film, setFilm] = useState<Film | null>(null);
+  const [filmIndex, setFilmIndex] = useState<number | null>(null);
   const [filter, setFilter] = useState<Filter>("all");
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
   const [shuffleSeed, setShuffleSeed] = useState(0);
@@ -132,11 +152,18 @@ export default function Gallery() {
 
   useEffect(() => setVisibleCount(INITIAL_VISIBLE_COUNT), [filter, shuffleSeed]);
 
+  const film = filmIndex !== null ? FILMS[filmIndex] : null;
+
+  const showNextFilm = () => setFilmIndex((i) => (i === null ? i : (i + 1) % FILMS.length));
+  const showPrevFilm = () => setFilmIndex((i) => (i === null ? i : (i - 1 + FILMS.length) % FILMS.length));
+
   /* Keyboard + scroll-lock support for the film modal (the photo lightbox handles its own) */
   useEffect(() => {
-    if (film === null) return;
+    if (filmIndex === null) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setFilm(null);
+      if (e.key === "Escape") setFilmIndex(null);
+      else if (e.key === "ArrowRight") showNextFilm();
+      else if (e.key === "ArrowLeft") showPrevFilm();
     };
     window.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
@@ -144,11 +171,16 @@ export default function Gallery() {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
-  }, [film]);
+  }, [filmIndex]);
 
   const openPhoto = (photo: Photo) => {
     const idx = PHOTOS.indexOf(photo);
     if (idx >= 0) setLightbox(idx);
+  };
+
+  const openFilm = (f: Film) => {
+    const idx = FILMS.indexOf(f);
+    if (idx >= 0) setFilmIndex(idx);
   };
 
   const shuffleGallery = () => {
@@ -256,7 +288,7 @@ export default function Gallery() {
                 {item.kind === "photo" ? (
                   <PhotoTile photo={item.photo} onOpen={openPhoto} priority={i < 3} />
                 ) : (
-                  <FilmTile film={item.film} onPlay={setFilm} />
+                  <FilmTile film={item.film} onPlay={openFilm} />
                 )}
               </Reveal>
             ))}
@@ -316,7 +348,7 @@ export default function Gallery() {
           <div className="mt-10 grid gap-6 md:grid-cols-2">
             {FILMS.map((v, i) => (
               <Reveal key={v.name} delay={i * 120} className="aspect-video">
-                <FilmTile film={v} onPlay={setFilm} />
+                <FilmTile film={v} onPlay={openFilm} />
               </Reveal>
             ))}
           </div>
@@ -348,13 +380,46 @@ export default function Gallery() {
 
       {/* ====================== FILM MODAL ====================== */}
       {film && (
-        <div className="nd-video-modal" role="dialog" aria-modal="true" aria-label={`Playing film: ${film.name}`} onClick={() => setFilm(null)}>
-          <button type="button" className="nd-lightbox-btn right-5 top-5" aria-label="Close film" onClick={() => setFilm(null)}>
+        <div className="nd-video-modal" role="dialog" aria-modal="true" aria-label={`Playing film: ${film.name}`} onClick={() => setFilmIndex(null)}>
+          <button type="button" className="nd-lightbox-btn nd-lightbox-close" aria-label="Close film" onClick={() => setFilmIndex(null)}>
             <X size={20} />
           </button>
+          {FILMS.length > 1 && (
+            <>
+              <button
+                type="button"
+                className="nd-lightbox-btn nd-lightbox-nav nd-lightbox-nav--prev"
+                aria-label="Previous film"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  showPrevFilm();
+                }}
+              >
+                <ChevronLeft size={22} />
+              </button>
+              <button
+                type="button"
+                className="nd-lightbox-btn nd-lightbox-nav nd-lightbox-nav--next"
+                aria-label="Next film"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  showNextFilm();
+                }}
+              >
+                <ChevronRight size={22} />
+              </button>
+            </>
+          )}
           <div onClick={(e) => e.stopPropagation()} className="text-center">
-            <video src={film.src} poster={film.poster} controls autoPlay playsInline preload="none" />
-            <p className="mt-4 font-display text-sm italic text-gold-300">{film.name}</p>
+            <video key={film.src} src={film.src} poster={film.poster} controls autoPlay playsInline preload="none" />
+            <p className="mt-4 font-display text-sm italic text-gold-300">
+              {film.name}
+              {FILMS.length > 1 && (
+                <span className="ml-2 text-gold-300/60">
+                  ({(filmIndex ?? 0) + 1} / {FILMS.length})
+                </span>
+              )}
+            </p>
           </div>
         </div>
       )}

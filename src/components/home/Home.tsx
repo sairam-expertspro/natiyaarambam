@@ -16,7 +16,6 @@ import { Reveal } from "@/components/ui/Reveal";
 import { PageHero } from "@/components/sections/PageHero";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { TestimonialCard } from "@/components/home/TestimonialCard";
-import { HeritageCount } from "@/components/home/HeritageCount";
 import { useSite } from "@/lib/site-context";
 import { TESTIMONIALS } from "@/lib/content";
 
@@ -52,7 +51,10 @@ export default function Home() {
   const touchRestUntilRef = useRef(0); // keeps drift paused briefly after a touch swipe ends
 
   const onTestimonialExpandChange = (isExpanded: boolean) => {
-    expandedCountRef.current = Math.max(0, expandedCountRef.current + (isExpanded ? 1 : -1));
+    expandedCountRef.current = Math.max(
+      0,
+      expandedCountRef.current + (isExpanded ? 1 : -1),
+    );
   };
 
   useEffect(() => {
@@ -315,7 +317,8 @@ export default function Home() {
                 />
               </div>
               <p className="nd-dark-chip absolute -bottom-6 left-6 max-w-[250px] rounded-md px-6 py-5 text-[0.92rem] leading-snug">
-                &ldquo;Precision is the bridge between the human and the divine.&rdquo;
+                &ldquo;Precision is the bridge between the human and the
+                divine.&rdquo;
               </p>
             </Reveal>
           </div>
@@ -395,7 +398,11 @@ export default function Home() {
                 <div className="nd-marquee-track">
                   {TESTIMONIALS.map((t) => (
                     <div key={t.name} className="nd-marquee-item">
-                      <TestimonialCard t={t} truncate onExpandChange={onTestimonialExpandChange} />
+                      <TestimonialCard
+                        t={t}
+                        truncate
+                        onExpandChange={onTestimonialExpandChange}
+                      />
                     </div>
                   ))}
                   {TESTIMONIALS.map((t) => (
@@ -404,7 +411,11 @@ export default function Home() {
                       className="nd-marquee-item"
                       aria-hidden="true"
                     >
-                      <TestimonialCard t={t} truncate onExpandChange={onTestimonialExpandChange} />
+                      <TestimonialCard
+                        t={t}
+                        truncate
+                        onExpandChange={onTestimonialExpandChange}
+                      />
                     </div>
                   ))}
                 </div>
@@ -441,24 +452,15 @@ export default function Home() {
       <section id="why" className="scroll-mt-24 bg-cream-50 py-20 md:py-28">
         <div className="mx-auto grid max-w-[1180px] items-center gap-14 px-5 md:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
           <Reveal delay={140} className="relative w-full">
-  <div className="nd-img-zoom mx-auto w-full max-w-[650px] overflow-hidden rounded-[26px]">
-    <Image
-      src="/images/Images/61.webp"
-      alt="A dancer's hand held in gyan mudra, adorned with bangles"
-      width={1366}
-      height={2048}
-      sizes="(max-width: 1024px) 100vw, 650px"
-      className="nd-grayscale block h-auto w-full rounded-[26px]"
-    />
-  </div>
-            <div className="nd-badge-gold absolute -bottom-6 right-6 w-[108px] rounded-sm py-4">
-              <p className="font-display text-[1.9rem] font-bold leading-none">
-                <HeritageCount />
-                <span className="align-top text-lg">+</span>
-              </p>
-              <p className="mt-1.5 text-[0.58rem] font-semibold uppercase tracking-[0.22em]">
-                Years of Heritage
-              </p>
+            <div className="nd-img-zoom mx-auto w-full max-w-[650px] overflow-hidden rounded-[26px]">
+              <Image
+                src="/images/Images/61.webp"
+                alt="A dancer's hand held in gyan mudra, adorned with bangles"
+                width={1366}
+                height={2048}
+                sizes="(max-width: 1024px) 100vw, 650px"
+                className="nd-grayscale block h-auto w-full rounded-[26px]"
+              />
             </div>
           </Reveal>
 

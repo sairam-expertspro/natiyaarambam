@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Toast } from "@/components/ui/Toast";
-import { SiteCtx, scrollToId } from "@/lib/site-context";
+import { SiteCtx, scrollToId, scrollToIdWhenReady } from "@/lib/site-context";
 
 export function SiteLayout({ children }: { children: ReactNode }) {
   const [progress, setProgress] = useState(0);
@@ -31,13 +31,13 @@ export function SiteLayout({ children }: { children: ReactNode }) {
           scrollToId("enroll");
         } else {
           router.push("/contact");
-          window.setTimeout(() => scrollToId("enroll"), 180);
+          scrollToIdWhenReady("enroll");
         }
         return;
       }
       if (pathname !== "/") {
         router.push("/");
-        window.setTimeout(() => scrollToId(id), 140);
+        scrollToIdWhenReady(id);
       } else {
         scrollToId(id);
       }
