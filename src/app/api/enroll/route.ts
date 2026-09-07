@@ -50,23 +50,23 @@ export async function POST(request: Request) {
 
   try {
     const pool = getDbPool();
-    await pool.query(
-      `CREATE TABLE IF NOT EXISTS enrollments (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        age INT NULL,
-        phone VARCHAR(50) NULL,
-        email VARCHAR(255) NULL,
-        level VARCHAR(100) NULL,
-        guardian VARCHAR(255) NULL,
-        aspirations TEXT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )`,
-    );
-    await pool.query(
-      `INSERT INTO enrollments (name, age, phone, email, level, guardian, aspirations) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [payload.name, payload.age, payload.phone, payload.email, payload.level, payload.guardian, payload.aspirations],
-    );
+    // await pool.query(
+    //   `CREATE TABLE IF NOT EXISTS enrollments (
+    //     id INT AUTO_INCREMENT PRIMARY KEY,
+    //     name VARCHAR(255) NOT NULL,
+    //     age INT NULL,
+    //     phone VARCHAR(50) NULL,
+    //     email VARCHAR(255) NULL,
+    //     level VARCHAR(100) NULL,
+    //     guardian VARCHAR(255) NULL,
+    //     aspirations TEXT NULL,
+    //     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    //   )`,
+    // );
+    // await pool.query(
+    //   `INSERT INTO enrollments (name, age, phone, email, level, guardian, aspirations) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    //   [payload.name, payload.age, payload.phone, payload.email, payload.level, payload.guardian, payload.aspirations],
+    // );
   } catch (err) {
     console.error("Enroll DB insert failed:", err);
     return NextResponse.json(
@@ -101,5 +101,5 @@ export async function POST(request: Request) {
     console.error("Enroll notification email failed:", err);
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, message: "Thank you for your interest." });
 }
