@@ -158,10 +158,7 @@ export async function sendContactNotification(submission: ContactSubmission) {
 
   const transporter = getMailTransporter();
   const submittedAt = formatSubmittedAt(new Date());
-  const from = {
-    name: "Natyaarambham Support Team | natyaarambham@gmail.com",
-    address: "natyaarambham@gmail.com",
-  };
+  const from = fromAddress;
 
   if (submission.email) {
     await transporter.sendMail({
