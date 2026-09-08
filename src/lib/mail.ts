@@ -4,7 +4,12 @@ let transporter: nodemailer.Transporter | null = null;
 
 export function getMailTransporter() {
   if (!transporter) {
-    const { ZEPTOMAIL_HOST, ZEPTOMAIL_PORT, ZEPTOMAIL_API_USER, ZEPTOMAIL_API_KEY } = process.env;
+    const {
+      ZEPTOMAIL_HOST,
+      ZEPTOMAIL_PORT,
+      ZEPTOMAIL_API_USER,
+      ZEPTOMAIL_API_KEY,
+    } = process.env;
 
     if (!ZEPTOMAIL_HOST || !ZEPTOMAIL_PORT || !ZEPTOMAIL_API_USER || !ZEPTOMAIL_API_KEY) {
       throw new Error(
@@ -16,6 +21,7 @@ export function getMailTransporter() {
       host: ZEPTOMAIL_HOST,
       port: Number(ZEPTOMAIL_PORT),
       secure: Number(ZEPTOMAIL_PORT) === 465,
+      requireTLS: Number(ZEPTOMAIL_PORT) === 587,
       auth: {
         user: ZEPTOMAIL_API_USER,
         pass: ZEPTOMAIL_API_KEY,

@@ -149,7 +149,7 @@ button:focus-visible {
   font-weight: 600;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: var(--nd-gold-600, #a9861c);
+  color: var(--nd-maroon-700);
 }
 .nd-rule {
   width: 64px;

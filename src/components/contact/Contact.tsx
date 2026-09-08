@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
   BadgeCheck,
   CalendarDays,
@@ -16,6 +16,16 @@ import { Reveal } from "@/components/ui/Reveal";
 import { PageHero } from "@/components/sections/PageHero";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { useSite, scrollToId } from "@/lib/site-context";
+import ReCAPTCHA from "react-google-recaptcha";
+import {
+  CONTACT_LEVELS,
+  formatPhoneDisplay,
+  normalizePhoneDigits,
+  validateContactForm,
+  type ContactFormInput,
+} from "@/lib/contact-form";
+
+const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
 
 const JOURNEY = [
   {
@@ -35,22 +45,6 @@ const JOURNEY = [
   },
 ];
 
-const US_PHONE_DIAL = "+1";
-
-function formatPhoneDisplay(digits: string) {
-  const area = digits.slice(0, 3);
-  const mid = digits.slice(3, 6);
-  const last = digits.slice(6, 10);
-  if (digits.length > 6) return `(${area}) ${mid}-${last}`;
-  if (digits.length > 3) return `(${area}) ${mid}`;
-  if (digits.length > 0) return `(${area}`;
-  return "";
-}
-
-function isValidPhone(digits: string) {
-  return /^\d{10}$/.test(digits);
-}
-
 const INFO_CARDS = [
   { icon: Mail, label: "Email", value: "natyaarambham@gmail.com", href: "mailto:natyaarambham@gmail.com" },
   { icon: MapPin, label: "Location", value: "Natyaarambam Dance Academy, 14901, Thunder Rd, Frisco, 75035" },
@@ -60,8 +54,10 @@ const INFO_CARDS = [
 
 export default function Contact() {
   const { showToast } = useSite();
+  const recaptchaRef = useRef<ReCAPTCHA | null>(null);
   const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState({
+  const [startedAt, setStartedAt] = useState("");
+  const [form, setForm] = useState<ContactFormInput>({
     name: "",
     age: "",
     phone: "",
@@ -69,41 +65,56 @@ export default function Contact() {
     level: "Beginner (Prarambhika)",
     guardian: "",
     aspirations: "",
+    trap: "",
+    startedAt: "",
+    recaptchaToken: "",
   });
 
-  const [errors, setErrors] = useState<{ name?: string; contact?: string }>({});
+  const [errors, setErrors] = useState<Partial<Record<keyof ContactFormInput | "contact", string>>>({});
   const [submitting, setSubmitting] = useState(false);
 
-  const set = (key: keyof typeof form) => (e: { target: { value: string } }) => {
+  useEffect(() => {
+    const timestamp = Date.now().toString();
+    setStartedAt(timestamp);
+    setForm((current) => ({ ...current, startedAt: timestamp }));
+  }, []);
+
+  const set = (key: keyof ContactFormInput) => (e: { target: { value: string } }) => {
     setForm((f) => ({ ...f, [key]: e.target.value }));
-    if (key === "name" || key === "phone" || key === "email") {
+    if (key === "name" || key === "phone" || key === "email" || key === "age" || key === "guardian" || key === "aspirations") {
       setErrors((err) => ({
         ...err,
-        name: key === "name" ? undefined : err.name,
+        [key]: undefined,
         contact: key === "phone" || key === "email" ? undefined : err.contact,
       }));
     }
   };
 
   const onPhoneChange = (e: { target: { value: string } }) => {
-    const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
+    const digits = normalizePhoneDigits(e.target.value);
     setForm((f) => ({ ...f, phone: digits }));
     setErrors((err) => ({ ...err, contact: undefined }));
   };
 
+  const onRecaptchaChange = (token: string | null) => {
+    setForm((f) => ({ ...f, recaptchaToken: token || "" }));
+    setErrors((err) => ({ ...err, recaptchaToken: undefined }));
+  };
+
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const nextErrors: { name?: string; contact?: string } = {};
-    if (!form.name.trim()) nextErrors.name = "Please enter the student's name";
-    if (!form.phone.trim() && !form.email.trim()) {
-      nextErrors.contact = "Add a phone number or email so we can reply";
-    } else if (form.phone.trim() && !isValidPhone(form.phone)) {
-      nextErrors.contact = "Enter a valid 10-digit US mobile number";
+    const validation = validateContactForm(form);
+    const nextErrors: Partial<Record<keyof ContactFormInput | "contact", string>> = {
+      ...validation.errors,
+    };
+
+    if (validation.values.startedAt !== startedAt) {
+      nextErrors.contact = "Please refresh the page and try again.";
     }
 
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors);
-      showToast(nextErrors.contact ?? "Please add the student's name and a phone or email so we can reply");
+      showToast(nextErrors.contact ?? nextErrors.name ?? "Please review the form and try again.");
       return;
     }
     setErrors({});
@@ -113,10 +124,7 @@ export default function Contact() {
       const res = await fetch("/api/enroll", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...form,
-          phone: form.phone ? `${US_PHONE_DIAL} ${formatPhoneDisplay(form.phone)}` : "",
-        }),
+        body: JSON.stringify(form),
       });
 
       if (!res.ok) {
@@ -125,7 +133,12 @@ export default function Contact() {
       }
 
       setSubmitted(true);
+      recaptchaRef.current?.reset();
+      setForm((current) => ({ ...current, recaptchaToken: "" }));
+      showToast("Your message was sent successfully.");
     } catch (err) {
+      recaptchaRef.current?.reset();
+      setForm((current) => ({ ...current, recaptchaToken: "" }));
       showToast(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
@@ -228,7 +241,19 @@ export default function Contact() {
                     onClick={() => {
                       setSubmitted(false);
                       setErrors({});
-                      setForm({ name: "", age: "", phone: "", email: "", level: "Beginner (Prarambhika)", guardian: "", aspirations: "" });
+                      setForm({
+                        name: "",
+                        age: "",
+                        phone: "",
+                        email: "",
+                        level: CONTACT_LEVELS[0],
+                        guardian: "",
+                        aspirations: "",
+                        trap: "",
+                        startedAt,
+                        recaptchaToken: "",
+                      });
+                      recaptchaRef.current?.reset();
                     }}
                   >
                     Submit Another Request
@@ -252,6 +277,7 @@ export default function Contact() {
                         value={form.name}
                         onChange={set("name")}
                         required
+                        maxLength={120}
                         aria-invalid={errors.name ? "true" : undefined}
                         aria-describedby={errors.name ? "f-name-error" : undefined}
                       />
@@ -263,7 +289,12 @@ export default function Contact() {
                     </div>
                     <div className="nd-field">
                       <label htmlFor="f-age">Student Age</label>
-                      <input id="f-age" type="number" min="3" max="99" placeholder="Years" value={form.age} onChange={set("age")} />
+                      <input id="f-age" type="number" min="3" max="99" placeholder="Years" value={form.age} onChange={set("age")} aria-invalid={errors.age ? "true" : undefined} aria-describedby={errors.age ? "f-age-error" : undefined} />
+                      {errors.age && (
+                        <p id="f-age-error" role="alert" className="mt-1 text-xs text-maroon-700">
+                          {errors.age}
+                        </p>
+                      )}
                     </div>
                     <div className="nd-field">
                       <label htmlFor="f-phone">Mobile Number (US)</label>
@@ -277,6 +308,7 @@ export default function Contact() {
                           placeholder="(214) 555-0136"
                           value={formatPhoneDisplay(form.phone)}
                           onChange={onPhoneChange}
+                          maxLength={14}
                           aria-invalid={errors.contact ? "true" : undefined}
                           aria-describedby={errors.contact ? "f-contact-error" : undefined}
                         />
@@ -290,6 +322,7 @@ export default function Contact() {
                         placeholder="Dance@gmail.com"
                         value={form.email}
                         onChange={set("email")}
+                        maxLength={255}
                         aria-invalid={errors.contact ? "true" : undefined}
                         aria-describedby={errors.contact ? "f-contact-error" : undefined}
                       />
@@ -302,16 +335,14 @@ export default function Contact() {
                     <div className="nd-field">
                       <label htmlFor="f-level">Experience Level</label>
                       <select id="f-level" value={form.level} onChange={set("level")}>
-                        <option>Beginner (Prarambhika)</option>
-                        <option>Intermediate (Madhyama)</option>
-                        <option>Advanced (Praveena)</option>
-                        <option>Semi-Classical</option>
-                        <option>Not sure yet</option>
+                        {CONTACT_LEVELS.map((level) => (
+                          <option key={level}>{level}</option>
+                        ))}
                       </select>
                     </div>
                     <div className="nd-field">
                       <label htmlFor="f-guardian">Parent/Guardian Name</label>
-                      <input id="f-guardian" type="text" placeholder="If applicable" value={form.guardian} onChange={set("guardian")} />
+                      <input id="f-guardian" type="text" placeholder="If applicable" value={form.guardian} onChange={set("guardian")} maxLength={120} />
                     </div>
                   </div>
 
@@ -323,7 +354,38 @@ export default function Contact() {
                       placeholder="Share your previous training history or your goals for joining the academy…"
                       value={form.aspirations}
                       onChange={set("aspirations")}
+                      maxLength={3000}
                     />
+                  </div>
+
+                  <input type="hidden" value={form.trap} onChange={set("trap")} />
+                  <input type="hidden" value={form.startedAt || startedAt} readOnly />
+
+                  <div className="mt-6">
+                    {RECAPTCHA_SITE_KEY ? (
+                      <ReCAPTCHA
+                        ref={recaptchaRef}
+                        sitekey={RECAPTCHA_SITE_KEY}
+                        onChange={onRecaptchaChange}
+                        onExpired={() => onRecaptchaChange(null)}
+                        onErrored={() => {
+                          setForm((current) => ({ ...current, recaptchaToken: "" }));
+                          setErrors((current) => ({
+                            ...current,
+                            recaptchaToken: "reCAPTCHA failed to load. Please try again.",
+                          }));
+                        }}
+                      />
+                    ) : (
+                      <p className="text-sm text-maroon-700">
+                        reCAPTCHA is not configured yet.
+                      </p>
+                    )}
+                    {errors.recaptchaToken && (
+                      <p role="alert" className="mt-2 text-xs text-maroon-700">
+                        {errors.recaptchaToken}
+                      </p>
+                    )}
                   </div>
 
                   <button
@@ -352,9 +414,11 @@ export default function Contact() {
                 {/* Map */}
                 <div className="nd-map-frame">
                   
-                  <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3338.504754693429!2d-96.77432492452144!3d33.200861073489506!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzPCsDEyJzAzLjEiTiA5NsKwNDYnMTguMyJX!5e0!3m2!1sen!2sin!4v1786693556713!5m2!1sen!2sin"
-                  loading="lazy" 
-                  referrerPolicy="no-referrer-when-downgrade"
+                  <iframe
+                    title="Natyaarambam Dance Academy location on Google Maps"
+                    src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3338.504754693429!2d-96.77432492452144!3d33.200861073489506!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzPCsDEyJzAzLjEiTiA5NsKwNDYnMTguMyJX!5e0!3m2!1sen!2sin!4v1786693556713!5m2!1sen!2sin"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
                   />
                 </div>
 

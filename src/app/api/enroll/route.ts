@@ -1,22 +1,65 @@
 import { NextResponse } from "next/server";
-import { getDbPool } from "@/lib/db";
-import { getMailTransporter } from "@/lib/mail";
+import { createContactSubmission, sendContactNotification } from "@/lib/contact-submissions";
 
-type EnrollPayload = {
-  name: string;
-  age: number | null;
-  phone: string | null;
-  email: string | null;
-  level: string;
-  guardian: string;
-  aspirations: string;
-};
+export const runtime = "nodejs";
 
-function asString(value: unknown) {
-  return typeof value === "string" ? value.trim() : "";
+function getRequestIp(request: Request) {
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  if (forwardedFor) return forwardedFor.split(",")[0]?.trim() || null;
+  return request.headers.get("x-real-ip")?.trim() || null;
+}
+
+function isValidOrigin(request: Request) {
+  const origin = request.headers.get("origin");
+  if (!origin) return true;
+  return origin === new URL(request.url).origin;
+}
+
+async function verifyRecaptcha(token: string, remoteIp: string | null) {
+  const secret = process.env.RECAPTCHA_SECRET_KEY;
+  if (!secret) {
+    throw new Error("Google reCAPTCHA is not configured.");
+  }
+
+  const verifyUrl = "https://www.google.com/recaptcha/api/siteverify";
+  const body = new URLSearchParams({
+    secret,
+    response: token,
+  });
+
+  if (remoteIp) {
+    body.set("remoteip", remoteIp);
+  }
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
+
+  try {
+    const response = await fetch(verifyUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body,
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      throw new Error("Unable to verify reCAPTCHA.");
+    }
+
+    const data = (await response.json()) as { success?: boolean; ["error-codes"]?: string[] };
+    if (!data.success) {
+      throw new Error("Please complete the reCAPTCHA challenge and try again.");
+    }
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 export async function POST(request: Request) {
+  if (!isValidOrigin(request)) {
+    return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
+  }
+
   let body: unknown;
   try {
     body = await request.json();
@@ -25,81 +68,54 @@ export async function POST(request: Request) {
   }
 
   const input = (body ?? {}) as Record<string, unknown>;
-
-  const name = asString(input.name);
-  const phone = asString(input.phone);
-  const email = asString(input.email);
-  const ageRaw = asString(input.age);
-
-  if (!name) {
-    return NextResponse.json({ error: "Please enter the student's name." }, { status: 400 });
-  }
-  if (!phone && !email) {
-    return NextResponse.json({ error: "Add a phone number or email so we can reply." }, { status: 400 });
-  }
-
-  const payload: EnrollPayload = {
-    name,
-    age: ageRaw && !Number.isNaN(Number(ageRaw)) ? Number(ageRaw) : null,
-    phone: phone || null,
-    email: email || null,
-    level: asString(input.level),
-    guardian: asString(input.guardian),
-    aspirations: asString(input.aspirations),
-  };
+  const recaptchaToken = typeof input.recaptchaToken === "string" ? input.recaptchaToken.trim() : "";
 
   try {
-    const pool = getDbPool();
-    // await pool.query(
-    //   `CREATE TABLE IF NOT EXISTS enrollments (
-    //     id INT AUTO_INCREMENT PRIMARY KEY,
-    //     name VARCHAR(255) NOT NULL,
-    //     age INT NULL,
-    //     phone VARCHAR(50) NULL,
-    //     email VARCHAR(255) NULL,
-    //     level VARCHAR(100) NULL,
-    //     guardian VARCHAR(255) NULL,
-    //     aspirations TEXT NULL,
-    //     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    //   )`,
-    // );
-    // await pool.query(
-    //   `INSERT INTO enrollments (name, age, phone, email, level, guardian, aspirations) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    //   [payload.name, payload.age, payload.phone, payload.email, payload.level, payload.guardian, payload.aspirations],
-    // );
-  } catch (err) {
-    console.error("Enroll DB insert failed:", err);
+    await verifyRecaptcha(recaptchaToken, getRequestIp(request));
+  } catch (error) {
     return NextResponse.json(
-      { error: "Something went wrong saving your enrollment. Please try again." },
-      { status: 500 },
+      {
+        error: error instanceof Error ? error.message : "Please complete the reCAPTCHA challenge and try again.",
+      },
+      { status: 400 },
+    );
+  }
+
+  const result = await createContactSubmission(
+    {
+      name: typeof input.name === "string" ? input.name : "",
+      age: typeof input.age === "string" ? input.age : "",
+      phone: typeof input.phone === "string" ? input.phone : "",
+      email: typeof input.email === "string" ? input.email : "",
+      level: typeof input.level === "string" ? input.level : "",
+      guardian: typeof input.guardian === "string" ? input.guardian : "",
+      aspirations: typeof input.aspirations === "string" ? input.aspirations : "",
+      trap: typeof input.trap === "string" ? input.trap : "",
+      startedAt: typeof input.startedAt === "string" ? input.startedAt : "",
+      recaptchaToken,
+    },
+    {
+      ipAddress: getRequestIp(request),
+      userAgent: request.headers.get("user-agent"),
+    },
+  );
+
+  if (!result.ok) {
+    const firstError = Object.values(result.errors).find(Boolean);
+    return NextResponse.json(
+      {
+        error: firstError || "Please review the highlighted fields and try again.",
+        fieldErrors: result.errors,
+      },
+      { status: 400 },
     );
   }
 
   try {
-    const notifyTo = process.env.ENROLL_NOTIFY_EMAIL || process.env.LEAD_EMAIL_TO;
-    const fromAddress = process.env.ZEPTOMAIL_FROM_EMAIL || process.env.ZEPTOMAIL_FROM;
-
-    if (notifyTo && fromAddress) {
-      const transporter = getMailTransporter();
-      await transporter.sendMail({
-        from: fromAddress,
-        to: notifyTo,
-        replyTo: payload.email || undefined,
-        subject: `New Enrollment Request - ${payload.name}`,
-        text: [
-          `Name: ${payload.name}`,
-          `Age: ${payload.age ?? "-"}`,
-          `Phone: ${payload.phone ?? "-"}`,
-          `Email: ${payload.email ?? "-"}`,
-          `Level: ${payload.level || "-"}`,
-          `Guardian: ${payload.guardian || "-"}`,
-          `Aspirations: ${payload.aspirations || "-"}`,
-        ].join("\n"),
-      });
-    }
+    await sendContactNotification(result.submission);
   } catch (err) {
-    console.error("Enroll notification email failed:", err);
+    console.error("Contact notification email failed:", err);
   }
 
-  return NextResponse.json({ ok: true, message: "Thank you for your interest." });
+  return NextResponse.json({ ok: true, message: "Thanks. Your message has been received." }, { status: 201 });
 }

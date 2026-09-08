@@ -384,6 +384,7 @@ export default function Home() {
                 ref={marqueeRef}
                 className="nd-marquee"
                 aria-label="Client testimonials, auto-scrolling — drag, swipe, or use the arrows"
+                tabIndex={0}
                 onMouseEnter={() => (pausedRef.current = true)}
                 onMouseLeave={() => (pausedRef.current = false)}
                 onFocusCapture={() => (pausedRef.current = true)}
@@ -401,6 +402,7 @@ export default function Home() {
                       <TestimonialCard
                         t={t}
                         truncate
+                        interactive={false}
                         onExpandChange={onTestimonialExpandChange}
                       />
                     </div>
@@ -410,6 +412,7 @@ export default function Home() {
                       key={`echo-${t.name}`}
                       className="nd-marquee-item"
                       aria-hidden="true"
+                      inert
                     >
                       <TestimonialCard
                         t={t}

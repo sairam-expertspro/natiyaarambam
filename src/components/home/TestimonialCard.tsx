@@ -9,10 +9,12 @@ const TRUNCATE_LENGTH = 150;
 export function TestimonialCard({
   t,
   truncate = false,
+  interactive = true,
   onExpandChange,
 }: {
   t: (typeof TESTIMONIALS)[number];
   truncate?: boolean;
+  interactive?: boolean;
   onExpandChange?: (expanded: boolean) => void;
 }) {
   const [expanded, setExpanded] = useState(false);
@@ -46,7 +48,7 @@ export function TestimonialCard({
         {text}
       </blockquote>
 
-      {shouldTruncate && (
+      {shouldTruncate && interactive && (
         <button
           type="button"
           onClick={() => setExpanded((prev) => !prev)}
