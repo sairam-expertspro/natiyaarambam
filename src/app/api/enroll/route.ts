@@ -9,10 +9,51 @@ function getRequestIp(request: Request) {
   return request.headers.get("x-real-ip")?.trim() || null;
 }
 
+function normalizeHost(hostname: string) {
+  return hostname.trim().toLowerCase().replace(/\.$/, "");
+}
+
+function extractHost(value: string) {
+  const first = value.split(",")[0]?.trim() || "";
+  if (!first) return "";
+
+  try {
+    return normalizeHost(new URL(`http://${first}`).hostname);
+  } catch {
+    return normalizeHost(first.split(":")[0] || "");
+  }
+}
+
+function sameSiteHost(a: string, b: string) {
+  if (!a || !b) return false;
+  if (a === b) return true;
+  return a === `www.${b}` || b === `www.${a}`;
+}
+
 function isValidOrigin(request: Request) {
   const origin = request.headers.get("origin");
   if (!origin) return true;
-  return origin === new URL(request.url).origin;
+
+  let originUrl: URL;
+  try {
+    originUrl = new URL(origin);
+  } catch {
+    return false;
+  }
+
+  const requestUrl = new URL(request.url);
+  const originHost = normalizeHost(originUrl.hostname);
+  const requestHost = normalizeHost(requestUrl.hostname);
+  if (sameSiteHost(originHost, requestHost)) {
+    return true;
+  }
+
+  const forwardedHost = request.headers.get("x-forwarded-host");
+  if (!forwardedHost) {
+    return false;
+  }
+
+  return sameSiteHost(originHost, extractHost(forwardedHost));
 }
 
 async function verifyRecaptcha(token: string, remoteIp: string | null) {
