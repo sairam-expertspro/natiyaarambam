@@ -117,6 +117,35 @@ ADMIN_BASIC_AUTH_USER=
 ADMIN_BASIC_AUTH_PASSWORD=
 ```
 
+### One-step env file generation
+
+If you want to generate a local `.env.production` file instead of typing values manually, run:
+
+```powershell
+@'
+MYSQL_HOST=
+MYSQL_USER=
+MYSQL_PASSWORD=
+MYSQL_DATABASE=
+MYSQL_PORT=3306
+MYSQL_SSL=true
+
+ZEPTOMAIL_HOST=
+ZEPTOMAIL_PORT=
+ZEPTOMAIL_API_USER=
+ZEPTOMAIL_API_KEY=
+
+CONTACT_FROM_EMAIL=natyaarambham@gmail.com
+CONTACT_NOTIFY_EMAIL=natyaarambham@gmail.com
+
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY=
+RECAPTCHA_SECRET_KEY=
+
+ADMIN_BASIC_AUTH_USER=
+ADMIN_BASIC_AUTH_PASSWORD=
+'@ | Set-Content -Path .env.production -Encoding UTF8
+```
+
 ## 8. Deploy
 
 1. Upload or pull the latest code to the Hostinger app directory.
@@ -159,4 +188,3 @@ Subject lines:
 - Email not sending: check ZeptoMail credentials and sender verification
 - DB write failure: check MySQL host/user/password/database/SSL
 - Admin access denied: check basic auth env vars
-
