@@ -88,6 +88,126 @@ function formatSubmittedAt(value: Date) {
   }).format(value);
 }
 
+function buildConfirmationEmailHtml(submission: ContactSubmission, submittedAt: string) {
+  const name = escapeHtml(submission.name);
+  const details: Array<[string, string]> = [
+    ["Experience Level", submission.level || "—"],
+    ["Age", submission.age != null ? `${submission.age} years` : "—"],
+    ["Phone", submission.phone ? formatPhoneDisplay(submission.phone) : "—"],
+    ["Parent / Guardian", submission.guardian || "—"],
+    ["Submitted", submittedAt],
+  ];
+
+  const detailRows = details
+    .map(
+      ([label, value], index) => `
+        <tr>
+          <td style="padding:11px 0;${index < details.length - 1 ? "border-bottom:1px solid #efe8cf;" : ""}font-size:13px;color:#5e584c;">${escapeHtml(label)}</td>
+          <td style="padding:11px 0;${index < details.length - 1 ? "border-bottom:1px solid #efe8cf;" : ""}font-size:13px;color:#2e2a24;font-weight:600;text-align:right;">${escapeHtml(value)}</td>
+        </tr>`,
+    )
+    .join("");
+
+  const aspirationsBlock = submission.message
+    ? `
+      <tr>
+        <td style="padding-top:20px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f7f3e2;border-radius:10px;">
+            <tr>
+              <td style="padding:16px 18px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#a9861c;">
+                Your Message
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 18px 18px;font-size:14px;font-style:italic;line-height:1.6;color:#4a453c;">
+                &ldquo;${escapeHtml(submission.message).replace(/\n/g, "<br>")}&rdquo;
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>`
+    : "";
+
+  return `
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Thank you for contacting Natyaarambam</title>
+  </head>
+  <body style="margin:0;padding:0;background:#f7f3e2;font-family:Arial,Helvetica,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f7f3e2;padding:32px 16px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:100%;background:#ffffff;border-radius:14px;overflow:hidden;">
+            <tr>
+              <td style="background:#3d0707;padding:36px 40px;text-align:center;">
+                <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto;">
+                  <tr>
+                    <td style="width:44px;height:44px;border:1.5px solid #d9b94e;border-radius:50%;text-align:center;vertical-align:middle;font-family:Georgia,'Times New Roman',serif;font-size:22px;font-weight:700;color:#fcfaf0;">
+                      N
+                    </td>
+                  </tr>
+                </table>
+                <p style="margin:14px 0 0;font-family:Georgia,'Times New Roman',serif;font-size:19px;font-weight:700;color:#fcfaf0;">
+                  Natyaarambam
+                </p>
+                <p style="margin:2px 0 0;font-size:10px;font-weight:600;letter-spacing:0.3em;text-transform:uppercase;color:#e8d184;">
+                  Dance Academy
+                </p>
+                <h1 style="margin:20px 0 0;font-family:Georgia,'Times New Roman',serif;font-size:24px;font-weight:700;color:#fcfaf0;">
+                  Thank You for Reaching Out!
+                </h1>
+                <p style="margin:10px auto 0;max-width:380px;font-size:13px;font-weight:300;line-height:1.6;color:#efe8cf;">
+                  We've received your enquiry and a member of our team will be in
+                  touch within 2 business days.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:36px 40px;">
+                <p style="margin:0;font-size:14px;line-height:1.65;color:#4a453c;">
+                  Dear <strong style="color:#2e2a24;">${name}</strong>, thank you for
+                  contacting Natyaarambam Dance Academy. Here's a summary of the
+                  details you shared with us.
+                </p>
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:22px;">
+                  ${detailRows}
+                  ${aspirationsBlock}
+                </table>
+                <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:28px;">
+                  <tr>
+                    <td style="border-radius:999px;background:#821616;">
+                      <a href="https://natyaarambam.com" style="display:inline-block;padding:12px 26px;font-size:13px;font-weight:600;color:#fcfaf0;text-decoration:none;">
+                        Visit Our Website
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="background:#3d0707;padding:26px 40px;">
+                <p style="margin:0;font-size:12px;line-height:1.7;color:#efe8cf;">
+                  Natyaarambam Dance Academy · 14901 Thunder Rd, Frisco, TX 75035<br />
+                  <a href="tel:+17033341164" style="color:#e8d184;text-decoration:none;">+1 (703) 334-1164</a>
+                  &nbsp;·&nbsp;
+                  <a href="mailto:natyaarambham@gmail.com" style="color:#e8d184;text-decoration:none;">natyaarambham@gmail.com</a>
+                </p>
+                <p style="margin:12px 0 0;font-size:11px;font-weight:300;color:#e4dab8;opacity:0.7;">
+                  You're receiving this email because you submitted an enquiry on natyaarambam.com.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`;
+}
+
 export async function createContactSubmission(input: ContactFormInput, meta: { ipAddress: string | null; userAgent: string | null }) {
   const validation = validateContactForm(input);
   if (Object.keys(validation.errors).length > 0) {
@@ -168,7 +288,14 @@ export async function sendContactNotification(submission: ContactSubmission) {
       text: [
         `Dear ${submission.name},`,
         "",
-        "Thank you for reaching out to Natyaarambham Dance Academy. We have received your enquiry and our team will review the details promptly.",
+        "Thank you for reaching out to Natyaarambham Dance Academy. We have received your enquiry with the following details:",
+        "",
+        `- Experience Level: ${submission.level || "-"}`,
+        `- Age: ${submission.age ?? "-"}`,
+        `- Phone: ${submission.phone ? formatPhoneDisplay(submission.phone) : "-"}`,
+        `- Parent/Guardian: ${submission.guardian || "-"}`,
+        `- Submitted: ${submittedAt}`,
+        ...(submission.message ? ["", `Your Message: "${submission.message}"`] : []),
         "",
         "One of our representatives will connect with you shortly to provide the necessary information and guidance. You can expect a response within 2 business days.",
         "",
@@ -177,15 +304,7 @@ export async function sendContactNotification(submission: ContactSubmission) {
         "Best Regards,",
         "Team Natyaarambham",
       ].join("\n"),
-      html: `
-        <div style="font-family:Arial,sans-serif;line-height:1.6;color:#2e2a24">
-          <p>Dear ${escapeHtml(submission.name)},</p>
-          <p>Thank you for reaching out to Natyaarambham Dance Academy. We have received your enquiry and our team will review the details promptly.</p>
-          <p>One of our representatives will connect with you shortly to provide the necessary information and guidance. You can expect a response within 2 business days.</p>
-          <p>We appreciate your interest in Natyaarambham and look forward to supporting your dance journey.</p>
-          <p>Best Regards,<br />Team Natyaarambham</p>
-        </div>
-      `,
+      html: buildConfirmationEmailHtml(submission, submittedAt),
     });
   }
 
